@@ -38,7 +38,7 @@ export default function Home() {
               <section>
                 <section>
                   <h1 className='text-3xl font-bold'>
-                    Explain JavaScript Currying to me like I'm 5
+                    Explain JavaScript Currying to me like I&apos;m 5
                   </h1>
                 </section>
                 <h2 className='text-2xl font-bold mt-8 mb-3'>Definition 🤔</h2>
@@ -50,7 +50,7 @@ export default function Home() {
                   more secure, reliable, and efficient. Web3 is built on top of
                   blockchain technology and is an open source project that
                   anyone can contribute to and use. const web3 = new Web3(new
-                  Web3.providers.HttpProvider('http://localhost:8545'))
+                  Web3.providers.HttpProvider(&apos;http://localhost:8545&apos;))
                 </p>
                 <h2 className='text-2xl font-bold mt-8 mb-3'>Analogy 🤓</h2>
                 <p>

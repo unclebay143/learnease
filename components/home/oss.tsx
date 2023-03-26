@@ -8,7 +8,7 @@ export default function OSS({ stars }: { stars: number }) {
     <div className='my-20'>
       <div className='mx-auto max-w-md text-center sm:max-w-xl'>
         <h2 className='bg-gradient-to-r from-gray-800 via-gray-500 to-gray-800 bg-clip-text font-display text-4xl font-extrabold leading-tight text-transparent sm:text-5xl sm:leading-tight'>
-          It's open-source
+          It&apos;s open-source
         </h2>
         <p className='mt-5 text-gray-600 sm:text-lg'>
           LearnEase source code is available on GitHub as part of learning -

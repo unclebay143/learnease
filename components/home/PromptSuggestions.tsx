@@ -17,10 +17,10 @@ export default function PromptSuggestions({}: Props) {
             I want to learn JavaScript
           </button>
           <button className='border rounded p-2 mr-2 mt-2 border-gray-400'>
-            Explain JavaScript Currying to me like I'm 5
+            Explain JavaScript Currying to me like I&apos;m five
           </button>
           <button className='border rounded p-2 mr-2 mt-2 border-gray-400'>
-            Explain Recursion to me like I'm 5
+            Explain Recursion to me like I&apos;m five
           </button>
         </motion.div>
       </AnimatePresence>
