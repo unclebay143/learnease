@@ -2,9 +2,19 @@ import React from "react";
 import Hero from "./hero";
 import Navbar from "./navbar";
 
-type Props = {};
-
-export default function Header({}: Props) {
+export default function Header({
+  promptInputValue,
+  setPromptInputValue,
+  handleSubmit,
+  isGeneratingResponse,
+  showSharer,
+}: {
+  promptInputValue: string;
+  setPromptInputValue: Function;
+  handleSubmit: Function;
+  isGeneratingResponse: boolean;
+  showSharer: boolean;
+}) {
   return (
     <header
       className='bg-gray-800 z-20'
@@ -17,7 +27,13 @@ export default function Header({}: Props) {
       }}
     >
       <Navbar />
-      <Hero />
+      <Hero
+        promptInputValue={promptInputValue}
+        setPromptInputValue={setPromptInputValue}
+        handleSubmit={handleSubmit}
+        isGeneratingResponse={isGeneratingResponse}
+        showSharer={showSharer}
+      />
     </header>
   );
 }

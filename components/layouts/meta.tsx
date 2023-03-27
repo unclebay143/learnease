@@ -2,8 +2,8 @@ import { FAVICON_FOLDER } from "@/lib/constants";
 import Head from "next/head";
 
 export default function Meta({
-  title = "LearnEase -  ",
-  description = "",
+  title = "LearnEase - Unlock the Power of Learning with AI",
+  description = "Your One-Stop Destination for Easy-to-Understand Tech Concepts with AI Assistance.",
   image = "",
 }: {
   title?: string;
@@ -31,7 +31,7 @@ export default function Meta({
         sizes='16x16'
         href={`${FAVICON_FOLDER}/favicon-16x16.png`}
       />
-      <link rel='manifest' href='/site.webmanifest' />
+      {/* <link rel='manifest' href='/site.webmanifest' /> */}
       <link
         rel='mask-icon'
         href={`${FAVICON_FOLDER}/safari-pinned-tab.svg`}

@@ -1,10 +1,21 @@
 import React from "react";
+import PromptForm from "../app/prompt-form";
 import Sharer from "../shared/sharer";
 import PromptSuggestions from "./PromptSuggestions";
 
-type Props = {};
-
-export default function Hero({}: Props) {
+export default function Hero({
+  promptInputValue,
+  handleSubmit,
+  setPromptInputValue,
+  isGeneratingResponse,
+  showSharer,
+}: {
+  promptInputValue: string;
+  setPromptInputValue: Function;
+  handleSubmit: Function;
+  isGeneratingResponse: boolean;
+  showSharer: boolean;
+}) {
   return (
     <div className='px-5 md:px-20 flex justify-center items-center flex-col py-10'>
       <div className='max-w-screen-md'>
@@ -18,22 +29,19 @@ export default function Hero({}: Props) {
             Your One-Stop Destination for Understanding Complex Tech Concepts.
           </p> */}
 
-          <PromptSuggestions />
-        </section>
-        <form className='w-full mb-10 sm:flex items-center space-y-2 sm:space-x-2 sm:space-y-0'>
-          <input
-            type='text'
-            name='animal'
-            placeholder='What else do you want to learn?'
-            className='p-4 w-full sm:w-9/12 rounded text-md bg-white'
+          <PromptSuggestions
+            setPromptInputValue={setPromptInputValue}
+            handleSubmit={handleSubmit}
+            isGeneratingResponse={isGeneratingResponse}
           />
-          <button className='bg-green-700 w-full bg-opacity-90 flex-1 p-4 rounded text-white text-md uppercase'>
-            Generate
-          </button>
-        </form>
-
-        {/* Todo: Render after user has ran their first prompt request */}
-        <Sharer />
+        </section>
+        <PromptForm
+          promptInputValue={promptInputValue}
+          setPromptInputValue={setPromptInputValue}
+          handleSubmit={handleSubmit}
+          isGeneratingResponse={isGeneratingResponse}
+        />
+        {showSharer ? <Sharer /> : null}
       </div>
     </div>
   );

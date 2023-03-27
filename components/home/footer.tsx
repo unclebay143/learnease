@@ -7,7 +7,16 @@ type Props = {};
 
 export default function Footer({}: Props) {
   return (
-    <section className='z-20 flex items-center space-x-4 text-md md:text-md w-full justify-center p-3 text-gray-400 bg-gray-800'>
+    <section
+      className='z-20 flex items-center space-x-4 text-md md:text-md w-full justify-center p-5 text-gray-400 bg-gray-800'
+      style={{
+        backgroundImage: "url('/_static/illustrations/grid.svg')",
+        backgroundPosition: "center",
+        width: "100%",
+        height: "100%",
+        top: "0",
+      }}
+    >
       <a
         href='http://'
         target='_blank'
