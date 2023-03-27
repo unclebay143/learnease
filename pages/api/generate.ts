@@ -1,36 +1,27 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import { Configuration, OpenAIApi } from 'openai'
+import { OpenAIStream, OpenAIStreamPayload } from '@/lib/OpenAIStream'
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-const openai = new OpenAIApi(configuration)
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error('OpenAI API key is required')
+}
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
-  if (!configuration.apiKey) {
-    res.status(500).json({
-      error: {
-        message:
-          'OpenAI API key not configured, please follow instructions in README.md',
-      },
-    })
-    return
-  }
+export const config = {
+  runtime: 'edge',
+}
 
-  const prompt = req.body.prompt || ''
-  const promptEmpty = prompt.trim().length === 0
-
-  if (promptEmpty) {
-    res.status(400).json({
-      error: {
-        message: 'Please enter a valid prompt',
-      },
-    })
-    return
-  }
-
+const handler = async (req: Request): Promise<Response> => {
   try {
-    const completion = await openai.createCompletion({
+    const { prompt } = (await req.json()) as {
+      prompt: string
+    }
+
+    const promptEmpty = prompt.trim().length === 0
+
+    if (promptEmpty) {
+      return new Response('Please enter a valid prompt', { status: 400 })
+    }
+
+    const completion: OpenAIStreamPayload = {
+      // model: 'gpt-3.5-turbo',
       model: 'text-davinci-003',
       prompt: generatePrompt(prompt),
       temperature: 0.6,
@@ -38,31 +29,21 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       top_p: 1.0,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,
-    })
-    res.status(200).json({ result: completion.data.choices[0].text })
-  } catch (error) {
-    if (error) {
-      res.status(400).json(error)
-      console.log(error)
-      // TS erroring this line
-      // console.log(error?.response?.status)
-      // res.status(error?.response?.status).json(error.response.data)
-    } else {
-      if (error instanceof Error) {
-        console.error(`Error with OpenAI API request: ${error.message}`)
-      } else {
-        console.log(error)
-      }
-      res.status(500).json({
-        error: {
-          message: 'An error occurred during your request.',
-        },
-      })
+      stream: true,
+      n: 1,
     }
+
+    const stream = await OpenAIStream(completion)
+    console.log(stream)
+    return new Response(stream)
+  } catch (error) {
+    console.log(error)
+    throw new Error('Something went wrong')
   }
 }
 
 function generatePrompt(prompt: string) {
+  console.log('generate prompt')
   const conceptToLearn = prompt[0].toUpperCase() + prompt.slice(1).toLowerCase()
   // return `do nothing and smile`;
 
@@ -123,3 +104,5 @@ function generatePrompt(prompt: string) {
   [INSTRUCTION: generate links from most viewed resource on ${conceptToLearn} from youtube, articles etc]
 `
 }
+
+export default handler

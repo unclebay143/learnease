@@ -19,25 +19,53 @@ export default function Home() {
   const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
   const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
 
-  const handleSubmit = (prompt: string) => {
+  const handleSubmit = async (prompt: string) => {
     setIsGeneratingResponse(true);
     setResponse(null); //reset previous response to show PlaceholderSections
     setResponseTitle(prompt || promptInputValue);
 
-    sendPrompt(prompt || promptInputValue)
-      .then((res) => {
-        setResponse(res);
-        setIsGeneratingResponse(false);
-        setUsedAppCount(usedAppCount + 1);
+    const res = await fetch("api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
 
-        if (!showSharer && usedAppCount + 1 === 1) {
-          setShowSharer(true);
-        }
-      })
-      .catch((error) => {
-        console.log("something went wrong");
-        setIsGeneratingResponse(false);
-      });
+    console.log("Edge function returned.");
+
+    if (!res.ok) {
+      setIsGeneratingResponse(false);
+
+      throw new Error(res.statusText);
+    }
+
+    const data = res.body;
+    if (!data) {
+      return;
+    }
+
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+      console.log(chunkValue);
+      console.log(response + chunkValue);
+      setResponse((prev) => prev + chunkValue);
+    }
+    console.log(done);
+    setIsGeneratingResponse(false);
+    setUsedAppCount(usedAppCount + 1);
+
+    // show sharer for first time users
+    if (!showSharer && usedAppCount + 1 === 1) {
+      setShowSharer(true);
+    }
   };
 
   return (
