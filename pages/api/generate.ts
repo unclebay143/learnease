@@ -1,5 +1,6 @@
 import { OpenAIStream, OpenAIStreamPayload } from '@/lib/OpenAIStream'
-
+import { NextRequest } from 'next/server'
+console.log(process.env.OPENAI_API_KEY)
 if (!process.env.OPENAI_API_KEY) {
   throw new Error('OpenAI API key is required')
 }
@@ -8,7 +9,7 @@ export const config = {
   runtime: 'edge',
 }
 
-const handler = async (req: Request): Promise<Response> => {
+const handler = async (req: NextRequest): Promise<Response> => {
   try {
     const { prompt } = (await req.json()) as {
       prompt: string
@@ -21,9 +22,8 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const completion: OpenAIStreamPayload = {
-      // model: 'gpt-3.5-turbo',
-      model: 'text-davinci-003',
-      prompt: generatePrompt(prompt),
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: generatePrompt(prompt) }],
       temperature: 0.6,
       max_tokens: 2000,
       top_p: 1.0,
@@ -43,7 +43,6 @@ const handler = async (req: Request): Promise<Response> => {
 }
 
 function generatePrompt(prompt: string) {
-  console.log('generate prompt')
   const conceptToLearn = prompt[0].toUpperCase() + prompt.slice(1).toLowerCase()
   // return `do nothing and smile`;
 

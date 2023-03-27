@@ -4,9 +4,15 @@ import {
   ReconnectInterval,
 } from 'eventsource-parser'
 
+export type ChatGPTAgent = 'user' | 'system'
+
+export interface ChatGPTMessage {
+  role: ChatGPTAgent
+  content: string
+}
 export interface OpenAIStreamPayload {
   model: string
-  prompt: string
+  messages: ChatGPTMessage[]
   temperature: number
   top_p: number
   frequency_penalty: number

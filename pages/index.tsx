@@ -5,26 +5,24 @@ import Header from "@/components/home/header";
 import OSS from "@/components/home/oss";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
-import { sendPrompt } from "@/lib/prompts";
 import ResponseMarkdown from "@/components/app/response-markdown";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
-import { Toast } from "@radix-ui/react-toast";
 
 export default function Home() {
   const [isGeneratingResponse, setIsGeneratingResponse] =
     useState<boolean>(false);
   const [responseTitle, setResponseTitle] = useState<string | null>(null);
-  const [response, setResponse] = useState<string | null>(null);
+  const [response, setResponse] = useState<string>("");
   const [promptInputValue, setPromptInputValue] = useState<string>("");
   const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
   const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
 
   const handleSubmit = async (prompt: string) => {
     setIsGeneratingResponse(true);
-    setResponse(null); //reset previous response to show PlaceholderSections
+    setResponse(""); //reset previous response to show PlaceholderSections
     setResponseTitle(prompt || promptInputValue);
 
-    const res = await fetch("api/generate", {
+    const response = await fetch("api/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,15 +30,12 @@ export default function Home() {
       body: JSON.stringify({ prompt }),
     });
 
-    console.log("Edge function returned.");
-
-    if (!res.ok) {
+    if (!response.ok) {
       setIsGeneratingResponse(false);
-
-      throw new Error(res.statusText);
+      return;
     }
 
-    const data = res.body;
+    const data = response.body;
     if (!data) {
       return;
     }
@@ -54,11 +49,8 @@ export default function Home() {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       const chunkValue = decoder.decode(value);
-      console.log(chunkValue);
-      console.log(response + chunkValue);
       setResponse((prev) => prev + chunkValue);
     }
-    console.log(done);
     setIsGeneratingResponse(false);
     setUsedAppCount(usedAppCount + 1);
 
