@@ -17,13 +17,13 @@ export default function OSS({ stars }: { stars: number }) {
       </div>
       <div className='flex items-center justify-center py-10'>
         <a
-          href='https://github.com/steven-tey/dub'
+          href='https://dub.sh/learnease-github'
           target='_blank'
           rel='noreferrer'
         >
           <div className='flex items-center'>
             <div
-              className='flex h-10 items-center space-x-2 rounded-md border border-gray-600 bg-gray-800 p-4'
+              className='flex h-10 items-center space-x-2 rounded-md border border-gray-600 bg-gray-900 p-4'
               style={{
                 backgroundImage: "url('/_static/illustrations/grid.svg')",
                 backgroundPosition: "center",
@@ -35,7 +35,7 @@ export default function OSS({ stars }: { stars: number }) {
               <p className='font-medium text-white'>Star</p>
             </div>
             <div
-              className={styles.label}
+              className={`${styles.label} bg-gray-900`}
               style={{
                 backgroundImage: "url('/_static/illustrations/grid.svg')",
                 backgroundPosition: "center",
@@ -50,6 +50,29 @@ export default function OSS({ stars }: { stars: number }) {
             </div>
           </div>
         </a>
+      </div>
+
+      <div className='flex justify-center text-center'>
+        <p>
+          Powered by
+          <a
+            href='https://openai.com/blog/chatgpt'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='font-bold text-gray-800 mx-1 hover:underline hover:underline-offset-2'
+          >
+            ChatGPT
+          </a>
+          and
+          <a
+            href='https://vercel.com/docs/concepts/functions/edge-functions'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='font-bold text-gray-800 mx-1 hover:underline hover:underline-offset-2'
+          >
+            Vercel Edge Functions.
+          </a>
+        </p>
       </div>
     </div>
   );

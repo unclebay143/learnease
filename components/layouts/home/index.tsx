@@ -14,7 +14,9 @@ export default function HomeLayout({
     <div className='flex justify-between flex-col min-h-screen'>
       <Meta {...meta} />
       <PageBackground />
+      <div className="z-20">
       {children}
+      </div>
       <Footer />
     </div>
   );

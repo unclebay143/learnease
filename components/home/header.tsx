@@ -17,7 +17,7 @@ export default function Header({
 }) {
   return (
     <header
-      className='bg-gray-800 z-20'
+      className='bg-gray-900'
       style={{
         backgroundImage: "url('/_static/illustrations/grid.svg')",
         backgroundPosition: "center",
