@@ -1,4 +1,15 @@
-import SlideOver from "../shared/slider-over";
+import SlideOverWrapper from "../shared/slider-over";
+import Favorites from "./favorites";
+import Saved from "./saved";
+
+const data = [
+  "Explain JavaScript Currying to me like I'm 5",
+  "I want to learn about JavaScript and Python",
+  "I want to learn about JavaScript, Python, AI, Machine Learning, Booking, commerce, economics, agric, computer",
+  "web3",
+  "AI",
+  "jknjndfjoidjoijsd",
+];
 
 export default function SidebarDashboard({
   open,
@@ -8,34 +19,9 @@ export default function SidebarDashboard({
   setOpen: Function;
 }) {
   return (
-    <SlideOver title='Dashboard' open={open} setOpen={setOpen}>
-      <div className='h-1/2 '>
-        <div className='relative h-full p-5 overflow-hidden rounded-xl border border-dashed border-gray-400 opacity-75'>
-          <svg
-            className='absolute inset-0 h-full w-full stroke-gray-900/10'
-            fill='none'
-          >
-            <defs>
-              <pattern
-                id='pattern-510798f3-74a4-4150-a0cf-4e93e8f4fbdf'
-                x={0}
-                y={0}
-                width={10}
-                height={10}
-                patternUnits='userSpaceOnUse'
-              >
-                <path d='M-3 13 15-5M-5 5l18-18M-1 21 17 3' />
-              </pattern>
-            </defs>
-            <rect
-              stroke='none'
-              fill='url(#pattern-510798f3-74a4-4150-a0cf-4e93e8f4fbdf)'
-              width='100%'
-              height='100%'
-            />
-          </svg>
-        </div>
-      </div>
-    </SlideOver>
+    <SlideOverWrapper title='Dashboard' open={open} setOpen={setOpen}>
+      <Favorites items={data} />
+      <Saved items={data} />
+    </SlideOverWrapper>
   );
 }

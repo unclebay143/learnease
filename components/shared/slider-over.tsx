@@ -1,10 +1,11 @@
 import { Fragment, ReactNode } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 // https://tailwindui.com/components/application-ui/overlays/slide-overs
 
-export default function SlideOver({
+export default function SlideOverWrapper({
   open,
   setOpen,
   title,
@@ -15,6 +16,9 @@ export default function SlideOver({
   title?: string;
   children: ReactNode;
 }) {
+  const getImage = () => {
+    return "https://github.com/unclebay143.png";
+  };
   return (
     <Transition show={open}>
       <Dialog as='div' className='relative z-30' onClose={() => setOpen(false)}>
@@ -65,8 +69,16 @@ export default function SlideOver({
                   </Transition.Child>
                   <div className='flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl'>
                     <div className='px-4 sm:px-6'>
-                      <Dialog.Title className='text-base font-semibold leading-6 text-gray-900'>
-                        {title}
+                      <Dialog.Title className='text-lg font-semibold leading-6 text-gray-900 flex items-center'>
+                        <h3>{title}</h3>
+                        <Image
+                          loader={getImage}
+                          src='https://github.com/unclebay143.png'
+                          alt='user'
+                          width='50'
+                          height='50'
+                          className='rounded-full w-7 h-7 ml-2'
+                        />
                       </Dialog.Title>
                     </div>
                     <div className='relative mt-6 flex-1 px-4 sm:px-6'>

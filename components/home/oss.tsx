@@ -1,5 +1,5 @@
 import React from "react";
-import Github from "../shared/background/icons/github";
+import Github from "../shared/icons/github";
 import CountingNumbers from "../shared/counting-number";
 import styles from "./oss.module.css";
 

@@ -1,6 +1,6 @@
 import { OpenAIStream, OpenAIStreamPayload } from '@/lib/OpenAIStream'
 import { NextRequest } from 'next/server'
-console.log(process.env.OPENAI_API_KEY)
+
 if (!process.env.OPENAI_API_KEY) {
   throw new Error('OpenAI API key is required')
 }
@@ -34,7 +34,6 @@ const handler = async (req: NextRequest): Promise<Response> => {
     }
 
     const stream = await OpenAIStream(completion)
-    console.log(stream)
     return new Response(stream)
   } catch (error) {
     console.log(error)

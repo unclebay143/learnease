@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import Github from "../shared/background/icons/github";
+import Github from "../shared/icons/github";
 
 export default function AppDemo() {
   return (

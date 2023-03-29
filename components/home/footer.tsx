@@ -1,7 +1,7 @@
 import React from "react";
-import Github from "../shared/background/icons/github";
-import Love from "../shared/background/icons/love";
-import Chat from "../shared/background/icons/chat";
+import Github from "../shared/icons/github";
+import Love from "../shared/icons/love";
+import Chat from "../shared/icons/chat";
 
 type Props = {};
 
