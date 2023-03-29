@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 import Image from "next/image";
-type Props = {};
 
-export default function Navbar({}: Props) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // pass as prop or useSession
+export default function Navbar({
+  setOpenSiderbar,
+}: {
+  setOpenSiderbar: Function;
+}) {
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // pass as prop or useSession
 
   return (
     <nav className='px-5 md:px-20 py-2 text-gray-400 z-20'>
@@ -28,6 +31,7 @@ export default function Navbar({}: Props) {
               <motion.button
                 {...FADE_IN_ANIMATION_SETTINGS}
                 className='rounded text-white text-sm transition-all border border-gray-50 hover:bg-white hover:text-gray-700 border-opacity-40 bg-gray-800 py-1.5 px-5'
+                onClick={() => setOpenSiderbar(true)}
               >
                 My Dashboard
               </motion.button>

@@ -1,14 +1,17 @@
 import React from "react";
 import Hero from "./hero";
+
 import Navbar from "./navbar";
 
 export default function Header({
+  setOpenSiderbar,
   promptInputValue,
   setPromptInputValue,
   handleSubmit,
   isGeneratingResponse,
   showSharer,
 }: {
+  setOpenSiderbar: Function;
   promptInputValue: string;
   setPromptInputValue: Function;
   handleSubmit: Function;
@@ -26,7 +29,7 @@ export default function Header({
         top: "0",
       }}
     >
-      <Navbar />
+      <Navbar setOpenSiderbar={setOpenSiderbar} />
       <Hero
         promptInputValue={promptInputValue}
         setPromptInputValue={setPromptInputValue}

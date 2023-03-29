@@ -6,6 +6,7 @@ import AppFeatures from "@/components/home/features-section";
 import AppDemo from "@/components/home/demo-section";
 import OSS from "@/components/home/oss";
 import PromptResponse from "@/components/app/result-response-section";
+import SidebarDashboard from "@/components/dashboard/sidebar";
 
 export default function Home() {
   const [isGeneratingResponse, setIsGeneratingResponse] =
@@ -16,6 +17,7 @@ export default function Home() {
   const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
   const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
   const resultDivRef = useRef<null | HTMLDivElement>(null);
+  const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
 
   // won't work if stream happens immediately
   const scrollToResult = () => {
@@ -76,7 +78,10 @@ export default function Home() {
 
   return (
     <HomeLayout>
+      <SidebarDashboard open={openSidebar} setOpen={setOpenSiderbar} />
+
       <Header
+        setOpenSiderbar={setOpenSiderbar}
         promptInputValue={promptInputValue}
         setPromptInputValue={setPromptInputValue}
         handleSubmit={handleSubmit}
