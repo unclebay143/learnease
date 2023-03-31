@@ -23,7 +23,7 @@ export default function Footer({}: Props) {
         rel='noopener noreferrer'
         className='flex justify-center items-center space-x-1'
       >
-        <Github />
+        <Github className='mt-1' />
         <span>GitHub</span>
       </a>
       <a
@@ -32,7 +32,7 @@ export default function Footer({}: Props) {
         rel='noopener noreferrer'
         className='flex justify-center items-center space-x-1'
       >
-        <Love />
+        <Love className='mt-1' />
         <span>Buy me a coffee</span>
       </a>
       <a
@@ -41,7 +41,7 @@ export default function Footer({}: Props) {
         rel='noopener noreferrer'
         className='flex justify-center items-center space-x-1'
       >
-        <Chat />
+        <Chat className='mt-1' />
         <span>Feedback</span>
       </a>
     </section>

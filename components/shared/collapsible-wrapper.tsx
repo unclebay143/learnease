@@ -30,7 +30,7 @@ const CollapsibleWrapper = ({
       >
         <Collapsible.Trigger asChild>
           <div className='flex items-center justify-between group cursor-pointer'>
-            <h3 className='text-sm text-slate-700 group-hover:text-gray-900 font-semibold group-black uppercase'>
+            <h3 className='text-sm text-slate-700 group-hover:text-gray-900 font-semibold uppercase'>
               {heading || ""}
             </h3>
             <button className='rounded-md group-hover:bg-gray-300/10 group-hover:text-gray-700 p-1 text-gray-400 shadow-blackA7 outline-none'>

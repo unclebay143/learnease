@@ -142,6 +142,14 @@ export default function Home({
       </Header>
       <AppFeatures />
       <AppDemo />
+      <section className='text-center mt-20'>
+        <button className='rounded-2xl py-2 px-4 text-gray-700 text-base border border-green-600'>
+          Over{" "}
+          <span className='text-green-600 font-semibold'>1 hundred users</span>{" "}
+          have used LearnEase so far
+        </button>
+      </section>
+
       <div ref={resultDivRef}></div>
       <PromptResponse
         currentlyLoggedInUser={currentlyLoggedInUser}
