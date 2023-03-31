@@ -8,7 +8,9 @@ export default function Favorites({ items }: { items: Array<any> }) {
       placeholder='Your favorite items will appear here'
     >
       {items?.map((d, i) => {
-        return <ResponseCard title={d} id={i} key={d + i} isFavourite />;
+        return (
+          <ResponseCard title={d} key={d + i} isFavorite responseId={i + ""} />
+        );
       })}
     </CollapsibleWrapper>
   );

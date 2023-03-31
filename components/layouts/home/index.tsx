@@ -11,12 +11,10 @@ export default function HomeLayout({
   children: ReactNode;
 }) {
   return (
-    <div className='flex justify-between flex-col min-h-screen'>
+    <div className='flex justify-between flex-col min-h-screen selection:bg-green-300/75'>
       <Meta {...meta} />
       <PageBackground />
-      <div className="z-20">
-      {children}
-      </div>
+      <div className='z-20'>{children}</div>
       <Footer />
     </div>
   );

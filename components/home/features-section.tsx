@@ -1,7 +1,9 @@
+import MaxWidthWrapper from "../shared/max-width-wrapper";
+
 export default function AppFeatures() {
   return (
-    <div className='flex flex-col justify-center px-6 mt-20'>
-      <p className='text-gray-900 font-medium leading-10 text-4xl text-center'>
+    <MaxWidthWrapper>
+      <p className='text-gray-900 font-medium leading-10 text-4xl text-center mt-20'>
         Unlock the Power of
         <span className='mx-2 relative whitespace-nowrap text-green-600'>
           Learning with
@@ -17,7 +19,7 @@ export default function AppFeatures() {
         AI
       </p>
 
-      <div className='mt-10 max-w-screen-xl mx-auto'>
+      <div className='mt-10'>
         <section className='grid grid-cols-1 md:grid-cols-3 gap-5'>
           <article className='border rounded-lg w-full p-4 border-gray-300'>
             <section>
@@ -106,6 +108,6 @@ export default function AppFeatures() {
           </article>
         </section>
       </div>
-    </div>
+    </MaxWidthWrapper>
   );
 }

@@ -34,6 +34,7 @@ const handler = async (req: NextRequest): Promise<Response> => {
     }
 
     const stream = await OpenAIStream(completion)
+
     return new Response(stream)
   } catch (error) {
     console.log(error)

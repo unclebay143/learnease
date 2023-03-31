@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import Github from "../shared/icons/github";
+import MaxWidthWrapper from "../shared/max-width-wrapper";
 
 export default function AppDemo() {
   return (
-    <div className='relative max-w-screen-xl mx-auto w-full mt-20 px-6 xl:px-0'>
+    <MaxWidthWrapper>
       <section className='rounded-lg overflow-hidden border pt-10 px-5 xl:pl-10 mt-20 flex flex-col xl:flex-row justify-center xl:justify-between'>
         <div className='xl:flex flex-col xl:mb-32 items-center justify-center'>
           <div className='xl:pr-10 text-center'>
@@ -98,6 +99,6 @@ export default function AppDemo() {
           </AnimatePresence>
         </div>
       </section>
-    </div>
+    </MaxWidthWrapper>
   );
 }

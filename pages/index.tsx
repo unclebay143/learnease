@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
 import HomeLayout from "@/components/layouts/home";
 import Header from "@/components/home/header";
@@ -7,10 +7,18 @@ import AppDemo from "@/components/home/demo-section";
 import OSS from "@/components/home/oss";
 import PromptResponse from "@/components/app/result-response-section";
 import SidebarDashboard from "@/components/dashboard/sidebar";
+import Hero from "@/components/home/hero";
 
-export default function Home() {
+export default function Home({
+  stars,
+  profile,
+}: {
+  stars: number;
+  profile: Array<any>;
+}) {
   const [isGeneratingResponse, setIsGeneratingResponse] =
     useState<boolean>(false);
+  const [savedPromptResponse, setSavedPromptResponse] = useState({});
   const [responseTitle, setResponseTitle] = useState<string>("");
   const [response, setResponse] = useState<string>("");
   const [promptInputValue, setPromptInputValue] = useState<string>("");
@@ -18,6 +26,11 @@ export default function Home() {
   const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
   const resultDivRef = useRef<null | HTMLDivElement>(null);
   const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
+
+  const [currentlyLoggedInUser, setCurrentlyLoggedInUser] =
+    useState<Object | null>(null);
+
+  const [savedPromptResponses, setSavedPromptResponses] = useState([]);
 
   // won't work if stream happens immediately
   const scrollToResult = () => {
@@ -29,6 +42,12 @@ export default function Home() {
   };
 
   const handleSubmit = async (prompt: string) => {
+    console.log(usedAppCount > 3 && !currentlyLoggedInUser);
+    if (usedAppCount > 3 && !currentlyLoggedInUser) {
+      alert("Please log in to access unlimited LearnEase.");
+      return;
+    }
+
     setResponse(""); //reset previous response to show PlaceholderSections (isIDle)
     setResponseTitle(prompt || promptInputValue);
     scrollToResult();
@@ -50,7 +69,16 @@ export default function Home() {
         return;
       }
 
+      // increase app use
+      await fetch("api/app", {
+        method: "POST",
+      })
+        .then(() => console.log("app use increased"))
+        .catch((err) => console.log(err));
+
+      // continue
       const data = response.body;
+
       if (!data) {
         return;
       }
@@ -68,7 +96,7 @@ export default function Home() {
       }
       setIsGeneratingResponse(false);
       setUsedAppCount(usedAppCount + 1);
-
+      setSavedPromptResponse({});
       // show sharer for first time users
       if (!showSharer && usedAppCount + 1 === 1) {
         setShowSharer(true);
@@ -76,29 +104,78 @@ export default function Home() {
     }, 1000);
   };
 
+  useEffect(() => {
+    const getProfile = async () => {
+      const res = await fetch("/api/user");
+      const { data } = await res.json();
+      setCurrentlyLoggedInUser(data);
+    };
+    getProfile();
+  }, []);
+
+  const fetchSavedPromptResponses = async () => {
+    const res = await fetch("/api/response");
+    const { data } = await res.json();
+    setSavedPromptResponses(data);
+  };
+
+  useEffect(() => {
+    fetchSavedPromptResponses();
+  }, []);
+
   return (
     <HomeLayout>
-      <SidebarDashboard open={openSidebar} setOpen={setOpenSiderbar} />
-
-      <Header
-        setOpenSiderbar={setOpenSiderbar}
-        promptInputValue={promptInputValue}
-        setPromptInputValue={setPromptInputValue}
-        handleSubmit={handleSubmit}
-        isGeneratingResponse={isGeneratingResponse}
-        showSharer={showSharer}
+      <SidebarDashboard
+        open={openSidebar}
+        setOpen={setOpenSiderbar}
+        savedPromptResponses={savedPromptResponses}
       />
+
+      <Header setOpenSiderbar={setOpenSiderbar}>
+        <Hero
+          promptInputValue={promptInputValue}
+          setPromptInputValue={setPromptInputValue}
+          handleSubmit={handleSubmit}
+          isGeneratingResponse={isGeneratingResponse}
+          showSharer={showSharer}
+        />
+      </Header>
       <AppFeatures />
       <AppDemo />
       <div ref={resultDivRef}></div>
       <PromptResponse
+        currentlyLoggedInUser={currentlyLoggedInUser}
         isIdle={!response}
         handleSubmit={handleSubmit}
         isGeneratingResponse={isGeneratingResponse}
         response={response}
         responseTitle={responseTitle}
+        fetchSavedPromptResponses={fetchSavedPromptResponses}
+        savedPromptResponse={savedPromptResponse}
       />
-      <OSS stars={2000} />
+      <OSS stars={stars || 2} />
     </HomeLayout>
   );
+}
+
+export async function getStaticProps() {
+  const { stargazers_count: stars } = await fetch(
+    "https://api.github.com/repos/unclebay143/learnease",
+    {
+      // optional – feel free to remove if you don't want to display star count
+      ...(process.env.GITHUB_OAUTH_TOKEN && {
+        headers: {
+          Authorization: `Bearer ${process.env.GITHUB_OAUTH_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }),
+    }
+  ).then((res) => res.json());
+
+  return {
+    props: {
+      stars,
+    },
+    revalidate: 60,
+  };
 }

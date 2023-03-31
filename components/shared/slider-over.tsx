@@ -2,9 +2,9 @@ import { Fragment, ReactNode } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 // https://tailwindui.com/components/application-ui/overlays/slide-overs
-
 export default function SlideOverWrapper({
   open,
   setOpen,
@@ -16,9 +16,8 @@ export default function SlideOverWrapper({
   title?: string;
   children: ReactNode;
 }) {
-  const getImage = () => {
-    return "https://github.com/unclebay143.png";
-  };
+  const { data: session } = useSession();
+
   return (
     <Transition show={open}>
       <Dialog as='div' className='relative z-30' onClose={() => setOpen(false)}>
@@ -72,8 +71,10 @@ export default function SlideOverWrapper({
                       <Dialog.Title className='text-lg font-semibold leading-6 text-gray-900 flex items-center'>
                         <h3>{title}</h3>
                         <Image
-                          loader={getImage}
-                          src='https://github.com/unclebay143.png'
+                          src={
+                            session?.user?.image ||
+                            `https://avatars.dicebear.com/api/micah/${session?.user?.email}.svg`
+                          }
                           alt='user'
                           width='50'
                           height='50'

@@ -1,12 +1,15 @@
-import "@/styles/globals.css";
-import { ToastProvider } from "@radix-ui/react-toast";
-
-import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
-import Script from "next/script";
 import { useEffect } from "react";
+import Script from "next/script";
+import { useRouter } from "next/router";
+import type { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
+import { ToastProvider } from "@radix-ui/react-toast";
+import "@/styles/globals.css";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
@@ -40,8 +43,11 @@ export default function App({ Component, pageProps }: AppProps) {
         `,
         }}
       />
+
       <ToastProvider>
-        <Component {...pageProps} />
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
       </ToastProvider>
     </>
   );

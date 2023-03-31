@@ -5,11 +5,22 @@ export default function Saved({ items }: { items: Array<any> }) {
   return (
     <CollapsibleWrapper
       heading='saved'
-      placeholder='Your saved items will appear here.'
+      placeholder='Your saved response will appear here.'
     >
-      {items?.map((d, i) => {
-        return <ResponseCard title={d} id={i} key={d + i} />;
-      })}
+      {items.length > 0 ? (
+        <>
+          {items?.map((item, i) => {
+            const { title, responseId } = item;
+            return (
+              <ResponseCard
+                title={title}
+                key={responseId}
+                responseId={responseId}
+              />
+            );
+          })}
+        </>
+      ) : null}
     </CollapsibleWrapper>
   );
 }

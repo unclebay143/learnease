@@ -22,7 +22,7 @@ export default function PlaceholderCard({ loading }: { loading?: boolean }) {
                 LearnEase AI response will appear below.{" "}
                 <button
                   onClick={() => scrollToTop()}
-                  className='hover:underline text-gray-500 font-semibold  hover:text-gray-800 transition-all'
+                  className='underline hover:no-underline text-gray-600 font-semibold  hover:text-gray-800 transition-all'
                 >
                   Give it a try!
                 </button>
@@ -34,7 +34,7 @@ export default function PlaceholderCard({ loading }: { loading?: boolean }) {
               loading ? "animate-pulse" : ""
             } h-6 w-1/2 rounded-md bg-gray-200 mt-8 mb-3`}
           />
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: loading ? 6 : 1 }).map((_, i) => (
             <div key={i}>
               <div
                 className={`${

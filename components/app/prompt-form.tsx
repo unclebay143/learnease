@@ -1,9 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  FADE_IN_ANIMATION_SETTINGS,
-  FRAMER_MOTION_LIST_ITEM_VARIANTS,
-} from "@/lib/constants";
+import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 
 export default function PromptForm({
   promptInputValue,
@@ -31,13 +28,14 @@ export default function PromptForm({
           <motion.div
             {...FADE_IN_ANIMATION_SETTINGS}
             className={`${
-              promptInputValue.length >= 10 ? "md:flex" : "hidden"
+              promptInputValue?.length >= 10 ? "md:flex" : "hidden"
             } transition-all items-center justify-end text-gray-400 text-sm absolute l-0 w-full hidden`}
           >
             <button
-              disabled={promptInputValue.length <= 0}
+              disabled={promptInputValue?.length <= 0}
               className='flex disabled:text-gray-500'
               onClick={() => setPromptInputValue("")}
+              type='button'
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -59,6 +57,7 @@ export default function PromptForm({
         </AnimatePresence>
       </div>
       <button
+        role='submit'
         className={`bg-green-700 hover:bg-opacity-100 w-full bg-opacity-90 flex-1 p-4 rounded text-white text-md uppercase ${
           !promptInputValue ? "disabled:bg-opacity-75" : ""
         } ${isGeneratingResponse ? "disabled:bg-opacity-40" : ""}`}

@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import ResponseMarkdown from "./response-markdown";
 import PlaceholderSections from "@/components/home/PlaceholderSections";
 
 const PromptResponse = ({
+  currentlyLoggedInUser,
   isIdle,
   handleSubmit,
   isGeneratingResponse,
   response,
   responseTitle,
+  savedPromptResponse,
+  fetchSavedPromptResponses,
 }: {
+  currentlyLoggedInUser: Object | null;
   isIdle: boolean;
   handleSubmit: Function;
   isGeneratingResponse: boolean;
   response: string;
   responseTitle: string;
+  savedPromptResponse: Object;
+  fetchSavedPromptResponses: Function;
 }) => {
+  const [focusMode, setFocusMode] = useState<boolean>(true);
   return (
     <div className='relative max-w-screen-md mx-auto w-full mt-20'>
       <h3 className='text-4xl text-center mb-3 font-medium'>
@@ -31,15 +38,24 @@ const PromptResponse = ({
           </svg>
         </span>
       </h3>
-      <section className='sm:rounded-lg border mx-auto border-grays-200 bg-white p-8 shadow mt-10'>
+      <section
+        className={`sm:rounded-lg border mx-auto border-grays-200 ${
+          focusMode ? "bg-white" : ""
+        } p-8 shadow mt-10`}
+      >
         {isIdle ? (
           <PlaceholderSections loading={isGeneratingResponse} />
         ) : (
           <ResponseMarkdown
+            currentlyLoggedInUser={currentlyLoggedInUser}
             handleSubmit={handleSubmit}
             loading={isGeneratingResponse}
             markdown={response}
             title={responseTitle}
+            focusMode={focusMode}
+            setFocusMode={setFocusMode}
+            fetchSavedPromptResponses={fetchSavedPromptResponses}
+            savedPromptResponse={savedPromptResponse}
           />
         )}
       </section>

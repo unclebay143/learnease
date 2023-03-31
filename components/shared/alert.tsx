@@ -19,8 +19,8 @@ const ToastNotification = ({
   const [scrollY, setScrollY] = React.useState(0);
 
   const onScroll = React.useCallback(() => {
-    const { pageYOffset, scrollY } = window;
-    console.log("yOffset", pageYOffset, "scrollY", scrollY);
+    // const { pageYOffset, scrollY } = window;
+    // console.log("yOffset", pageYOffset, "scrollY", scrollY);
     setScrollY(window.pageYOffset);
   }, []);
 

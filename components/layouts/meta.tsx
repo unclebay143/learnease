@@ -14,39 +14,34 @@ export default function Meta({
     <Head>
       <title>{title}</title>
       <meta name='description' content={description} />
-      <link
+      {/* <link
         rel='apple-touch-icon'
         sizes='180x180'
-        href={`${FAVICON_FOLDER}/apple-touch-icon.png`}
-      />
+        href={`${FAVICON_FOLDER}/teacher/apple-touch-icon.png`}
+      /> */}
       <link
         rel='icon'
         type='image/png'
         sizes='32x32'
-        href={`${FAVICON_FOLDER}/favicon-32x32.png`}
+        href={`${FAVICON_FOLDER}/favicon.ico`}
       />
-      <link
+      {/* <link
         rel='icon'
         type='image/png'
         sizes='16x16'
-        href={`${FAVICON_FOLDER}/favicon-16x16.png`}
-      />
-      {/* <link rel='manifest' href='/site.webmanifest' /> */}
-      <link
-        rel='mask-icon'
-        href={`${FAVICON_FOLDER}/safari-pinned-tab.svg`}
-        color='#5bbad5'
-      />
+        href={`${FAVICON_FOLDER}/teacher/favicon-16x16.png`}
+      /> */}
+
       <meta name='msapplication-TileColor' content='#ffffff' />
       <meta name='theme-color' content='#ffffff' />
 
       <meta charSet='utf-8' />
       <meta name='viewport' content='width=device-width, initial-scale=1' />
       <meta itemProp='image' content={image} />
-      <link
+      {/* <link
         rel='shortcut icon'
-        href={`${FAVICON_FOLDER}/apple-touch-icon.png`}
-      />
+        href={`${FAVICON_FOLDER}/teacher/apple-touch-icon-57x57.png`}
+      /> */}
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
       <meta property='og:image' content={image} />
