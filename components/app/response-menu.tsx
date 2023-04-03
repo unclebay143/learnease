@@ -89,7 +89,7 @@ function ResponseMenu({
                 </button>
               )}
               <button
-                disabled={isUpdatingFavorite || !responseId}
+                disabled={isUpdatingFavorite}
                 onClick={() => {
                   if (!responseId) {
                     return alert("Save response first");
@@ -98,7 +98,9 @@ function ResponseMenu({
                 }}
                 className={` ${
                   isFavorite ? "fill-yellow-300 text-yellow-300" : ""
-                } capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm`}
+                } capitalize flex items-center ${
+                  !responseId ? "bg-slate-200" : ""
+                } hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm`}
               >
                 <Star
                   className={` ${
