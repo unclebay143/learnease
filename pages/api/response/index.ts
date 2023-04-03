@@ -12,13 +12,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (method) {
     case 'GET':
       try {
-        // const session = await getServerSession(req, res, authOptions)
+        const session = await getServerSession(req, res, authOptions)
 
-        // if (!session) {
-        //   return errorResponse(res, 'You must be logged in.', 401)
-        // }
+        if (!session) {
+          return errorResponse(res, 'You must be logged in.', 401)
+        }
 
-        const session = { user: { email: 'unclebigbay@gmail.com' } }
+        // TEST: const session = { user: { email: 'unclebigbay@gmail.com' } }
 
         await connectToMongoDb()
 
@@ -43,13 +43,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     case 'POST':
       try {
-        const session = { user: { email: 'unclebigbay@gmail.com' } }
+        // TEST: const session = { user: { email: 'unclebigbay@gmail.com' } }
 
-        // const session = await getServerSession(req, res, authOptions)
+        const session = await getServerSession(req, res, authOptions)
 
-        // if (!session) {
-        //   return errorResponse(res, 'You must be logged in.', 401)
-        // }
+        if (!session) {
+          return errorResponse(res, 'You must be logged in.', 401)
+        }
 
         await connectToMongoDb()
 

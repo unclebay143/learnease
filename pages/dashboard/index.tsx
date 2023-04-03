@@ -7,32 +7,26 @@ import SidebarDashboard from "@/components/dashboard/sidebar";
 import Hero from "@/components/home/hero";
 import { useSession } from "next-auth/react";
 
-export default function Home({
-  stars,
-  profile,
-}: {
-  stars: number;
-  profile: Array<any>;
-}) {
+export default function Dashboard() {
   const { status, data: session } = useSession();
-
   const [currentlyLoggedInUser, setCurrentlyLoggedInUser] =
     useState<Object | null>(null);
 
   const [promptInputValue, setPromptInputValue] = useState<string>("");
-  const resultDivRef = useRef<null | HTMLDivElement>(null);
   const [isGeneratingResponse, setIsGeneratingResponse] =
     useState<boolean>(false);
+  const resultDivRef = useRef<null | HTMLDivElement>(null);
+  const [isErrorWhileResponding, setIsErrorWhileResponding] =
+    useState<boolean>(false);
+
+  const [savedPromptResponses, setSavedPromptResponses] = useState([]);
   const [savedPromptResponse, setSavedPromptResponse] = useState({});
   const [responseTitle, setResponseTitle] = useState<string>("");
   const [response, setResponse] = useState<string>(""); // state for streaming
 
   const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
   const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
-
   const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
-
-  const [savedPromptResponses, setSavedPromptResponses] = useState([]);
 
   // won't work if stream happens immediately
   const scrollToResult = () => {
@@ -44,68 +38,68 @@ export default function Home({
   };
 
   const handleSubmit = async (prompt: string) => {
-    setResponse(""); //reset previous response to show PlaceholderSections (isIDle)
-    setResponseTitle(prompt || promptInputValue);
-    scrollToResult();
+    try {
+      setResponse(""); //reset previous response to show PlaceholderSections (isIDle)
+      setResponseTitle(prompt || promptInputValue);
+      scrollToResult();
 
-    // Adding settimeout to allow scrollToResult work
-    setTimeout(async () => {
-      setIsGeneratingResponse(true);
+      // Adding settimeout to allow scrollToResult work
+      setTimeout(async () => {
+        setIsGeneratingResponse(true);
 
-      const response = await fetch("api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt: prompt || promptInputValue }),
-      });
+        const response = await fetch("/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: prompt || promptInputValue }),
+        });
 
-      if (!response.ok) {
+        if (!response.ok) {
+          setIsErrorWhileResponding(true);
+          setIsGeneratingResponse(false);
+          return;
+        }
+
+        // increase app use
+        await fetch("/api/app-use", {
+          method: "POST",
+        })
+          .then(() => console.log("app use increased"))
+          .catch((err) => console.log(err));
+
+        const data = response.body;
+
+        if (!data) {
+          console.log(data);
+          return;
+        }
+
+        const reader = data.getReader();
+        const decoder = new TextDecoder();
+
+        let done = false;
+
+        while (!done) {
+          const { value, done: doneReading } = await reader.read();
+          done = doneReading;
+          const chunkValue = decoder.decode(value);
+          setResponse((prev) => prev + chunkValue);
+        }
         setIsGeneratingResponse(false);
-        return;
-      }
-      // increase app use
-      await fetch("api/app", {
-        method: "POST",
-      })
-        .then(() => console.log("app use increased"))
-        .catch((err) => console.log(err));
+        setUsedAppCount(usedAppCount + 1);
+        setSavedPromptResponse({}); // response is not saved yet
+        setIsErrorWhileResponding(false);
 
-      const data = response.body;
-      if (!data) {
-        return;
-      }
-
-      const reader = data.getReader();
-      const decoder = new TextDecoder();
-
-      let done = false;
-
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-        setResponse((prev) => prev + chunkValue);
-      }
-      setIsGeneratingResponse(false);
-      setUsedAppCount(usedAppCount + 1);
-      setSavedPromptResponse({}); // response is not saved yet
-
-      // show sharer for first time users
-      if (!showSharer && usedAppCount + 1 === 1) {
-        setShowSharer(true);
-      }
-    }, 1000);
+        // show sharer for first time users
+        if (!showSharer && usedAppCount + 1 === 1) {
+          setShowSharer(true);
+        }
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  useEffect(() => {
-    const getProfile = async () => {
-      const res = await fetch("/api/user");
-      const { data } = await res.json();
-      setCurrentlyLoggedInUser(data);
-    };
-    getProfile();
-  }, []);
 
   const fetchSavedPromptResponses = async () => {
     const res = await fetch("/api/response");
@@ -113,11 +107,16 @@ export default function Home({
     setSavedPromptResponses(data);
   };
 
+  const getProfile = async () => {
+    const res = await fetch("/api/user");
+    const { data } = await res.json();
+    setCurrentlyLoggedInUser(data);
+  };
+
   useEffect(() => {
+    getProfile();
     fetchSavedPromptResponses();
   }, []);
-
-  console.log(typeof window !== "undefined" && !session);
 
   if (
     typeof window !== "undefined" &&
@@ -133,6 +132,7 @@ export default function Home({
         open={openSidebar}
         setOpen={setOpenSiderbar}
         savedPromptResponses={savedPromptResponses}
+        fetchSavedPromptResponses={fetchSavedPromptResponses}
       />
 
       <Header setOpenSiderbar={setOpenSiderbar}>
@@ -154,6 +154,8 @@ export default function Home({
         responseTitle={responseTitle}
         fetchSavedPromptResponses={fetchSavedPromptResponses}
         savedPromptResponse={savedPromptResponse}
+        fetchResponse={() => null}
+        isErrorWhileResponding={isErrorWhileResponding}
       />
       <div className='mb-20'></div>
     </HomeLayout>

@@ -1,20 +1,22 @@
+import { getServerSession } from 'next-auth'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { errorResponse, successResponse } from '@/lib/helpers'
 import connectToMongoDb from '@/lib/connectDb'
 import { AppStat } from 'models/AppStat'
+import { authOptions } from './auth/[...nextauth]'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req
   switch (method) {
     case 'GET':
       try {
-        // const session = await getServerSession(req, res, authOptions)
+        const session = await getServerSession(req, res, authOptions)
 
-        // if (!session) {
-        //   return errorResponse(res, 'You must be logged in.', 401)
-        // }
+        if (!session) {
+          return errorResponse(res, 'You must be logged in.', 401)
+        }
 
-        const session = { user: { email: 'unclebigbay@gmail.com' } }
+        //Test: const session = { user: { email: 'unclebigbay@gmail.com' } }
 
         await connectToMongoDb()
 
@@ -35,13 +37,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     case 'POST':
       try {
-        const session = { user: { email: 'unclebigbay@gmail.com' } }
-        console.log('posttt')
-        // const session = await getServerSession(req, res, authOptions)
+        // Test:const session = { user: { email: 'unclebigbay@gmail.com' } }
 
-        // if (!session) {
-        //   return errorResponse(res, 'You must be logged in.', 401)
-        // }
+        const session = await getServerSession(req, res, authOptions)
+
+        if (!session) {
+          return errorResponse(res, 'You must be logged in.', 401)
+        }
 
         await connectToMongoDb()
 
@@ -53,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           },
         )
-        console.log(response)
+
         return successResponse(res, 'New response recorded', {}, 200)
       } catch (error) {
         console.log(error)

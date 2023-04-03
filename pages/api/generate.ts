@@ -25,7 +25,7 @@ const handler = async (req: NextRequest): Promise<Response> => {
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: generatePrompt(prompt) }],
       temperature: 0.6,
-      max_tokens: 2000,
+      max_tokens: 1000,
       top_p: 1.0,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,
@@ -81,6 +81,7 @@ function generatePrompt(prompt: string) {
   ## Definition EMOJI
   [paragraph] - [INSTRUCTION: break to new line after 2 dots.]
   [INSTRUCTION: Only if ${conceptToLearn} is code related generate at least one sample of ${conceptToLearn} in markdown code block]
+  [INSTRUCTION: Do not put code block heading, text, list, paragraphs or sentence inside the markdown code block backticks, only code syntax and its comments should be within code blocks, you've made this mistakes before]
 
   ## Analogy EMOJI
   [paragraph]

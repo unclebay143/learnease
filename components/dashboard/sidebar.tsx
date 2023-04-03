@@ -5,79 +5,22 @@ import { signOut } from "next-auth/react";
 import Power from "../shared/icons/power";
 import { useRouter } from "next/router";
 
-const data = [
-  "Explain JavaScript Currying to me like I'm 5",
-  "I want to learn about JavaScript and Python",
-  "I want to learn about JavaScript, Python, AI, Machine Learning, Booking, commerce, economics, agric, computer",
-  "web3",
-  "AI",
-  "jknjndfjoidjoijsd",
-  "Untitled",
-  "test",
-  "does this work?",
-  "who are you?",
-  "1",
-  "2?",
-  "who are you bott?",
-  "/AI?",
-  "bot?",
-  "who are you?",
-  "long list behavior",
-  "test for overflow",
-  "jknjndfjoidjoijsd",
-  "Untitled",
-  "test",
-  "does this work?",
-  "who are you?",
-  "1",
-  "2?",
-  "who are you bott?",
-  "/AI?",
-  "bot?",
-  "who are you?",
-  "long list behavior",
-  "test for overflow",
-  "jknjndfjoidjoijsd",
-  "Untitled",
-  "test",
-  "does this work?",
-  "who are you?",
-  "1",
-  "2?",
-  "who are you bott?",
-  "/AI?",
-  "bot?",
-  "who are you?",
-  "long list behavior",
-  "test for overflow",
-  "jknjndfjoidjoijsd",
-  "Untitled",
-  "test",
-  "does this work?",
-  "who are you?",
-  "1",
-  "2?",
-  "who are you bott?",
-  "/AI?",
-  "bot?",
-  "who are you?",
-  "long list behavior",
-  "test for overflow",
-];
-
 export default function SidebarDashboard({
   open,
   setOpen,
   savedPromptResponses,
+  fetchSavedPromptResponses,
 }: {
   open: boolean;
   setOpen: Function;
   savedPromptResponses: Array<any>;
+  fetchSavedPromptResponses: Function;
 }) {
   const router = useRouter();
+
   return (
     <SlideOverWrapper title='Dashboard' open={open} setOpen={setOpen}>
-      <div className='flex flex-col justify-between h-full'>
+      <div className='flex flex-col justify-between h-full max-w-[350px] md:max-w-full'>
         <section>
           {router.pathname === "/" && (
             <section className='mb-4'>
@@ -102,8 +45,14 @@ export default function SidebarDashboard({
               </a>
             </section>
           )}
-          <Favorites items={data} />
-          <Saved items={savedPromptResponses} />
+          <Favorites
+            items={savedPromptResponses}
+            fetchSavedPromptResponses={fetchSavedPromptResponses}
+          />
+          <Saved
+            items={savedPromptResponses}
+            fetchSavedPromptResponses={fetchSavedPromptResponses}
+          />
         </section>
         <section>
           {/* {router.pathname === "/" ? (

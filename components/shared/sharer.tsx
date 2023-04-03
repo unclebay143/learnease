@@ -14,7 +14,7 @@ export default function Sharer({ caption }: { caption?: string }) {
           showSharer ? "flex" : "hidden"
         } bg-green-800 mt-10 bg-opacity-50 p-3 rounded text-white  justify-between group items-center`}
       >
-        <div className='flex items-center space-x-1 justify-center w-11/12'>
+        <div className='flex flex-wrap items-center space-x-1 justify-center w-11/12'>
           <h3>Found this useful? </h3>
           <div className='space-x-2'>
             <a

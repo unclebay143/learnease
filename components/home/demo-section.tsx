@@ -42,7 +42,7 @@ export default function AppDemo() {
               <a
                 target={"_blank"}
                 rel='noreferrer'
-                href='https://github.com/unclebay143/learnease'
+                href='https://dub.sh/learnease-github'
                 className='flex items-center gap-1 bg-black text-sm text-white rounded-lg px-2.5 py-2 hover:bg-white border hover:text-black hover:border hover:border-black'
               >
                 <Github />

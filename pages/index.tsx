@@ -9,28 +9,25 @@ import PromptResponse from "@/components/app/result-response-section";
 import SidebarDashboard from "@/components/dashboard/sidebar";
 import Hero from "@/components/home/hero";
 
-export default function Home({
-  stars,
-  profile,
-}: {
-  stars: number;
-  profile: Array<any>;
-}) {
-  const [isGeneratingResponse, setIsGeneratingResponse] =
-    useState<boolean>(false);
-  const [savedPromptResponse, setSavedPromptResponse] = useState({});
-  const [responseTitle, setResponseTitle] = useState<string>("");
-  const [response, setResponse] = useState<string>("");
-  const [promptInputValue, setPromptInputValue] = useState<string>("");
-  const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
-  const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
-  const resultDivRef = useRef<null | HTMLDivElement>(null);
-  const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
-
+export default function Home({ stars }: { stars: number }) {
   const [currentlyLoggedInUser, setCurrentlyLoggedInUser] =
     useState<Object | null>(null);
 
+  const [promptInputValue, setPromptInputValue] = useState<string>("");
+  const [isGeneratingResponse, setIsGeneratingResponse] =
+    useState<boolean>(false);
+  const resultDivRef = useRef<null | HTMLDivElement>(null);
+  const [isErrorWhileResponding, setIsErrorWhileResponding] =
+    useState<boolean>(false);
+
   const [savedPromptResponses, setSavedPromptResponses] = useState([]);
+  const [savedPromptResponse, setSavedPromptResponse] = useState({});
+  const [responseTitle, setResponseTitle] = useState<string>("");
+  const [response, setResponse] = useState<string>("");
+
+  const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
+  const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
+  const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
 
   // won't work if stream happens immediately
   const scrollToResult = () => {
@@ -42,7 +39,6 @@ export default function Home({
   };
 
   const handleSubmit = async (prompt: string) => {
-    console.log(usedAppCount > 3 && !currentlyLoggedInUser);
     if (usedAppCount > 3 && !currentlyLoggedInUser) {
       alert("Please log in to access unlimited LearnEase.");
       return;
@@ -56,7 +52,7 @@ export default function Home({
     setTimeout(async () => {
       setIsGeneratingResponse(true);
 
-      const response = await fetch("api/generate", {
+      const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,12 +61,13 @@ export default function Home({
       });
 
       if (!response.ok) {
+        setIsErrorWhileResponding(true);
         setIsGeneratingResponse(false);
         return;
       }
 
       // increase app use
-      await fetch("api/app", {
+      await fetch("/api/app-use", {
         method: "POST",
       })
         .then(() => console.log("app use increased"))
@@ -97,6 +94,8 @@ export default function Home({
       setIsGeneratingResponse(false);
       setUsedAppCount(usedAppCount + 1);
       setSavedPromptResponse({});
+      setIsErrorWhileResponding(false);
+
       // show sharer for first time users
       if (!showSharer && usedAppCount + 1 === 1) {
         setShowSharer(true);
@@ -104,24 +103,24 @@ export default function Home({
     }, 1000);
   };
 
-  useEffect(() => {
-    const getProfile = async () => {
-      const res = await fetch("/api/user");
-      const { data } = await res.json();
-      setCurrentlyLoggedInUser(data);
-    };
-    getProfile();
-  }, []);
+  const getProfile = async () => {
+    const res = await fetch("/api/user");
+    const { data } = await res.json();
+    setCurrentlyLoggedInUser(data);
+  };
 
   const fetchSavedPromptResponses = async () => {
     const res = await fetch("/api/response");
     const { data } = await res.json();
-    setSavedPromptResponses(data);
+    return setSavedPromptResponses(data);
   };
 
   useEffect(() => {
+    getProfile();
     fetchSavedPromptResponses();
   }, []);
+
+  scrollToResult();
 
   return (
     <HomeLayout>
@@ -129,6 +128,7 @@ export default function Home({
         open={openSidebar}
         setOpen={setOpenSiderbar}
         savedPromptResponses={savedPromptResponses}
+        fetchSavedPromptResponses={() => null}
       />
 
       <Header setOpenSiderbar={setOpenSiderbar}>
@@ -142,13 +142,6 @@ export default function Home({
       </Header>
       <AppFeatures />
       <AppDemo />
-      <section className='text-center mt-20'>
-        <button className='rounded-2xl py-2 px-4 text-gray-700 text-base border border-green-600'>
-          Over{" "}
-          <span className='text-green-600 font-semibold'>1 hundred users</span>{" "}
-          have used LearnEase so far
-        </button>
-      </section>
 
       <div ref={resultDivRef}></div>
       <PromptResponse
@@ -160,7 +153,18 @@ export default function Home({
         responseTitle={responseTitle}
         fetchSavedPromptResponses={fetchSavedPromptResponses}
         savedPromptResponse={savedPromptResponse}
+        fetchResponse={() => null}
+        isErrorWhileResponding={isErrorWhileResponding}
       />
+
+      {/* <section className='text-center mt-20 px-6'>
+        <button className='rounded-2xl font-semibold py-2 px-4 text-gray-700 text-sm sm:text-base border border-green-600'>
+          Over{" "}
+          <span className='text-green-600 font-semibold'>1 hundred users</span>{" "}
+          have used LearnEase so far
+        </button>
+      </section> */}
+
       <OSS stars={stars || 2} />
     </HomeLayout>
   );
@@ -170,7 +174,6 @@ export async function getStaticProps() {
   const { stargazers_count: stars } = await fetch(
     "https://api.github.com/repos/unclebay143/learnease",
     {
-      // optional – feel free to remove if you don't want to display star count
       ...(process.env.GITHUB_OAUTH_TOKEN && {
         headers: {
           Authorization: `Bearer ${process.env.GITHUB_OAUTH_TOKEN}`,

@@ -26,7 +26,6 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
 
-
   let counter = 0
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {

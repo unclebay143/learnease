@@ -19,6 +19,8 @@ function ResponseMenu({
   deleteResponse,
   isDeletingResponse,
   savedPromptResponse,
+  toggleFavorite,
+  isUpdatingFavorite,
 }: {
   reload: Function;
   isLoading: boolean;
@@ -29,6 +31,8 @@ function ResponseMenu({
   deleteResponse: Function;
   isDeletingResponse: boolean;
   savedPromptResponse: Object;
+  toggleFavorite: Function;
+  isUpdatingFavorite: boolean;
 }) {
   const { status, data: session } = useSession();
 
@@ -84,10 +88,29 @@ function ResponseMenu({
                   </span>
                 </button>
               )}
-              <button className='capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'>
-                <Star className='text-slate-600 w-4 h-4' />
+              <button
+                disabled={isUpdatingFavorite || !responseId}
+                onClick={() => {
+                  if (!responseId) {
+                    return alert("Save response first");
+                  }
+                  toggleFavorite(responseId);
+                }}
+                className={` ${
+                  isFavorite ? "fill-yellow-300 text-yellow-300" : ""
+                } capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm`}
+              >
+                <Star
+                  className={` ${
+                    isFavorite ? "fill-yellow-300 text-yellow-300" : ""
+                  } text-slate-600 w-4 h-4`}
+                />
                 <span className='text-slate-600'>
-                  {isFavorite ? "Unmark favorite" : "Mark favorite"}
+                  {isUpdatingFavorite
+                    ? "Please wait..."
+                    : isFavorite
+                    ? "Unmark favorite"
+                    : "Mark favorite"}
                 </span>
               </button>
             </>

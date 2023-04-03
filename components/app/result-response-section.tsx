@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ResponseMarkdown from "./response-markdown";
 import PlaceholderSections from "@/components/home/PlaceholderSections";
+import ErrorOccurred from "../shared/error-occurred";
 
 const PromptResponse = ({
   currentlyLoggedInUser,
@@ -11,6 +12,8 @@ const PromptResponse = ({
   responseTitle,
   savedPromptResponse,
   fetchSavedPromptResponses,
+  fetchResponse,
+  isErrorWhileResponding,
 }: {
   currentlyLoggedInUser: Object | null;
   isIdle: boolean;
@@ -20,6 +23,8 @@ const PromptResponse = ({
   responseTitle: string;
   savedPromptResponse: Object;
   fetchSavedPromptResponses: Function;
+  fetchResponse: Function;
+  isErrorWhileResponding: boolean;
 }) => {
   const [focusMode, setFocusMode] = useState<boolean>(true);
   return (
@@ -38,27 +43,37 @@ const PromptResponse = ({
           </svg>
         </span>
       </h3>
-      <section
-        className={`sm:rounded-lg border mx-auto border-grays-200 ${
-          focusMode ? "bg-white" : ""
-        } p-8 shadow mt-10`}
-      >
-        {isIdle ? (
+      {!isGeneratingResponse && isErrorWhileResponding ? (
+        <ErrorOccurred
+          handleBtnClick={handleSubmit}
+          hide={isGeneratingResponse}
+        >
           <PlaceholderSections loading={isGeneratingResponse} />
-        ) : (
-          <ResponseMarkdown
-            currentlyLoggedInUser={currentlyLoggedInUser}
-            handleSubmit={handleSubmit}
-            loading={isGeneratingResponse}
-            markdown={response}
-            title={responseTitle}
-            focusMode={focusMode}
-            setFocusMode={setFocusMode}
-            fetchSavedPromptResponses={fetchSavedPromptResponses}
-            savedPromptResponse={savedPromptResponse}
-          />
-        )}
-      </section>
+        </ErrorOccurred>
+      ) : (
+        <section
+          className={`sm:rounded-lg border mx-auto border-grays-200 ${
+            focusMode ? "bg-white" : ""
+          } p-6 md:px-8 shadow mt-10`}
+        >
+          {isIdle ? (
+            <PlaceholderSections loading={isGeneratingResponse} />
+          ) : (
+            <ResponseMarkdown
+              currentlyLoggedInUser={currentlyLoggedInUser}
+              handleSubmit={handleSubmit}
+              loading={isGeneratingResponse}
+              markdown={response}
+              title={responseTitle}
+              focusMode={focusMode}
+              setFocusMode={setFocusMode}
+              fetchSavedPromptResponses={fetchSavedPromptResponses}
+              savedPromptResponse={savedPromptResponse}
+              fetchResponse={fetchResponse}
+            />
+          )}
+        </section>
+      )}
     </div>
   );
 };

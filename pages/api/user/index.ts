@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return res.status(401).json({ message: 'You must be logged in.' })
         }
 
-        // const session = { user: { email: 'unclebigbay@gmail.com' } }
+        // TEST: const session = { user: { email: 'unclebigbay@gmail.com' } }
 
         await connectToMongoDb()
         const user = await User.findOne({ email: session.user?.email })

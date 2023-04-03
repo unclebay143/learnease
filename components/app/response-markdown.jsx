@@ -16,11 +16,14 @@ export default function ResponseMarkdown({
   currentlyLoggedInUser,
   fetchSavedPromptResponses,
   savedPromptResponse,
+  fetchResponse,
 }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [isDeletingResponse, setIsDeletingResponse] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [favoriteStatusUpdated, setFavoriteStatusUpdated] = useState(false);
+  const [isUpdatingFavorite, setIsUpdatingFavorite] = useState(false);
 
   const saveResponse = async () => {
     setSaving(true);
@@ -40,7 +43,7 @@ export default function ResponseMarkdown({
 
     if (res.ok) {
       const { data } = await res.json();
-      console.log(data);
+
       fetchSavedPromptResponses();
       setSaved(true);
       // setSaving(false);
@@ -53,13 +56,7 @@ export default function ResponseMarkdown({
   const deleteResponse = async (responseId) => {
     setIsDeletingResponse(true);
 
-    const confirm = window.confirm(
-      `
-      Warning! ✋🏽
-      
-      Are you sure you want to delete this prompt response?
-      `
-    );
+    const confirm = window.confirm("This prompt response will be deleted");
 
     if (!confirm) {
       setIsDeletingResponse(false);
@@ -82,8 +79,26 @@ export default function ResponseMarkdown({
       }, 2000);
     }
   };
+
+  const toggleFavorite = async (responseId) => {
+    setIsUpdatingFavorite(true);
+
+    try {
+      const res = await fetch("/api/response/" + responseId, {
+        method: "PUT",
+      });
+      fetchSavedPromptResponses();
+      setFavoriteStatusUpdated(true);
+      await fetchResponse().then((res) => {
+        setIsUpdatingFavorite(false);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className={`markdown-container ${loading && "min-h-[100vh]"}`}>
+    <div className={`markdown-container ${loading ? "min-h-[100vh]" : ""}`}>
       {saved ? (
         <ToastNotification
           open={saved}
@@ -101,6 +116,22 @@ export default function ResponseMarkdown({
           dark
         />
       ) : null}
+
+      {favoriteStatusUpdated ? (
+        <ToastNotification
+          open={favoriteStatusUpdated}
+          setOpen={setFavoriteStatusUpdated}
+          title='Prompt response favorite updated successfully'
+          dark
+        />
+      ) : null}
+
+      {!savedPromptResponse?.responseId ? (
+        <span className='text-xs bg-green-300 bg-opacity-50 rounded p-1 text-gray-600'>
+          {saving ? "Saving" : "Not saved"}
+        </span>
+      ) : null}
+
       <ResponseMenu
         currentlyLoggedInUser={currentlyLoggedInUser}
         reload={handleSubmit}
@@ -112,6 +143,8 @@ export default function ResponseMarkdown({
         deleteResponse={deleteResponse}
         isDeletingResponse={isDeletingResponse}
         savedPromptResponse={savedPromptResponse}
+        toggleFavorite={toggleFavorite}
+        isUpdatingFavorite={isUpdatingFavorite}
       />
 
       <h1 className='capitalize'>{title}</h1>
