@@ -1,0 +1,190 @@
+import React, { useEffect, useRef, useState } from "react";
+import useLocalStorage from "@/lib/hooks/use-local-storage";
+import HomeLayout from "@/components/layouts/home";
+import Header from "@/components/home/header";
+import PromptResponse from "@/components/app/result-response-section";
+import SidebarDashboard from "@/components/dashboard/sidebar";
+import Hero from "@/components/home/hero";
+import { useSession } from "next-auth/react";
+import { handleInsufficientCredits, handleStreamResponse } from "@/lib/index";
+import {
+  appUsageCount,
+  fetchSavedPromptResponses,
+  generateResponse,
+  getProfile,
+  saveResponse,
+} from "@/lib/services";
+import { useRouter } from "next/router";
+import ToastNotification from "@/components/shared/alert";
+
+export default function Dashboard() {
+  const { status, data: session } = useSession();
+  const [currentlyLoggedInUser, setCurrentlyLoggedInUser] = useState<{
+    credits: number;
+    freeCredits: number;
+  } | null>(null);
+
+  const [promptInputValue, setPromptInputValue] = useState<string>("");
+  const [isGeneratingResponse, setIsGeneratingResponse] =
+    useState<boolean>(false);
+  const resultDivRef = useRef<null | HTMLDivElement>(null);
+  const [isErrorWhileResponding, setIsErrorWhileResponding] =
+    useState<boolean>(false);
+
+  const [savedPromptResponses, setSavedPromptResponses] = useState([]);
+  const [savedPromptResponse, setSavedPromptResponse] = useState({});
+  const [responseTitle, setResponseTitle] = useState<string>("");
+  const [response, setResponse] = useState<string>(""); // state for streaming
+
+  const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
+  const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
+  const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
+  const [doneGenerating, setDoneGenerating] = useState<boolean>(false);
+  const [responseId, setResponseId] = useState<string>("");
+  const [paymentSuccessful, setPaymentSuccessful] = useState<boolean>(false);
+
+  const router = useRouter();
+
+  // won't work if stream happens immediately
+  const scrollToResult = () => {
+    if (resultDivRef.current !== null) {
+      resultDivRef.current.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    return;
+  };
+
+  const handleSubmit = async (prompt: string) => {
+    try {
+      setDoneGenerating(false);
+
+      const hasSufficientCredits = handleInsufficientCredits({
+        usedAppCount,
+        currentlyLoggedInUser,
+      });
+
+      if (!hasSufficientCredits) {
+        return;
+      }
+
+      setResponse(""); //reset previous response to show PlaceholderSections (isIDle)
+      setResponseTitle(prompt || promptInputValue);
+      scrollToResult();
+
+      // Adding settimeout to allow scrollToResult work
+      setTimeout(async () => {
+        setIsGeneratingResponse(true);
+
+        const generateRes = await generateResponse(prompt || promptInputValue);
+
+        if (!generateRes.ok) {
+          setIsErrorWhileResponding(true);
+          setIsGeneratingResponse(false);
+          return;
+        }
+
+        appUsageCount();
+
+        const done = await handleStreamResponse({
+          data: generateRes.body,
+          setResponse,
+        });
+
+        if (done) {
+          setDoneGenerating(true);
+          setIsGeneratingResponse(false);
+          setUsedAppCount(usedAppCount + 1);
+          setSavedPromptResponse({}); // response is not saved yet
+          setIsErrorWhileResponding(false);
+          getProfile();
+
+          // show sharer for first time users
+          if (!showSharer && usedAppCount + 1 === 1) {
+            setShowSharer(true);
+          }
+        }
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (session) {
+      getProfile().then((profile) => setCurrentlyLoggedInUser(profile));
+      fetchSavedPromptResponses().then((responses) =>
+        setSavedPromptResponses(responses)
+      );
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (doneGenerating) {
+      saveResponse({
+        title: responseTitle,
+        markdown: response,
+      }).then((res) => setResponseId(res.responseId));
+    }
+  }, [doneGenerating]);
+
+  useEffect(() => {
+    if (router.query.status === "successful") {
+      setPaymentSuccessful(true);
+      // https://stackoverflow.com/a/72346195
+      router.replace("/dashboard", undefined, { shallow: true }); // clear query params from browser bar
+    }
+  }, [router.query]);
+
+  if (
+    typeof window !== "undefined" &&
+    status !== "loading" &&
+    status === "unauthenticated"
+  ) {
+    return (window.location.href = "/");
+  }
+
+  return (
+    <HomeLayout>
+      <SidebarDashboard
+        open={openSidebar}
+        setOpen={setOpenSiderbar}
+        savedPromptResponses={savedPromptResponses}
+        setSavedPromptResponses={setSavedPromptResponses}
+        currentlyLoggedInUser={currentlyLoggedInUser}
+      />
+
+      <Header setOpenSiderbar={setOpenSiderbar}>
+        <Hero
+          promptInputValue={promptInputValue}
+          setPromptInputValue={setPromptInputValue}
+          handleSubmit={handleSubmit}
+          isGeneratingResponse={isGeneratingResponse}
+          showSharer={showSharer}
+        />
+      </Header>
+      <div ref={resultDivRef}></div>
+      <PromptResponse
+        currentlyLoggedInUser={currentlyLoggedInUser}
+        isIdle={!response}
+        handleSubmit={handleSubmit}
+        isGeneratingResponse={isGeneratingResponse}
+        response={response}
+        responseTitle={responseTitle}
+        fetchSavedPromptResponses={fetchSavedPromptResponses}
+        savedPromptResponse={savedPromptResponse}
+        fetchResponse={() => null}
+        isErrorWhileResponding={isErrorWhileResponding}
+        responseId={responseId}
+      />
+      <div className='mb-20'></div>
+      {paymentSuccessful ? (
+        <ToastNotification
+          open={paymentSuccessful}
+          setOpen={setPaymentSuccessful}
+          title='Credit purchase successfully'
+          dark
+        />
+      ) : null}
+    </HomeLayout>
+  );
+}

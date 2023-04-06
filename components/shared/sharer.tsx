@@ -10,9 +10,11 @@ export default function Sharer({ caption }: { caption?: string }) {
     <AnimatePresence>
       <motion.div
         {...FADE_IN_ANIMATION_SETTINGS}
-        className={`bg-green-800 mt-10 bg-opacity-50 p-3 rounded text-white flex justify-between group items-center`}
+        className={`${
+          showSharer ? "flex" : "hidden"
+        } bg-green-800 mt-10 bg-opacity-50 p-3 rounded text-white  justify-between group items-center`}
       >
-        <div className='flex items-center space-x-1 justify-center w-11/12'>
+        <div className='flex flex-wrap items-center space-x-1 justify-center w-11/12'>
           <h3>Found this useful? </h3>
           <div className='space-x-2'>
             <a
@@ -28,7 +30,7 @@ export default function Sharer({ caption }: { caption?: string }) {
             </a>
             <span className='hidden md:inline'>or</span>
             <a
-              href="https://twitter.com/intent/tweet?url=https://learnease.vercel.app/&text=I just learned a new concept on LearnEase powered by AI. It's detailed"
+              href='https://dub.sh/learnease-github'
               target='_blank'
               rel='noopener noreferrer'
               className='hidden md:inline underline underline-offset-2 text-blue-300'

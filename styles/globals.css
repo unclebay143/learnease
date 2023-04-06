@@ -7,11 +7,11 @@
 }
 
 .markdown-container h2 {
-  @apply text-2xl font-bold mt-8 mb-3 text-gray-700;
+  @apply text-[1.6666667em] font-bold mt-10 mb-5 text-gray-700;
 }
 
 .markdown-container p {
-  @apply block;
+  @apply block text-lg leading-[1.7777778];
 }
 
 .markdown-container a {
@@ -19,8 +19,9 @@
 }
 
 .markdown-container ul {
-  @apply list-inside list-disc;
+  @apply list-disc leading-[1.7777778] text-lg;
   padding-inline-start: 10px;
   margin-block-start: 1em;
   margin-block-end: 1em;
+  margin-left: 8px;
 }

@@ -24,11 +24,6 @@ export default function Hero({
             Learn with Ease, Master with Confidence.
           </h3>
 
-          {/* <p className='text-gray-400'>Unlock the Power of Learning with AI</p> */}
-          {/* <p className='text-gray-500 max-w-md '>
-            Your One-Stop Destination for Understanding Complex Tech Concepts.
-          </p> */}
-
           <PromptSuggestions
             setPromptInputValue={setPromptInputValue}
             handleSubmit={handleSubmit}

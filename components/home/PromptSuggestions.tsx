@@ -5,7 +5,7 @@ import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 const promptSuggestions = [
   "I want to learn about AI",
   "I want to learn JavaScript",
-  "Explain JavaScript Currying to me like I'm five",
+  "Explain JavaScript Currying to me like I'm 5",
   "Explain Recursion to me like I'm five",
 ];
 
