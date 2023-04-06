@@ -52,7 +52,7 @@ export default function AppDemo() {
           </div>
         </div>
 
-        <div className='xl:-mr-5 -mb-5 w-full mt-5 xl:mt-0 xl:w-auto shadow-lg xl:shadow-none flex justify-center'>
+        <div className='group relative xl:-mr-5 -mb-5 w-full mt-5 xl:mt-0 xl:w-auto shadow-lg xl:shadow-none flex justify-center'>
           <Link
             as='video'
             href={
@@ -97,6 +97,7 @@ export default function AppDemo() {
               </video>
             </motion.div>
           </AnimatePresence>
+          <div className='group-hover:bg-transparent transition-all absolute bg-black bg-opacity-10 h-full w-full rounded-2xl rounded-bl-none xl:rounded-tr-none'></div>
         </div>
       </section>
     </MaxWidthWrapper>

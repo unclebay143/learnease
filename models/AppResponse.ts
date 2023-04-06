@@ -1,14 +1,13 @@
 import mongoose, { Schema, model, models } from 'mongoose'
 import Joi from 'joi'
 
-const ResponseSchema = new Schema(
+const AppResponseSchema = new Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
     title: String,
-    isFavorite: { type: Boolean, default: false },
     markdown: String,
     hasGivenFeedback: Boolean,
   },
@@ -21,11 +20,11 @@ const ResponseSchema = new Schema(
       },
     },
     timestamps: true,
-    collection: 'response',
+    collection: 'appresponse',
   },
 )
 
-const validateNewResponse = (response: object) => {
+const validateNewAppResponse = (response: object) => {
   const schema = Joi.object({
     title: Joi.string().label('Response title'),
     address: Joi.string().label('Response markdown'),
@@ -34,6 +33,7 @@ const validateNewResponse = (response: object) => {
   return schema.validate(response)
 }
 
-const Response = models.Response || model('Response', ResponseSchema)
+const AppResponse =
+  models.AppResponse || model('AppResponse', AppResponseSchema)
 
-export { Response, validateNewResponse }
+export { AppResponse, validateNewAppResponse }

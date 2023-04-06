@@ -95,7 +95,7 @@ function ResponseCard({
             <Star
               className={`w-4 h-4 ${
                 isFavorite
-                  ? "fill-yellow-300 text-yellow-300"
+                  ? "fill-yellow-300 text-yellow-300 group-focus:fill-none group-focus:text-current"
                   : "group-focus:fill-yellow-300 group-focus:text-yellow-300"
               }`}
             />

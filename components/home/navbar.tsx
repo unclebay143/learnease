@@ -15,7 +15,7 @@ export default function Navbar({
   return (
     <nav className='px-6 2xl:px-0 py-2 text-gray-400 z-20 relative max-w-screen-xl mx-auto'>
       <div className='flex h-16 items-center justify-between'>
-        <a href='/' className='flex space-x-1 items-center'>
+        <Link href='/' className='flex space-x-1 items-center'>
           <Image
             src='/_static/icons/building-block.png'
             width='50'
@@ -28,7 +28,7 @@ export default function Navbar({
           <span className='p-2 text-green-700 -mt-4 relative right-2'>
             Beta
           </span>
-        </a>
+        </Link>
         <section>
           <AnimatePresence>
             {status == "loading" ? null : (

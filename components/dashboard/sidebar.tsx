@@ -10,16 +10,26 @@ export default function SidebarDashboard({
   setOpen,
   savedPromptResponses,
   fetchSavedPromptResponses,
+  currentlyLoggedInUser,
 }: {
   open: boolean;
   setOpen: Function;
   savedPromptResponses: Array<any>;
   fetchSavedPromptResponses: Function;
+  currentlyLoggedInUser: {
+    credits: number;
+    freeCredits: number;
+  } | null;
 }) {
   const router = useRouter();
 
   return (
-    <SlideOverWrapper title='Dashboard' open={open} setOpen={setOpen}>
+    <SlideOverWrapper
+      title='Dashboard'
+      open={open}
+      setOpen={setOpen}
+      currentlyLoggedInUser={currentlyLoggedInUser}
+    >
       <div className='flex flex-col justify-between h-full max-w-[350px] md:max-w-full'>
         <section>
           {router.pathname === "/" && (

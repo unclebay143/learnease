@@ -53,7 +53,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         await connectToMongoDb()
 
-        const payload = JSON.parse(req.body) // parsing bcos req.body came as string for some unknown reasons
+        // const payload = JSON.parse(req.body) // parsing bcos req.body came as string for some unknown reasons
+        const payload = req.body // parsing bcos req.body came as string for some unknown reasons
         payload.user = new ObjectId(payload.userId)
         delete payload.userId
         const newPromptResponse = await Response.create(payload)

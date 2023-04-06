@@ -5,6 +5,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import CopyToClipboardButton from "./copy-to-clipboard";
 import ResponseMenu from "./response-menu";
 import ToastNotification from "../shared/alert";
+import EmojiFeedback from "../shared/emoji-feedback";
 
 export default function ResponseMarkdown({
   markdown,
@@ -35,7 +36,7 @@ export default function ResponseMarkdown({
 
     const res = await fetch("/api/response", {
       method: "POST",
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
@@ -185,6 +186,14 @@ export default function ResponseMarkdown({
         {/* passed here because of react/no-children-prop error */}
         {markdown}
       </ReactMarkdown>
+
+      <EmojiFeedback
+        title={title}
+        markdown={markdown}
+        responseId={savedPromptResponse?.responseId}
+        hasGivenFeedback={savedPromptResponse?.hasGivenFeedback}
+        hide={loading}
+      />
     </div>
   );
 }

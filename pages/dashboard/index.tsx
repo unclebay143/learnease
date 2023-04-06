@@ -6,11 +6,20 @@ import PromptResponse from "@/components/app/result-response-section";
 import SidebarDashboard from "@/components/dashboard/sidebar";
 import Hero from "@/components/home/hero";
 import { useSession } from "next-auth/react";
+import { handleInsufficientCredits, handleStreamResponse } from "@/lib/index";
+import {
+  appUsageCount,
+  fetchSavedPromptResponses,
+  generateResponse,
+  getProfile,
+} from "@/lib/services";
 
 export default function Dashboard() {
   const { status, data: session } = useSession();
-  const [currentlyLoggedInUser, setCurrentlyLoggedInUser] =
-    useState<Object | null>(null);
+  const [currentlyLoggedInUser, setCurrentlyLoggedInUser] = useState<{
+    credits: number;
+    freeCredits: number;
+  } | null>(null);
 
   const [promptInputValue, setPromptInputValue] = useState<string>("");
   const [isGeneratingResponse, setIsGeneratingResponse] =
@@ -39,6 +48,15 @@ export default function Dashboard() {
 
   const handleSubmit = async (prompt: string) => {
     try {
+      const hasSufficientCredits = handleInsufficientCredits({
+        usedAppCount,
+        currentlyLoggedInUser,
+      });
+
+      if (!hasSufficientCredits) {
+        return;
+      }
+
       setResponse(""); //reset previous response to show PlaceholderSections (isIDle)
       setResponseTitle(prompt || promptInputValue);
       scrollToResult();
@@ -47,53 +65,32 @@ export default function Dashboard() {
       setTimeout(async () => {
         setIsGeneratingResponse(true);
 
-        const response = await fetch("/api/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ prompt: prompt || promptInputValue }),
-        });
+        const generateRes = await generateResponse(prompt || promptInputValue);
 
-        if (!response.ok) {
+        if (!generateRes.ok) {
           setIsErrorWhileResponding(true);
           setIsGeneratingResponse(false);
           return;
         }
 
-        // increase app use
-        await fetch("/api/app-use", {
-          method: "POST",
-        })
-          .then(() => console.log("app use increased"))
-          .catch((err) => console.log(err));
+        appUsageCount();
 
-        const data = response.body;
+        const done = await handleStreamResponse({
+          data: generateRes.body,
+          setResponse,
+        });
 
-        if (!data) {
-          console.log(data);
-          return;
-        }
+        if (done) {
+          setIsGeneratingResponse(false);
+          setUsedAppCount(usedAppCount + 1);
+          setSavedPromptResponse({}); // response is not saved yet
+          setIsErrorWhileResponding(false);
+          getProfile();
 
-        const reader = data.getReader();
-        const decoder = new TextDecoder();
-
-        let done = false;
-
-        while (!done) {
-          const { value, done: doneReading } = await reader.read();
-          done = doneReading;
-          const chunkValue = decoder.decode(value);
-          setResponse((prev) => prev + chunkValue);
-        }
-        setIsGeneratingResponse(false);
-        setUsedAppCount(usedAppCount + 1);
-        setSavedPromptResponse({}); // response is not saved yet
-        setIsErrorWhileResponding(false);
-
-        // show sharer for first time users
-        if (!showSharer && usedAppCount + 1 === 1) {
-          setShowSharer(true);
+          // show sharer for first time users
+          if (!showSharer && usedAppCount + 1 === 1) {
+            setShowSharer(true);
+          }
         }
       }, 1000);
     } catch (error) {
@@ -101,22 +98,14 @@ export default function Dashboard() {
     }
   };
 
-  const fetchSavedPromptResponses = async () => {
-    const res = await fetch("/api/response");
-    const { data } = await res.json();
-    setSavedPromptResponses(data);
-  };
-
-  const getProfile = async () => {
-    const res = await fetch("/api/user");
-    const { data } = await res.json();
-    setCurrentlyLoggedInUser(data);
-  };
-
   useEffect(() => {
-    getProfile();
-    fetchSavedPromptResponses();
-  }, []);
+    if (session) {
+      getProfile().then((profile) => setCurrentlyLoggedInUser(profile));
+      fetchSavedPromptResponses().then((responses) =>
+        setSavedPromptResponses(responses)
+      );
+    }
+  }, [session]);
 
   if (
     typeof window !== "undefined" &&
@@ -133,6 +122,7 @@ export default function Dashboard() {
         setOpen={setOpenSiderbar}
         savedPromptResponses={savedPromptResponses}
         fetchSavedPromptResponses={fetchSavedPromptResponses}
+        currentlyLoggedInUser={currentlyLoggedInUser}
       />
 
       <Header setOpenSiderbar={setOpenSiderbar}>

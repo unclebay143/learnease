@@ -17,11 +17,19 @@ const UserSchema = new Schema(
         ref: 'Response',
       },
     ],
+    unsaved_response: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UnsavedResponse',
+      },
+    ],
     isPremium: {
       type: Boolean,
       required: true,
       default: false,
     },
+    credits: { type: Number, default: 0 },
+    freeCredits: { type: Number, default: 2 },
   },
   {
     toJSON: {

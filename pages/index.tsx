@@ -8,10 +8,24 @@ import OSS from "@/components/home/oss";
 import PromptResponse from "@/components/app/result-response-section";
 import SidebarDashboard from "@/components/dashboard/sidebar";
 import Hero from "@/components/home/hero";
+import { useSession } from "next-auth/react";
+import {
+  appUsageCount,
+  fetchSavedPromptResponses,
+  generateResponse,
+  getProfile,
+  saveResponseCopy,
+} from "@/lib/services";
+import { handleInsufficientCredits, handleStreamResponse } from "../lib";
 
 export default function Home({ stars }: { stars: number }) {
-  const [currentlyLoggedInUser, setCurrentlyLoggedInUser] =
-    useState<Object | null>(null);
+  const { data: session } = useSession();
+
+  const [currentlyLoggedInUser, setCurrentlyLoggedInUser] = useState<{
+    userId: string;
+    credits: number;
+    freeCredits: number;
+  } | null>(null);
 
   const [promptInputValue, setPromptInputValue] = useState<string>("");
   const [isGeneratingResponse, setIsGeneratingResponse] =
@@ -28,6 +42,7 @@ export default function Home({ stars }: { stars: number }) {
   const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
   const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
   const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
+  const [doneGenerating, setDoneGenerating] = useState<boolean>(false);
 
   // won't work if stream happens immediately
   const scrollToResult = () => {
@@ -39,8 +54,13 @@ export default function Home({ stars }: { stars: number }) {
   };
 
   const handleSubmit = async (prompt: string) => {
-    if (usedAppCount > 3 && !currentlyLoggedInUser) {
-      alert("Please log in to access unlimited LearnEase.");
+    setDoneGenerating(false);
+    const hasSufficientCredits = handleInsufficientCredits({
+      usedAppCount,
+      currentlyLoggedInUser,
+    });
+
+    if (!hasSufficientCredits) {
       return;
     }
 
@@ -51,76 +71,58 @@ export default function Home({ stars }: { stars: number }) {
     // Adding settimeout to allow scrollToResult work
     setTimeout(async () => {
       setIsGeneratingResponse(true);
+      const generateRes = await generateResponse(prompt || promptInputValue);
 
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt: prompt || promptInputValue }),
-      });
-
-      if (!response.ok) {
+      if (!generateRes.ok) {
         setIsErrorWhileResponding(true);
         setIsGeneratingResponse(false);
         return;
       }
 
-      // increase app use
-      await fetch("/api/app-use", {
-        method: "POST",
-      })
-        .then(() => console.log("app use increased"))
-        .catch((err) => console.log(err));
+      appUsageCount();
 
-      // continue
-      const data = response.body;
+      const done = await handleStreamResponse({
+        data: generateRes.body,
+        setResponse,
+      });
 
-      if (!data) {
-        return;
-      }
+      if (done) {
+        setDoneGenerating(true);
+        setIsGeneratingResponse(false);
+        setUsedAppCount(usedAppCount + 1);
+        setSavedPromptResponse({});
+        setIsErrorWhileResponding(false);
 
-      const reader = data.getReader();
-      const decoder = new TextDecoder();
+        if (currentlyLoggedInUser) {
+          getProfile();
+        }
 
-      let done = false;
-
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-        setResponse((prev) => prev + chunkValue);
-      }
-      setIsGeneratingResponse(false);
-      setUsedAppCount(usedAppCount + 1);
-      setSavedPromptResponse({});
-      setIsErrorWhileResponding(false);
-
-      // show sharer for first time users
-      if (!showSharer && usedAppCount + 1 === 1) {
-        setShowSharer(true);
+        // show sharer for first time users
+        if (!showSharer && usedAppCount + 1 === 1) {
+          setShowSharer(true);
+        }
       }
     }, 1000);
   };
 
-  const getProfile = async () => {
-    const res = await fetch("/api/user");
-    const { data } = await res.json();
-    setCurrentlyLoggedInUser(data);
-  };
-
-  const fetchSavedPromptResponses = async () => {
-    const res = await fetch("/api/response");
-    const { data } = await res.json();
-    return setSavedPromptResponses(data);
-  };
+  useEffect(() => {
+    if (session) {
+      getProfile().then((profile) => setCurrentlyLoggedInUser(profile));
+      fetchSavedPromptResponses().then((responses) =>
+        setSavedPromptResponses(responses)
+      );
+    }
+  }, [session]);
 
   useEffect(() => {
-    getProfile();
-    fetchSavedPromptResponses();
-  }, []);
-
-  scrollToResult();
+    if (doneGenerating) {
+      saveResponseCopy({
+        userId: currentlyLoggedInUser?.userId,
+        title: responseTitle,
+        markdown: response,
+      });
+    }
+  }, [doneGenerating]);
 
   return (
     <HomeLayout>
@@ -129,6 +131,7 @@ export default function Home({ stars }: { stars: number }) {
         setOpen={setOpenSiderbar}
         savedPromptResponses={savedPromptResponses}
         fetchSavedPromptResponses={() => null}
+        currentlyLoggedInUser={currentlyLoggedInUser}
       />
 
       <Header setOpenSiderbar={setOpenSiderbar}>
@@ -156,14 +159,6 @@ export default function Home({ stars }: { stars: number }) {
         fetchResponse={() => null}
         isErrorWhileResponding={isErrorWhileResponding}
       />
-
-      {/* <section className='text-center mt-20 px-6'>
-        <button className='rounded-2xl font-semibold py-2 px-4 text-gray-700 text-sm sm:text-base border border-green-600'>
-          Over{" "}
-          <span className='text-green-600 font-semibold'>1 hundred users</span>{" "}
-          have used LearnEase so far
-        </button>
-      </section> */}
 
       <OSS stars={stars || 2} />
     </HomeLayout>

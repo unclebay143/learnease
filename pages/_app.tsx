@@ -5,6 +5,7 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { ToastProvider } from "@radix-ui/react-toast";
 import "@/styles/globals.css";
+import * as gtag from "../lib/gtag";
 
 export default function App({
   Component,
@@ -14,9 +15,11 @@ export default function App({
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      //@ts-ignore
-      gtag.pageview(url);
+      if (typeof window !== "undefined") {
+        gtag.pageview(url);
+      }
     };
+
     router.events.on("routeChangeComplete", handleRouteChange);
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
