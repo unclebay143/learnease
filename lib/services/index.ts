@@ -31,6 +31,12 @@ export const saveResponseCopy = async ({
   })
 }
 
+export const getProfile = async () => {
+  const res = await fetch('/api/user')
+  const { data } = await res.json()
+  return data
+}
+
 export const generateResponse = async (prompt: string) => {
   const res = await fetch('/api/generate', {
     method: 'POST',
@@ -43,14 +49,23 @@ export const generateResponse = async (prompt: string) => {
   return res
 }
 
-export const getProfile = async () => {
-  const res = await fetch('/api/user')
-  const { data } = await res.json()
-  return data
-}
-
 export const fetchSavedPromptResponses = async () => {
   const res = await fetch('/api/response')
   const { data } = await res.json()
   return data
+}
+
+export const handleCreditsPurchase = async (amount: number) => {
+  const res = await fetch('/api/credits', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ amount }),
+  })
+
+  if (res.ok) {
+    const { data } = await res.json()
+    window.location.href = data?.data?.link
+  }
 }

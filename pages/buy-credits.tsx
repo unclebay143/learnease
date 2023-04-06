@@ -6,47 +6,35 @@ import SidebarDashboard from "@/components/dashboard/sidebar";
 import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
+import {
+  fetchSavedPromptResponses,
+  getProfile,
+  handleCreditsPurchase,
+} from "@/lib/services";
 
 export default function BuyCredits() {
+  const { status, data: session } = useSession();
   const [currentlyLoggedInUser, setCurrentlyLoggedInUser] = useState<{
     credits: number;
     freeCredits: number;
   } | null>(null);
-  const { status } = useSession();
   const [savedPromptResponses, setSavedPromptResponses] = useState([]);
   const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
 
-  const fetchSavedPromptResponses = async () => {
-    const res = await fetch("/api/response");
-    const { data } = await res.json();
-    setSavedPromptResponses(data);
-  };
+  // const handleCreditsPurchase = async (amount: number) => {
+  //   const res = await fetch("/api/credits", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ amount }),
+  //   });
 
-  useEffect(() => {
-    fetchSavedPromptResponses();
-  }, []);
-
-  const handleCreditsPurchase = async (amount: number) => {
-    const res = await fetch("/api/credits", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount }),
-    });
-
-    if (res.ok) {
-      const { data } = await res.json();
-      window.location.href = data?.data?.link;
-    }
-  };
-  if (
-    typeof window !== "undefined" &&
-    status !== "loading" &&
-    status === "unauthenticated"
-  ) {
-    return (window.location.href = "/");
-  }
+  //   if (res.ok) {
+  //     const { data } = await res.json();
+  //     window.location.href = data?.data?.link;
+  //   }
+  // };
 
   const features = [
     "Save your generated response",
@@ -55,16 +43,22 @@ export default function BuyCredits() {
     "Premium support by email",
   ];
 
-  const getProfile = async () => {
-    const res = await fetch("/api/user");
-    const { data } = await res.json();
-    setCurrentlyLoggedInUser(data);
-  };
-
   useEffect(() => {
-    getProfile();
-  }, []);
+    if (session) {
+      getProfile().then((profile) => setCurrentlyLoggedInUser(profile));
+      fetchSavedPromptResponses().then((responses) =>
+        setSavedPromptResponses(responses)
+      );
+    }
+  }, [session]);
 
+  if (
+    typeof window !== "undefined" &&
+    status !== "loading" &&
+    status === "unauthenticated"
+  ) {
+    return (window.location.href = "/");
+  }
   return (
     <HomeLayout>
       <SidebarDashboard

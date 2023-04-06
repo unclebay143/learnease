@@ -160,13 +160,13 @@ export default function Home({ stars }: { stars: number }) {
         isErrorWhileResponding={isErrorWhileResponding}
       />
 
-      <OSS stars={stars || 2} />
+      <OSS stars={stars} />
     </HomeLayout>
   );
 }
 
 export async function getStaticProps() {
-  const { stargazers_count: stars } = await fetch(
+  const res = await fetch(
     "https://api.github.com/repos/unclebay143/learnease",
     {
       ...(process.env.GITHUB_OAUTH_TOKEN && {
@@ -176,11 +176,15 @@ export async function getStaticProps() {
         },
       }),
     }
-  ).then((res) => res.json());
+  );
+  const data = await res.json();
+
+  console.log(data);
+  console.log(process.env.GITHUB_OAUTH_TOKEN);
 
   return {
     props: {
-      stars,
+      stars: data.stargazers_count,
     },
     revalidate: 60,
   };
