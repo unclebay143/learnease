@@ -12,7 +12,10 @@ import {
   fetchSavedPromptResponses,
   generateResponse,
   getProfile,
+  saveResponse,
 } from "@/lib/services";
+import { useRouter } from "next/router";
+import ToastNotification from "@/components/shared/alert";
 
 export default function Dashboard() {
   const { status, data: session } = useSession();
@@ -36,6 +39,11 @@ export default function Dashboard() {
   const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
   const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
   const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
+  const [doneGenerating, setDoneGenerating] = useState<boolean>(false);
+  const [responseId, setResponseId] = useState<string>("");
+  const [paymentSuccessful, setPaymentSuccessful] = useState<boolean>(false);
+
+  const router = useRouter();
 
   // won't work if stream happens immediately
   const scrollToResult = () => {
@@ -48,6 +56,8 @@ export default function Dashboard() {
 
   const handleSubmit = async (prompt: string) => {
     try {
+      setDoneGenerating(false);
+
       const hasSufficientCredits = handleInsufficientCredits({
         usedAppCount,
         currentlyLoggedInUser,
@@ -81,6 +91,7 @@ export default function Dashboard() {
         });
 
         if (done) {
+          setDoneGenerating(true);
           setIsGeneratingResponse(false);
           setUsedAppCount(usedAppCount + 1);
           setSavedPromptResponse({}); // response is not saved yet
@@ -107,6 +118,23 @@ export default function Dashboard() {
     }
   }, [session]);
 
+  useEffect(() => {
+    if (doneGenerating) {
+      saveResponse({
+        title: responseTitle,
+        markdown: response,
+      }).then((res) => setResponseId(res.responseId));
+    }
+  }, [doneGenerating]);
+
+  useEffect(() => {
+    if (router.query.status === "successful") {
+      setPaymentSuccessful(true);
+      // https://stackoverflow.com/a/72346195
+      router.replace("/dashboard", undefined, { shallow: true }); // clear query params from browser bar
+    }
+  }, [router.query]);
+
   if (
     typeof window !== "undefined" &&
     status !== "loading" &&
@@ -121,7 +149,7 @@ export default function Dashboard() {
         open={openSidebar}
         setOpen={setOpenSiderbar}
         savedPromptResponses={savedPromptResponses}
-        fetchSavedPromptResponses={fetchSavedPromptResponses}
+        setSavedPromptResponses={setSavedPromptResponses}
         currentlyLoggedInUser={currentlyLoggedInUser}
       />
 
@@ -146,8 +174,17 @@ export default function Dashboard() {
         savedPromptResponse={savedPromptResponse}
         fetchResponse={() => null}
         isErrorWhileResponding={isErrorWhileResponding}
+        responseId={responseId}
       />
       <div className='mb-20'></div>
+      {paymentSuccessful ? (
+        <ToastNotification
+          open={paymentSuccessful}
+          setOpen={setPaymentSuccessful}
+          title='Credit purchase successfully'
+          dark
+        />
+      ) : null}
     </HomeLayout>
   );
 }

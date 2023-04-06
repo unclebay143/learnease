@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { errorResponse, successResponse } from '@/lib/helpers'
 import connectToMongoDb from '@/lib/connectDb'
-import { Feedback } from 'models/Feedback'
 import { Response } from 'models/Response'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -11,25 +10,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         await connectToMongoDb()
         const payload = req.body
-        const feedbackRes = await Feedback.create(payload)
 
-        if (payload.responseId) {
-          console.log('inside responseId')
-          const r = await Response.findOneAndUpdate(
-            { _id: payload.responseId },
-            {
-              $set: {
-                hasGivenFeedback: true,
-              },
-            },
-          )
-          console.log(r)
+        if (!payload.responseId) {
+          return errorResponse(res, 'responseId is required', 400)
         }
-
+        const r = await Response.findOneAndUpdate(
+          { _id: payload.responseId },
+          {
+            $set: {
+              hasGivenFeedback: true,
+              isUseful: payload.isUseful,
+            },
+          },
+        )
         return successResponse(
           res,
-          'Feedback added successfully',
-          feedbackRes,
+          'Response feedback recorded successfully',
+          r,
           200,
         )
       } catch (error) {
@@ -37,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
     default:
-      res.setHeader('Allow', ['GET'])
+      res.setHeader('Allow', ['GET', 'POST'])
       res.status(405).end(`Method ${method} Not Allowed`)
       break
   }

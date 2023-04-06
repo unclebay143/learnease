@@ -18,6 +18,7 @@ export default function ResponseMarkdown({
   fetchSavedPromptResponses,
   savedPromptResponse,
   fetchResponse,
+  responseId,
 }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -26,16 +27,17 @@ export default function ResponseMarkdown({
   const [favoriteStatusUpdated, setFavoriteStatusUpdated] = useState(false);
   const [isUpdatingFavorite, setIsUpdatingFavorite] = useState(false);
 
-  const saveResponse = async () => {
+  const saveResponseForUser = async () => {
     setSaving(true);
     const payload = {
       userId: currentlyLoggedInUser?.userId,
-      title,
-      markdown,
+      responseId,
+      // title,
+      // markdown,
     };
 
     const res = await fetch("/api/response", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -139,7 +141,7 @@ export default function ResponseMarkdown({
         isLoading={loading}
         focusMode={focusMode}
         setFocusMode={setFocusMode}
-        saveResponse={saveResponse}
+        saveResponse={saveResponseForUser}
         saving={saving}
         deleteResponse={deleteResponse}
         isDeletingResponse={isDeletingResponse}
@@ -188,9 +190,7 @@ export default function ResponseMarkdown({
       </ReactMarkdown>
 
       <EmojiFeedback
-        title={title}
-        markdown={markdown}
-        responseId={savedPromptResponse?.responseId}
+        responseId={savedPromptResponse?.responseId || responseId}
         hasGivenFeedback={savedPromptResponse?.hasGivenFeedback}
         hide={loading}
       />

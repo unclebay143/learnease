@@ -1,3 +1,4 @@
+import { fetchSavedPromptResponses } from "@/lib/services";
 import React, { useState } from "react";
 import ToastNotification from "../shared/alert";
 import Document from "../shared/icons/document";
@@ -8,12 +9,12 @@ function ResponseCard({
   responseId,
   title,
   isFavorite,
-  fetchSavedPromptResponses,
+  setSavedPromptResponses,
 }: {
   responseId: string;
   title: string;
   isFavorite?: boolean;
-  fetchSavedPromptResponses: Function;
+  setSavedPromptResponses: Function;
 }) {
   const [deleted, setDeleted] = useState<boolean>(false);
   const [isDeletingResponse, setIsDeletingResponse] = useState<boolean>(false);
@@ -38,7 +39,9 @@ function ResponseCard({
 
     if (data?.success) {
       setDeleted(true);
-      fetchSavedPromptResponses();
+      fetchSavedPromptResponses().then((responses) =>
+        setSavedPromptResponses(responses)
+      );
 
       // setTimeout(() => {
       //   window.location.href = "/dashboard";
@@ -49,7 +52,9 @@ function ResponseCard({
   const toggleFavorite = async (responseId: string) => {
     try {
       const res = await fetch("/api/response/" + responseId, { method: "PUT" });
-      fetchSavedPromptResponses();
+      fetchSavedPromptResponses().then((responses) =>
+        setSavedPromptResponses(responses)
+      );
     } catch (error) {
       console.log(error);
     }

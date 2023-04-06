@@ -21,9 +21,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // TEST: const session = { user: { email: 'unclebigbay@gmail.com' } }
 
         await connectToMongoDb()
+        const user = await User.findOne({ email: session?.user?.email })
 
         const promptResponse = await Response.find({
-          email: session?.user?.email,
+          user: user?._id,
+          isDeleted: false,
         })
           .sort({
             createdAt: -1,
@@ -43,6 +45,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     case 'POST':
       try {
+        await connectToMongoDb()
+        const payload = req.body
+
+        if (!payload.title || !payload.markdown) {
+          return errorResponse(res, 'Title and markdown are required', 400)
+        }
+
+        const newPromptResponse = await Response.create(payload)
+
+        return successResponse(
+          res,
+          'Prompt response saved successfully',
+          newPromptResponse,
+          200,
+        )
+      } catch (error) {
+        console.log(error)
+        return errorResponse(res, 'something went wrong', 400)
+      }
+    case 'PUT':
+      try {
         // TEST: const session = { user: { email: 'unclebigbay@gmail.com' } }
 
         const session = await getServerSession(req, res, authOptions)
@@ -53,24 +76,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         await connectToMongoDb()
 
-        // const payload = JSON.parse(req.body) // parsing bcos req.body came as string for some unknown reasons
-        const payload = req.body // parsing bcos req.body came as string for some unknown reasons
-        payload.user = new ObjectId(payload.userId)
-        delete payload.userId
-        const newPromptResponse = await Response.create(payload)
+        const payload = req.body
+
+        if (!payload.userId && !payload.responseId) {
+          return errorResponse(res, 'userId and responseId are required', 400)
+        }
 
         await User.findOneAndUpdate(
           { email: session?.user?.email },
           {
             $push: {
-              saved_response: new ObjectId(newPromptResponse._id),
+              saved_response: new ObjectId(payload.responseId),
             },
+          },
+        )
+
+        const newPromptResponse = await Response.findOneAndUpdate(
+          { _id: payload.responseId },
+          {
+            user: new ObjectId(payload.userId),
           },
         )
 
         return successResponse(
           res,
-          'Prompt response saved successfully',
+          'Prompt response saved to user record successfully',
           newPromptResponse,
           200,
         )

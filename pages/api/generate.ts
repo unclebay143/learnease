@@ -25,7 +25,7 @@ const handler = async (req: NextRequest): Promise<Response> => {
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: generatePrompt(prompt) }],
       temperature: 0.6,
-      max_tokens: 10,
+      max_tokens: 1000,
       top_p: 1.0,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,

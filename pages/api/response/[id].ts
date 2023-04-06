@@ -93,16 +93,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return errorResponse(res, 'Prompt response does not exist', 404)
         }
 
-        const promptRes = await Response.findOneAndDelete({ _id: responseId })
-        const user = await User.findOne({ _id: promptRes.user })
-        const newUserSavedResponse = user.saved_response.filter(
-          (id: string) => id.toString() !== responseId,
+        // const promptRes = await Response.findOneAndDelete({ _id: responseId })
+        // const user = await User.findOne({ _id: promptRes.user })
+        // const newUserSavedResponse = user.saved_response.filter(
+        //   (id: string) => id.toString() !== responseId,
+        // )
+
+        const promptRes = await Response.findOneAndUpdate(
+          { _id: responseId },
+          {
+            $set: {
+              isDeleted: true,
+            },
+          },
         )
 
         return successResponse(
           res,
           'Prompt response deleted successfully',
-          newUserSavedResponse,
+          promptRes,
           200,
         )
       } catch (error) {}

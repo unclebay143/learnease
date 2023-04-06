@@ -14,6 +14,7 @@ const PromptResponse = ({
   fetchSavedPromptResponses,
   fetchResponse,
   isErrorWhileResponding,
+  responseId,
 }: {
   currentlyLoggedInUser: Object | null;
   isIdle: boolean;
@@ -25,6 +26,7 @@ const PromptResponse = ({
   fetchSavedPromptResponses: Function;
   fetchResponse: Function;
   isErrorWhileResponding: boolean;
+  responseId: string;
 }) => {
   const [focusMode, setFocusMode] = useState<boolean>(true);
   return (
@@ -70,6 +72,7 @@ const PromptResponse = ({
               fetchSavedPromptResponses={fetchSavedPromptResponses}
               savedPromptResponse={savedPromptResponse}
               fetchResponse={fetchResponse}
+              responseId={responseId}
             />
           )}
         </section>

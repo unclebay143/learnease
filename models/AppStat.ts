@@ -1,5 +1,4 @@
 import mongoose, { Schema, model, models } from 'mongoose'
-// import Joi from 'joi'
 
 const AppStatSchema = new Schema(
   {
@@ -28,15 +27,6 @@ const AppStatSchema = new Schema(
     collection: 'appstats',
   },
 )
-
-// const validateNewAppStat = (client: object) => {
-//   const schema = Joi.object({
-//     response_count: Joi.number().label('Response count'),
-//     liked_response_count: Joi.number().label('Liked response count'),
-//   })
-
-//   return schema.validate(client)
-// }
 
 const AppStat = models.AppStat || model('AppStat', AppStatSchema)
 

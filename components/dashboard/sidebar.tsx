@@ -9,13 +9,13 @@ export default function SidebarDashboard({
   open,
   setOpen,
   savedPromptResponses,
-  fetchSavedPromptResponses,
+  setSavedPromptResponses,
   currentlyLoggedInUser,
 }: {
   open: boolean;
   setOpen: Function;
   savedPromptResponses: Array<any>;
-  fetchSavedPromptResponses: Function;
+  setSavedPromptResponses: Function;
   currentlyLoggedInUser: {
     credits: number;
     freeCredits: number;
@@ -32,7 +32,7 @@ export default function SidebarDashboard({
     >
       <div className='flex flex-col justify-between h-full max-w-[350px] md:max-w-full'>
         <section>
-          {router.pathname === "/" && (
+          {router.pathname !== "/dashboard" && (
             <section className='mb-4'>
               <a href='/dashboard'>
                 <button className='transition-all flex items-center justify-center rounded text-gray-600 hover:text-gray-800 text-sm border border-slate-200 font-semibold hover:border-slate-200 hover:bg-gray-200 w-full px-3 py-2'>
@@ -57,11 +57,11 @@ export default function SidebarDashboard({
           )}
           <Favorites
             items={savedPromptResponses}
-            fetchSavedPromptResponses={fetchSavedPromptResponses}
+            setSavedPromptResponses={setSavedPromptResponses}
           />
           <Saved
             items={savedPromptResponses}
-            fetchSavedPromptResponses={fetchSavedPromptResponses}
+            setSavedPromptResponses={setSavedPromptResponses}
           />
         </section>
         <section>

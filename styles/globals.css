@@ -19,8 +19,9 @@
 }
 
 .markdown-container ul {
-  @apply list-inside list-disc leading-[1.7777778] text-lg;
+  @apply list-disc leading-[1.7777778] text-lg;
   padding-inline-start: 10px;
   margin-block-start: 1em;
   margin-block-end: 1em;
+  margin-left: 8px;
 }

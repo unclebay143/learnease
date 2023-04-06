@@ -11,6 +11,8 @@ const ResponseSchema = new Schema(
     isFavorite: { type: Boolean, default: false },
     markdown: String,
     hasGivenFeedback: Boolean,
+    isUseful: Boolean,
+    isDeleted: { type: Boolean, default: false },
   },
   {
     toJSON: {
@@ -29,6 +31,7 @@ const validateNewResponse = (response: object) => {
   const schema = Joi.object({
     title: Joi.string().label('Response title'),
     address: Joi.string().label('Response markdown'),
+    isUseFul: Joi.boolean(),
   })
 
   return schema.validate(response)

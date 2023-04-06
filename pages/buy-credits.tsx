@@ -21,21 +21,6 @@ export default function BuyCredits() {
   const [savedPromptResponses, setSavedPromptResponses] = useState([]);
   const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
 
-  // const handleCreditsPurchase = async (amount: number) => {
-  //   const res = await fetch("/api/credits", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ amount }),
-  //   });
-
-  //   if (res.ok) {
-  //     const { data } = await res.json();
-  //     window.location.href = data?.data?.link;
-  //   }
-  // };
-
   const features = [
     "Save your generated response",
     "Mark response as favorite",
@@ -65,7 +50,7 @@ export default function BuyCredits() {
         open={openSidebar}
         setOpen={setOpenSiderbar}
         savedPromptResponses={savedPromptResponses}
-        fetchSavedPromptResponses={fetchSavedPromptResponses}
+        setSavedPromptResponses={setSavedPromptResponses}
         currentlyLoggedInUser={currentlyLoggedInUser}
       />
 

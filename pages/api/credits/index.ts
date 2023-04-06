@@ -2,7 +2,7 @@ import got from 'got'
 import { getServerSession } from 'next-auth'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { errorResponse, successResponse } from '@/lib/helpers'
-import { uuid } from 'uuidv4'
+import { v4 as uuidv4 } from 'uuid'
 import { authOptions } from '../auth/[...nextauth]'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const { amount, currency = 'USD' } = req.body
 
-        const transactionRefId = `learn-ease-txf-${uuid()}`
+        const transactionRefId = `learn-ease-txf-${uuidv4()}`
 
         const response = await got
           .post('https://api.flutterwave.com/v3/payments', {

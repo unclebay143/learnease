@@ -14,7 +14,7 @@ import {
   fetchSavedPromptResponses,
   generateResponse,
   getProfile,
-  saveResponseCopy,
+  saveResponse,
 } from "@/lib/services";
 import { handleInsufficientCredits, handleStreamResponse } from "../lib";
 
@@ -38,6 +38,7 @@ export default function Home({ stars }: { stars: number }) {
   const [savedPromptResponse, setSavedPromptResponse] = useState({});
   const [responseTitle, setResponseTitle] = useState<string>("");
   const [response, setResponse] = useState<string>("");
+  const [responseId, setResponseId] = useState<string>("");
 
   const [showSharer, setShowSharer] = useLocalStorage("show-sharer", false);
   const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
@@ -116,11 +117,10 @@ export default function Home({ stars }: { stars: number }) {
 
   useEffect(() => {
     if (doneGenerating) {
-      saveResponseCopy({
-        userId: currentlyLoggedInUser?.userId,
+      saveResponse({
         title: responseTitle,
         markdown: response,
-      });
+      }).then((res) => setResponseId(res.responseId));
     }
   }, [doneGenerating]);
 
@@ -130,7 +130,7 @@ export default function Home({ stars }: { stars: number }) {
         open={openSidebar}
         setOpen={setOpenSiderbar}
         savedPromptResponses={savedPromptResponses}
-        fetchSavedPromptResponses={() => null}
+        setSavedPromptResponses={setSavedPromptResponses}
         currentlyLoggedInUser={currentlyLoggedInUser}
       />
 
@@ -158,6 +158,7 @@ export default function Home({ stars }: { stars: number }) {
         savedPromptResponse={savedPromptResponse}
         fetchResponse={() => null}
         isErrorWhileResponding={isErrorWhileResponding}
+        responseId={responseId}
       />
 
       <OSS stars={stars} />
@@ -178,9 +179,6 @@ export async function getStaticProps() {
     }
   );
   const data = await res.json();
-
-  console.log(data);
-  console.log(process.env.GITHUB_OAUTH_TOKEN);
 
   return {
     props: {

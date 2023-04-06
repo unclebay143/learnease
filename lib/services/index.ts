@@ -7,28 +7,28 @@ export const appUsageCount = async () => {
     .catch((err) => console.log(err))
 }
 
-export const saveResponseCopy = async ({
-  userId,
+export const saveResponse = async ({
   title,
   markdown,
 }: {
-  userId?: string
   title: string
   markdown: string
 }) => {
   const payload = {
-    userId,
     title,
     markdown,
   }
 
-  await fetch('/api/app_response', {
+  const res = await fetch('/api/response', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(payload),
   })
+
+  const { data } = await res.json()
+  return data
 }
 
 export const getProfile = async () => {

@@ -3,10 +3,10 @@ import CollapsibleWrapper from "../shared/collapsible-wrapper";
 
 export default function Saved({
   items,
-  fetchSavedPromptResponses,
+  setSavedPromptResponses,
 }: {
   items: Array<any>;
-  fetchSavedPromptResponses: Function;
+  setSavedPromptResponses: Function;
 }) {
   const savedResWithoutFav = items.filter((item) => item.isFavorite === false);
   return (
@@ -27,7 +27,7 @@ export default function Saved({
                   title={title}
                   key={responseId}
                   responseId={responseId}
-                  fetchSavedPromptResponses={fetchSavedPromptResponses}
+                  setSavedPromptResponses={setSavedPromptResponses}
                 />
               );
             })}

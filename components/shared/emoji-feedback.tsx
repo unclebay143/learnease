@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 
 const EmojiFeedback = ({
-  title,
-  markdown,
   responseId,
   hasGivenFeedback,
   hide,
@@ -17,8 +15,6 @@ const EmojiFeedback = ({
 
   const handleSendFeedback = async (isUseful: boolean) => {
     const payload = {
-      title,
-      markdown,
       isUseful,
       responseId,
     };
