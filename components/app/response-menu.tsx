@@ -7,7 +7,10 @@ import Star from "../shared/icons/star";
 import { motion, AnimatePresence } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 import Trash from "../shared/icons/trash";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import DocumentPlus from "../shared/icons/document-plus";
+import Link from "next/link";
 
 function ResponseMenu({
   reload,
@@ -41,6 +44,8 @@ function ResponseMenu({
       isFavorite: boolean;
       responseId: string;
     }) || {};
+
+  const router = useRouter();
   return (
     <CollapsibleWrapper
       chevronClassName='w-5 h-5 text-black'
@@ -133,16 +138,27 @@ function ResponseMenu({
               <span className='text-slate-600'>Sign in to Save response</span>
             </button>
           )}
-          <button
-            disabled={isLoading}
-            onClick={() => reload()}
-            className='capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
-          >
-            <ArrowPathReload className='text-slate-600 w-4 h-4' />
-            <span className='text-slate-600'>
-              {isLoading ? "Generating response" : "Regenerate response"}
-            </span>
-          </button>
+
+          {router.query?.responseId ? (
+            <Link
+              href='/dashboard'
+              className='!no-underline capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
+            >
+              <DocumentPlus className='text-slate-600 w-4 h-4' />
+              <span className='text-slate-600'>New Prompt</span>
+            </Link>
+          ) : (
+            <button
+              disabled={isLoading}
+              onClick={() => reload()}
+              className='capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
+            >
+              <ArrowPathReload className='text-slate-600 w-4 h-4' />
+              <span className='text-slate-600'>
+                {isLoading ? "Generating response" : "Regenerate response"}
+              </span>
+            </button>
+          )}
         </motion.div>
       </AnimatePresence>
     </CollapsibleWrapper>

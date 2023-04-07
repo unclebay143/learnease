@@ -28,6 +28,7 @@ export default function DashboardWithResponseId() {
   const [response, setResponse] = useState<string>(""); // state for streaming
 
   const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
+  const [responseNotFound, setResponseNotFound] = useState<boolean>(false);
 
   const router = useRouter();
   const responseId = router.query?.responseId as string;
@@ -36,14 +37,17 @@ export default function DashboardWithResponseId() {
     if (responseId) {
       const res = await fetch("/api/response/" + responseId);
       const { data } = await res.json();
-      if (data) {
-        const { title, markdown } = data;
-        setResponseTitle(title);
-        setResponse(markdown);
-        setSavedPromptResponse(data);
+      if (!data || data?.isDeleted) {
+        setResponseNotFound(true);
         setIsRetrievingResponse(false);
-        return data;
+        return;
       }
+      const { title, markdown } = data;
+      setResponseTitle(title);
+      setResponse(markdown);
+      setSavedPromptResponse(data);
+      setIsRetrievingResponse(false);
+      return data;
     }
     setIsErrorWhileRetrievingResponse(true);
     return false;
@@ -97,6 +101,7 @@ export default function DashboardWithResponseId() {
         savedPromptResponse={savedPromptResponse}
         isErrorWhileResponding={isErrorWhileRetrievingResponse}
         responseId={responseId}
+        responseNotFound={responseNotFound}
       />
 
       <div className='mb-20'></div>

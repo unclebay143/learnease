@@ -17,6 +17,7 @@ import {
   saveResponse,
 } from "@/lib/services";
 import { handleInsufficientCredits, handleStreamResponse } from "../lib";
+import LowCreditDialog from "@/components/shared/low-credit-dialog";
 
 export default function Home({ stars }: { stars: number }) {
   const { data: session } = useSession();
@@ -44,6 +45,8 @@ export default function Home({ stars }: { stars: number }) {
   const [usedAppCount, setUsedAppCount] = useLocalStorage("used-app-count", 0); // consider tracking with db
   const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
   const [doneGenerating, setDoneGenerating] = useState<boolean>(false);
+  const [hasLowCredit, setHasLowCredit] = useState<boolean>(false);
+  const [hasLowCreditMsg, setHasLowCreditMsg] = useState<string>("");
 
   // won't work if stream happens immediately
   const scrollToResult = () => {
@@ -56,12 +59,16 @@ export default function Home({ stars }: { stars: number }) {
 
   const handleSubmit = async (prompt: string) => {
     setDoneGenerating(false);
-    const hasSufficientCredits = handleInsufficientCredits({
+    const { hasSufficientCredits, message } = handleInsufficientCredits({
       usedAppCount,
       currentlyLoggedInUser,
     });
-
+    console.log(hasSufficientCredits);
+    console.log(message);
+    console.log(currentlyLoggedInUser);
     if (!hasSufficientCredits) {
+      setHasLowCredit(true);
+      setHasLowCreditMsg(message);
       return;
     }
 
@@ -126,6 +133,13 @@ export default function Home({ stars }: { stars: number }) {
 
   return (
     <HomeLayout>
+      <LowCreditDialog
+        open={hasLowCredit}
+        setOpen={setHasLowCredit}
+        text={hasLowCreditMsg}
+        showLoginBtn={!session}
+        showBuyCreditsBtn={session ? true : false}
+      />
       <SidebarDashboard
         open={openSidebar}
         setOpen={setOpenSiderbar}

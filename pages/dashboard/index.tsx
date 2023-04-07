@@ -16,6 +16,7 @@ import {
 } from "@/lib/services";
 import { useRouter } from "next/router";
 import ToastNotification from "@/components/shared/alert";
+import LowCreditDialog from "@/components/shared/low-credit-dialog";
 
 export default function Dashboard() {
   const { status, data: session } = useSession();
@@ -42,6 +43,8 @@ export default function Dashboard() {
   const [doneGenerating, setDoneGenerating] = useState<boolean>(false);
   const [responseId, setResponseId] = useState<string>("");
   const [paymentSuccessful, setPaymentSuccessful] = useState<boolean>(false);
+  const [hasLowCredit, setHasLowCredit] = useState<boolean>(false);
+  const [hasLowCreditMsg, setHasLowCreditMsg] = useState<string>("");
 
   const router = useRouter();
 
@@ -58,12 +61,14 @@ export default function Dashboard() {
     try {
       setDoneGenerating(false);
 
-      const hasSufficientCredits = handleInsufficientCredits({
+      const { hasSufficientCredits, message } = handleInsufficientCredits({
         usedAppCount,
         currentlyLoggedInUser,
       });
 
       if (!hasSufficientCredits) {
+        setHasLowCredit(true);
+        setHasLowCreditMsg(message);
         return;
       }
 
@@ -145,6 +150,13 @@ export default function Dashboard() {
 
   return (
     <HomeLayout>
+      <LowCreditDialog
+        open={hasLowCredit}
+        setOpen={setHasLowCredit}
+        text={hasLowCreditMsg}
+        showBuyCreditsBtn
+      />
+
       <SidebarDashboard
         open={openSidebar}
         setOpen={setOpenSiderbar}

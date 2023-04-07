@@ -3,6 +3,7 @@ import Meta from "../meta";
 import Footer from "@/components/home/footer";
 import PageBackground from "@/components/shared/background";
 import { useSession } from "next-auth/react";
+import LowCreditBanner from "@/components/shared/low-credit-banner";
 
 export default function HomeLayout({
   meta,
@@ -12,7 +13,6 @@ export default function HomeLayout({
   children: ReactNode;
 }) {
   const { status, data: session } = useSession();
-
   const [currentlyLoggedInUser, setCurrentlyLoggedInUser] = useState<{
     credits: number;
     freeCredits: number;
@@ -35,15 +35,12 @@ export default function HomeLayout({
       <Meta {...meta} />
       <PageBackground />
       <div className='z-20'>
-        {currentlyLoggedInUser?.credits === 0 &&
-          currentlyLoggedInUser?.freeCredits === 0 && (
-            <div className='flex flex-wrap items-center justify-center text-center bg-green-700 bg-opacity-90 z-30 p-2 text-sm text-gray-100'>
-              <p> You&apos;ve exhausted your allocated credits.</p>
-              <button className='hover:underline underline-offset-2 rounded font-semibold p-1 text-gray-100 ml-1'>
-                Click here to buy credits!
-              </button>
-            </div>
-          )}
+        {status !== "loading" && (
+          <LowCreditBanner
+            currentlyLoggedInUser={currentlyLoggedInUser}
+            session={session}
+          />
+        )}
         {children}
       </div>
       <Footer />
