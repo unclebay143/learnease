@@ -29,7 +29,7 @@ const UserSchema = new Schema(
       default: false,
     },
     credits: { type: Number, default: 0 },
-    freeCredits: { type: Number, default: 2 },
+    freeCredits: { type: Number, default: 3 },
   },
   {
     toJSON: {

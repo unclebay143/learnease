@@ -28,10 +28,10 @@ export default function HomeLayout({
     if (session) {
       getProfile();
     }
-  }, []);
+  }, [session]);
 
   return (
-    <div className='flex justify-between flex-col min-h-screen selection:bg-green-300/75'>
+    <div className='flex flex-col justify-between min-h-screen selection:bg-green-300/75'>
       <Meta {...meta} />
       <PageBackground />
       <div className='z-20'>

@@ -5,6 +5,7 @@ import { signOut } from "next-auth/react";
 import Power from "../shared/icons/power";
 import { useRouter } from "next/router";
 import DocumentPlus from "../shared/icons/document-plus";
+import Link from "next/link";
 
 export default function SidebarDashboard({
   open,
@@ -35,12 +36,12 @@ export default function SidebarDashboard({
         <section>
           {router.pathname !== "/dashboard" && (
             <section className='mb-4'>
-              <a href='/dashboard'>
-                <button className='transition-all flex items-center justify-center rounded text-gray-600 hover:text-gray-800 text-sm border border-slate-200 font-semibold hover:border-slate-200 hover:bg-gray-200 w-full px-3 py-2'>
+              <Link href='/dashboard'>
+                <button className='flex items-center justify-center w-full px-3 py-2 text-sm font-semibold text-gray-600 transition-all border rounded hover:text-gray-800 border-slate-200 hover:border-slate-200 hover:bg-gray-200'>
                   <DocumentPlus className='w-[18px] h-[18px] mr-1' />
                   New Prompt
                 </button>
-              </a>
+              </Link>
             </section>
           )}
           <Favorites
@@ -55,7 +56,7 @@ export default function SidebarDashboard({
         <section>
           {/* {router.pathname === "/" ? (
             <a href='/dashboard' className='mb-4'>
-              <button className='flex items-center justify-center rounded text-base border border-slate-500 font-semibold hover:bg-gray-100 w-full px-3 py-2'>
+              <button className='flex items-center justify-center w-full px-3 py-2 text-base font-semibold border rounded border-slate-500 hover:bg-gray-100'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -74,9 +75,9 @@ export default function SidebarDashboard({
               </button>
             </a>
           ) : (
-            <section className='flex justify-center items-center rounded mt-5'>
+            <section className='flex items-center justify-center mt-5 rounded'>
               <button
-                className='text-slate-400 rounded hover:text-gray-500 p-1 flex items-center gap-1 text-sm'
+                className='flex items-center gap-1 p-1 text-sm rounded text-slate-400 hover:text-gray-500'
                 onClick={() => signOut()}
               >
                 <Power />
@@ -85,9 +86,9 @@ export default function SidebarDashboard({
             </section>
           )} */}
 
-          <section className='flex justify-center items-center rounded mt-5'>
+          <section className='flex items-center justify-center mt-5 rounded'>
             <button
-              className='text-slate-400 rounded hover:text-gray-500 p-1 flex items-center gap-1 text-sm'
+              className='flex items-center gap-1 p-1 text-sm rounded text-slate-400 hover:text-gray-500'
               onClick={() => signOut()}
             >
               <Power />

@@ -4,6 +4,7 @@ import ToastNotification from "../shared/alert";
 import Document from "../shared/icons/document";
 import Star from "../shared/icons/star";
 import Trash from "../shared/icons/trash";
+import Link from "next/link";
 
 function ResponseCard({
   responseId,
@@ -39,13 +40,10 @@ function ResponseCard({
 
     if (data?.success) {
       setDeleted(true);
+      setIsDeletingResponse(false);
       fetchSavedPromptResponses().then((responses) =>
         setSavedPromptResponses(responses)
       );
-
-      // setTimeout(() => {
-      //   window.location.href = "/dashboard";
-      // }, 2000);
     }
   };
 
@@ -62,10 +60,10 @@ function ResponseCard({
   return (
     <>
       <div
-        className='w-full relative group hover:bg-gray-400/10 p-1 mb-1 rounded flex items-center text-slate-600 '
+        className='relative flex items-center w-full p-1 mb-1 rounded group hover:bg-gray-400/10 text-slate-600 '
         role='button'
       >
-        <a
+        <Link
           href={`/dashboard/${responseId}`}
           className='flex items-center w-full'
         >
@@ -74,18 +72,18 @@ function ResponseCard({
           </section>
           <section className='w-9/12 md:w-10/12'>
             {isDeletingResponse ? (
-              <h3 className='truncate pl-1 text-sm capitalize' title={title}>
+              <h3 className='pl-1 text-sm capitalize truncate' title={title}>
                 Deleting:{" "}
                 <span className='line-through opacity-75'>{title}</span>
               </h3>
             ) : (
-              <h3 className='truncate pl-1 text-sm capitalize' title={title}>
+              <h3 className='pl-1 text-sm capitalize truncate' title={title}>
                 {title || "untitled"}
               </h3>
             )}
           </section>
-        </a>
-        <div className='sm:hidden group-hover:inline absolute right-0 z-20'>
+        </Link>
+        <div className='absolute right-0 z-20 sm:hidden group-hover:inline'>
           <button
             disabled={isDeletingResponse}
             onClick={() => deleteResponse(responseId)}
