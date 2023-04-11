@@ -15,7 +15,7 @@
 }
 
 .markdown-container a {
-  @apply underline underline-offset-1 text-gray-800;
+  @apply text-gray-800 underline underline-offset-1;
 }
 
 .markdown-container ul {
@@ -24,4 +24,8 @@
   margin-block-start: 1em;
   margin-block-end: 1em;
   margin-left: 8px;
+}
+
+.markdown-container hr {
+  @apply mt-3;
 }

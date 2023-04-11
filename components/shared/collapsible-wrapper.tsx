@@ -11,6 +11,7 @@ const CollapsibleWrapper = ({
   grid,
   chevronClassName,
   isLoading,
+  openDefault,
 }: {
   heading?: string;
   children?: ReactNode;
@@ -18,22 +19,23 @@ const CollapsibleWrapper = ({
   grid?: boolean;
   chevronClassName?: string;
   isLoading?: boolean;
+  openDefault?: boolean;
 }) => {
-  const [openCollapse, setOpenCollapse] = useState(false);
+  const [openCollapse, setOpenCollapse] = useState(openDefault ? true : false);
 
   return (
     <section>
       <Collapsible.Root
-        className='mb-6 w-full'
+        className='w-full mb-6'
         open={isLoading ? false : openCollapse} // since radix ui disabled prop not working
         onOpenChange={setOpenCollapse}
       >
         <Collapsible.Trigger asChild>
-          <div className='flex items-center justify-between group cursor-pointer'>
-            <h3 className='text-sm text-slate-700 group-hover:text-gray-900 font-semibold uppercase'>
+          <div className='flex items-center justify-between cursor-pointer group'>
+            <h3 className='text-sm font-semibold uppercase text-slate-700 group-hover:text-gray-900'>
               {heading || ""}
             </h3>
-            <button className='rounded-md group-hover:bg-gray-300/10 group-hover:text-gray-700 p-1 text-gray-400 shadow-blackA7 outline-none'>
+            <button className='p-1 text-gray-400 rounded-md outline-none group-hover:bg-gray-300/10 group-hover:text-gray-700 shadow-blackA7'>
               {isLoading ? (
                 <ArrowPathReload
                   className={`${chevronClassName} animate-spin w-4 h-4`}
@@ -53,10 +55,10 @@ const CollapsibleWrapper = ({
 
         <Collapsible.Content className='pt-1'>
           {children || (
-            <div className='mt-2 relative h-full p-5 overflow-hidden rounded-lg border border-dashed border-gray-400 opacity-75'>
+            <div className='relative h-full p-5 mt-2 overflow-hidden border border-gray-400 border-dashed rounded-lg opacity-75'>
               {grid ? (
                 <svg
-                  className='absolute inset-0 h-full w-full stroke-gray-900/10'
+                  className='absolute inset-0 w-full h-full stroke-gray-900/10'
                   fill='none'
                 >
                   <defs>
@@ -80,7 +82,7 @@ const CollapsibleWrapper = ({
                 </svg>
               ) : null}
 
-              <p className='text-gray-400 text-sm z-20'>
+              <p className='z-20 text-sm text-gray-400'>
                 {placeholder || "Collapsible items will appear here"}
               </p>
             </div>

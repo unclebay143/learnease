@@ -19,6 +19,8 @@ export default function ResponseMarkdown({
   savedPromptResponse,
   fetchResponse,
   responseId,
+  language,
+  level,
 }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -32,8 +34,6 @@ export default function ResponseMarkdown({
     const payload = {
       userId: currentlyLoggedInUser?.userId,
       responseId,
-      // title,
-      // markdown,
     };
 
     const res = await fetch("/api/response", {
@@ -49,7 +49,7 @@ export default function ResponseMarkdown({
 
       fetchSavedPromptResponses();
       setSaved(true);
-      // setSaving(false);
+
       setTimeout(() => {
         window.location.href = "/dashboard/" + data?.responseId;
       }, [2000]);
@@ -130,7 +130,7 @@ export default function ResponseMarkdown({
       ) : null}
 
       {!savedPromptResponse?.responseId ? (
-        <span className='text-xs bg-green-300 bg-opacity-50 rounded p-1 text-gray-600'>
+        <span className='p-1 text-xs text-gray-600 bg-green-300 bg-opacity-50 rounded'>
           {saving ? "Saving" : "Not saved"}
         </span>
       ) : null}
@@ -138,6 +138,9 @@ export default function ResponseMarkdown({
       <ResponseMenu
         currentlyLoggedInUser={currentlyLoggedInUser}
         reload={handleSubmit}
+        prompt={title}
+        language={language}
+        level={level}
         isLoading={loading}
         focusMode={focusMode}
         setFocusMode={setFocusMode}
@@ -201,7 +204,7 @@ export default function ResponseMarkdown({
 const PreWithCopyToClipboard = ({ children }) => {
   return (
     <pre style={{ position: "relative" }}>
-      <CopyToClipboardButton codeBlock={children[0].props.children[0]} />
+      <CopyToClipboardButton data={children[0].props.children[0]} />
       <div>{children}</div>
     </pre>
   );

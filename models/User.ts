@@ -10,26 +10,16 @@ const UserSchema = new Schema(
       unique: true,
     },
     image: String,
-    isOnboardingDone: { type: Boolean, default: false },
     saved_response: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Response',
       },
     ],
-    unsaved_response: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'UnsavedResponse',
-      },
-    ],
-    isPremium: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
     credits: { type: Number, default: 0 },
-    freeCredits: { type: Number, default: 2 },
+    freeCredits: { type: Number, default: 3 },
+    language: String,
+    level: String,
   },
   {
     toJSON: {
@@ -50,7 +40,6 @@ const validateUser = (user: object) => {
   const schema = Joi.object({
     name: Joi.string().label('Name'),
     email: Joi.string().email().required().label('Email'),
-    isOnboarded: Joi.boolean(),
     image: Joi.string(),
   })
 

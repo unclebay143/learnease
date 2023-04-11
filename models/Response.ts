@@ -1,5 +1,5 @@
 import mongoose, { Schema, model, models } from 'mongoose'
-import Joi from 'joi'
+import Joi, { string } from 'joi'
 
 const ResponseSchema = new Schema(
   {
@@ -13,6 +13,8 @@ const ResponseSchema = new Schema(
     hasGivenFeedback: Boolean,
     isUseful: Boolean,
     isDeleted: { type: Boolean, default: false },
+    language: String,
+    level: String,
   },
   {
     toJSON: {

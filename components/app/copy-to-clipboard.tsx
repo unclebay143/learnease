@@ -7,11 +7,7 @@ import styles from "./markdown.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 
-export default function CopyToClipboardButton({
-  codeBlock,
-}: {
-  codeBlock: string;
-}) {
+export default function CopyToClipboardButton({ data }: { data: string }) {
   const [copied, setCopied] = useState(false);
 
   return (
@@ -26,7 +22,7 @@ export default function CopyToClipboardButton({
       ) : null}
       <section className={`${styles.copyClip}`}>
         <CopyToClipboard
-          text={codeBlock}
+          text={data}
           onCopy={() => {
             setCopied(true);
             // reset copied state in 3s to match toast duration

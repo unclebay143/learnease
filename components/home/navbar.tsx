@@ -13,19 +13,20 @@ export default function Navbar({
   const { status, data: session } = useSession();
 
   return (
-    <nav className='px-6 2xl:px-0 py-2 text-gray-400 z-20 relative max-w-screen-xl mx-auto'>
-      <div className='flex h-16 items-center justify-between'>
-        <Link href='/' className='flex space-x-1 items-center'>
+    <nav className='relative z-20 max-w-screen-xl px-6 py-2 mx-auto text-gray-400 2xl:px-0'>
+      <div className='flex items-center justify-between h-16'>
+        <Link href='/' className='flex items-center space-x-1'>
           <Image
             src='/_static/icons/building-block.png'
-            width='50'
-            height='50'
+            width={50}
+            height={50}
             alt='LearnEase logo'
+            className='w-[50px] h-[48.4px]'
           />
-          <h1 className='text-2xl hidden md:inline-block text-gray-200 relative-left-16 mt-1'>
+          <h1 className='hidden mt-1 text-2xl text-gray-200 md:inline-block relative-left-16'>
             LearnEase
           </h1>
-          <span className='p-2 text-green-700 -mt-4 relative right-2'>
+          <span className='relative p-2 -mt-4 text-green-700 right-2'>
             Beta
           </span>
         </Link>
@@ -48,7 +49,7 @@ export default function Navbar({
                       alt='user'
                       width='50'
                       height='50'
-                      className='rounded-full w-6 h-6 ml-2'
+                      className='w-6 h-6 ml-2 rounded-full'
                     />
                   </motion.button>
                 ) : (

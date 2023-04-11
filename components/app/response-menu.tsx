@@ -7,7 +7,10 @@ import Star from "../shared/icons/star";
 import { motion, AnimatePresence } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 import Trash from "../shared/icons/trash";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import DocumentPlus from "../shared/icons/document-plus";
+import Link from "next/link";
 
 function ResponseMenu({
   reload,
@@ -21,6 +24,9 @@ function ResponseMenu({
   savedPromptResponse,
   toggleFavorite,
   isUpdatingFavorite,
+  prompt,
+  language,
+  level,
 }: {
   reload: Function;
   isLoading: boolean;
@@ -33,6 +39,9 @@ function ResponseMenu({
   savedPromptResponse: Object;
   toggleFavorite: Function;
   isUpdatingFavorite: boolean;
+  prompt: string;
+  language: { value: string; label: string };
+  level: { value: string; label: string };
 }) {
   const { status, data: session } = useSession();
 
@@ -41,21 +50,20 @@ function ResponseMenu({
       isFavorite: boolean;
       responseId: string;
     }) || {};
+
+  const router = useRouter();
   return (
-    <CollapsibleWrapper
-      chevronClassName='w-5 h-5 text-black'
-      isLoading={isLoading}
-    >
+    <CollapsibleWrapper chevronClassName='w-5 h-5' isLoading={isLoading}>
       <AnimatePresence>
         <motion.div
           {...FADE_IN_ANIMATION_SETTINGS}
-          className='mt-3 w-full justify-center flex flex-col md:flex-row gap-2'
+          className='flex flex-col justify-center w-full gap-2 mt-3 md:flex-row'
         >
           <button
             onClick={() => setFocusMode(!focusMode)}
-            className='capitalize flex  items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
+            className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
           >
-            <Sparkles className='text-slate-600 w-4 h-4' />
+            <Sparkles className='w-4 h-4 text-slate-600' />
             <span className='text-slate-600'>
               {focusMode ? "Classic" : "Focus"} mode
             </span>
@@ -67,9 +75,9 @@ function ResponseMenu({
                 <button
                   onClick={() => deleteResponse(responseId)}
                   disabled={isDeletingResponse}
-                  className='capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
+                  className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
                 >
-                  <Trash className='text-slate-600 w-4 h-4' />
+                  <Trash className='w-4 h-4 text-slate-600' />
                   <span className='text-slate-600'>
                     {isDeletingResponse
                       ? "Deleting response..."
@@ -80,9 +88,9 @@ function ResponseMenu({
                 <button
                   disabled={saving}
                   onClick={() => saveResponse()}
-                  className='capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
+                  className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
                 >
-                  <Bookmark className='text-slate-600 w-4 h-4' />
+                  <Bookmark className='w-4 h-4 text-slate-600' />
                   <span className='text-slate-600'>
                     {saving ? "Saving response..." : "Save response"}
                   </span>
@@ -119,7 +127,7 @@ function ResponseMenu({
           ) : (
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className='capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
+              className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
             >
               <img
                 alt="google's logo"
@@ -133,16 +141,27 @@ function ResponseMenu({
               <span className='text-slate-600'>Sign in to Save response</span>
             </button>
           )}
-          <button
-            disabled={isLoading}
-            onClick={() => reload()}
-            className='capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
-          >
-            <ArrowPathReload className='text-slate-600 w-4 h-4' />
-            <span className='text-slate-600'>
-              {isLoading ? "Generating response" : "Regenerate response"}
-            </span>
-          </button>
+
+          {router.query?.responseId ? (
+            <Link
+              href='/dashboard'
+              className='!no-underline capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
+            >
+              <DocumentPlus className='w-4 h-4 text-slate-600' />
+              <span className='text-slate-600'>New Prompt</span>
+            </Link>
+          ) : (
+            <button
+              disabled={isLoading}
+              onClick={() => reload({ prompt, language, level })}
+              className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
+            >
+              <ArrowPathReload className='w-4 h-4 text-slate-600' />
+              <span className='text-slate-600'>
+                {isLoading ? "Generating response" : "Regenerate response"}
+              </span>
+            </button>
+          )}
         </motion.div>
       </AnimatePresence>
     </CollapsibleWrapper>

@@ -11,8 +11,10 @@ export const handleInsufficientCredits = ({
   currentlyLoggedInUser: User | null
 }) => {
   if (usedAppCount >= 2 && !currentlyLoggedInUser) {
-    alert('Please log in to access 3 more credits.')
-    return false
+    return {
+      hasSufficientCredits: false,
+      message: 'Please log in to access 3 more credits.',
+    }
   }
 
   if (currentlyLoggedInUser) {
@@ -22,14 +24,14 @@ export const handleInsufficientCredits = ({
       currentlyLoggedInUser?.credits > 0
 
     if (!hasCredit) {
-      alert(
-        "You don't have enough credits. Please purchase more credits from your dashboard.",
-      )
-      return false
+      return {
+        hasSufficientCredits: false,
+        message: 'Please purchase more credits to continue using this service.',
+      }
     }
   }
   // Return true if user has enough credits to continue
-  return true
+  return { hasSufficientCredits: true, message: '' }
 }
 
 export const handleStreamResponse = async ({

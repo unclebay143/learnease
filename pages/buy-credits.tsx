@@ -18,6 +18,14 @@ export default function BuyCredits() {
     credits: number;
     freeCredits: number;
   } | null>(null);
+
+  let totalUserCredits;
+
+  if (currentlyLoggedInUser) {
+    totalUserCredits =
+      currentlyLoggedInUser?.freeCredits + currentlyLoggedInUser?.credits;
+  }
+
   const [savedPromptResponses, setSavedPromptResponses] = useState([]);
   const [openSidebar, setOpenSiderbar] = useState<boolean>(false);
 
@@ -55,13 +63,21 @@ export default function BuyCredits() {
       />
 
       <Header setOpenSiderbar={setOpenSiderbar}>
-        <div className='px-5 md:px-20 flex justify-center items-center flex-col py-10 text-white'>
+        <div className='flex flex-col items-center justify-center px-5 py-10 text-white md:px-20'>
           <div className='max-w-screen-md'>
             <section className='text-center'>
-              <h2 className='text-4xl mb-3'>Buy LearnEase Credits</h2>
-              <p className='text-sm '>
-                You currently have 0 credits. Purchase more below
-              </p>
+              <h2 className='mb-3 text-4xl'>Buy LearnEase Credits</h2>
+              {currentlyLoggedInUser && (
+                <AnimatePresence>
+                  <motion.p
+                    {...FADE_IN_ANIMATION_SETTINGS}
+                    className='text-sm '
+                  >
+                    You currently have {totalUserCredits} credits. Purchase more
+                    below
+                  </motion.p>
+                </AnimatePresence>
+              )}
             </section>
           </div>
         </div>
@@ -71,35 +87,35 @@ export default function BuyCredits() {
         <AnimatePresence>
           <motion.ul
             {...FADE_IN_ANIMATION_SETTINGS}
-            className='sm:mt-16 flex flex-wrap items-center justify-center '
+            className='flex flex-wrap items-center justify-center sm:mt-16 '
           >
-            <div className='flex flex-col sm:flex-col lg:flex-row xl:flex-row md:flex-col justify-center items-center container'>
-              <div className='py-12 sm:py-12 md:py-6 lg:py-6 xl:py-6 px-8 w-full xl:max-w-min sm:w-full bg-white z-30'>
-                <h1 className='text-gray-500 font-semibold text-xl text-center'>
+            <div className='container flex flex-col items-center justify-center sm:flex-col lg:flex-row xl:flex-row md:flex-col'>
+              <div className='z-30 w-full px-8 py-12 bg-white sm:py-12 md:py-6 lg:py-6 xl:py-6 xl:max-w-min sm:w-full'>
+                <h1 className='text-xl font-semibold text-center text-gray-500'>
                   20 Credits
                 </h1>
-                <div className='text-center py-4 px-7'>
-                  <h1 className='text-gray-700 text-4xl font-black'>$5.00</h1>
+                <div className='py-4 text-center px-7'>
+                  <h1 className='text-4xl font-black text-gray-700'>$5.00</h1>
                 </div>
                 <div className='h-px bg-gray-200' />
-                <div className='text-center mt-3'>
+                <div className='mt-3 text-center'>
                   <p className='text-sm text-gray-400'>
                     20 learning prompts response
                   </p>
                 </div>
                 <button
                   onClick={() => handleCreditsPurchase(5)}
-                  className='w-full mt-6 mb-3 py-2 text-white font-semibold bg-gray-700 hover:shadow-xl duration-200 hover:bg-gray-800'
+                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-gray-700 hover:shadow-xl hover:bg-gray-800'
                 >
                   Buy Now
                 </button>
               </div>
-              <div className='sm:rounded py-12 sm:py-12 md:py-6 lg:py-6 xl:py-6 px-8 w-full xl:max-w-min sm:w-full bg-gray-700'>
-                <h1 className='text-green-200 font-semibold text-xl text-center'>
+              <div className='w-full px-8 py-12 bg-gray-700 sm:rounded sm:py-12 md:py-6 lg:py-6 xl:py-6 xl:max-w-min sm:w-full'>
+                <h1 className='text-xl font-semibold text-center text-green-200'>
                   100 Credits
                 </h1>
-                <div className='text-center py-4 px-7'>
-                  <h1 className='text-white text-4xl font-black mb-2'>
+                <div className='py-4 text-center px-7'>
+                  <h1 className='mb-2 text-4xl font-black text-white'>
                     $19.00
                   </h1>
                   <p className='text-gray-100 bg-gray-400 rounded text-sm inline-block px-2 py-[2px]'>
@@ -107,54 +123,54 @@ export default function BuyCredits() {
                   </p>
                 </div>
                 <div className='h-px bg-green-200' />
-                <div className='text-center mt-3'>
+                <div className='mt-3 text-center'>
                   <p className='text-sm text-white text-opacity-80'>
                     100 learning prompt response
                   </p>
                 </div>
                 <button
                   onClick={() => handleCreditsPurchase(19)}
-                  className='bg-green-700 hover:bg-opacity-100 bg-opacity-90 w-full mt-6 mb-3 py-2 text-white font-semibold hover:shadow-xl duration-200'
+                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-green-700 hover:bg-opacity-100 bg-opacity-90 hover:shadow-xl'
                 >
                   Buy Now
                 </button>
               </div>
-              <div className='py-12 sm:py-12 md:py-6 lg:py-6 xl:py-6 px-8 w-full xl:max-w-min sm:w-full bg-white z-30'>
-                <h1 className='text-gray-500 font-semibold text-xl text-center'>
+              <div className='z-30 w-full px-8 py-12 bg-white sm:py-12 md:py-6 lg:py-6 xl:py-6 xl:max-w-min sm:w-full'>
+                <h1 className='text-xl font-semibold text-center text-gray-500'>
                   250 Credits
                 </h1>
-                <div className='text-center py-4 px-7'>
-                  <h1 className='text-gray-700 text-4xl font-black'>$35.00</h1>
+                <div className='py-4 text-center px-7'>
+                  <h1 className='text-4xl font-black text-gray-700'>$35.00</h1>
                 </div>
                 <div className='h-px bg-gray-200' />
-                <div className='text-center mt-3'>
+                <div className='mt-3 text-center'>
                   <p className='text-sm text-gray-400'>
                     250 learning prompt response
                   </p>
                 </div>
                 <button
                   onClick={() => handleCreditsPurchase(35)}
-                  className='w-full mt-6 mb-3 py-2 text-white font-semibold bg-gray-700 hover:shadow-xl duration-200 hover:bg-gray-800'
+                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-gray-700 hover:shadow-xl hover:bg-gray-800'
                 >
                   Buy Now
                 </button>
               </div>
-              <div className='py-12 sm:py-12 md:py-6 lg:py-6 xl:py-6 px-8 w-full xl:max-w-min sm:w-full bg-white z-30'>
-                <h1 className='text-gray-500 font-semibold text-xl text-center'>
+              <div className='z-30 w-full px-8 py-12 bg-white sm:py-12 md:py-6 lg:py-6 xl:py-6 xl:max-w-min sm:w-full'>
+                <h1 className='text-xl font-semibold text-center text-gray-500'>
                   750 Credits
                 </h1>
-                <div className='text-center py-4 px-7'>
-                  <h1 className='text-gray-700 text-4xl font-black'>$75.00</h1>
+                <div className='py-4 text-center px-7'>
+                  <h1 className='text-4xl font-black text-gray-700'>$75.00</h1>
                 </div>
                 <div className='h-px bg-gray-200' />
-                <div className='text-center mt-3'>
+                <div className='mt-3 text-center'>
                   <p className='text-sm text-gray-400'>
                     750 learning prompt response
                   </p>
                 </div>
                 <button
                   onClick={() => handleCreditsPurchase(75)}
-                  className='w-full mt-6 mb-3 py-2 text-white font-semibold bg-gray-700 hover:shadow-xl duration-200 hover:bg-gray-800'
+                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-gray-700 hover:shadow-xl hover:bg-gray-800'
                 >
                   Buy Now
                 </button>
@@ -162,9 +178,9 @@ export default function BuyCredits() {
             </div>
           </motion.ul>
         </AnimatePresence>
-        <div className='flex justify-center items-center'>
+        <div className='flex items-center justify-center'>
           <div className='mt-16'>
-            <h3 className='mb-7 text-2xl text-gray-500 font-semibold uppercase text-center tracking-px'>
+            <h3 className='text-2xl font-semibold text-center text-gray-500 uppercase mb-7 tracking-px'>
               Features included
             </h3>
             <AnimatePresence>
@@ -174,7 +190,7 @@ export default function BuyCredits() {
               >
                 {features.map((f, i) => {
                   return (
-                    <li className='mb-4 flex items-center' key={i}>
+                    <li className='flex items-center mb-4' key={i}>
                       <svg
                         className='mr-2 text-gray-600'
                         width={20}
@@ -199,10 +215,10 @@ export default function BuyCredits() {
             </AnimatePresence>
           </div>
         </div>
-        <section className='text-center my-10 px-6'>
-          <button className='rounded-2xl font-semibold py-2 px-4 text-gray-700 text-sm sm:text-base border border-green-600'>
+        <section className='px-6 my-10 text-center'>
+          <button className='px-4 py-2 text-sm font-semibold text-gray-700 border border-green-600 rounded-2xl sm:text-base'>
             Over{" "}
-            <span className='text-green-600 font-semibold'>
+            <span className='font-semibold text-green-600'>
               1 hundred users
             </span>{" "}
             have used LearnEase so far

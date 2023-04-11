@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (!payload.responseId) {
           return errorResponse(res, 'responseId is required', 400)
         }
-        const r = await Response.findOneAndUpdate(
+       await Response.findOneAndUpdate(
           { _id: payload.responseId },
           {
             $set: {
@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return successResponse(
           res,
           'Response feedback recorded successfully',
-          r,
+          {},
           200,
         )
       } catch (error) {

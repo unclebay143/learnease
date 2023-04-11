@@ -6,11 +6,11 @@ import MaxWidthWrapper from "../shared/max-width-wrapper";
 export default function AppDemo() {
   return (
     <MaxWidthWrapper>
-      <section className='rounded-lg overflow-hidden border pt-10 px-5 xl:pl-10 mt-20 flex flex-col xl:flex-row justify-center xl:justify-between'>
-        <div className='xl:flex flex-col xl:mb-32 items-center justify-center'>
-          <div className='xl:pr-10 text-center'>
-            <h3 className='text-gray-900 font-semibold text-4xl leading-snug'>
-              <span className='mx-2 relative whitespace-nowrap text-green-600'>
+      <section className='flex flex-col justify-center px-5 pt-10 mt-20 overflow-hidden border rounded-lg xl:pl-10 xl:flex-row xl:justify-between'>
+        <div className='flex-col items-center justify-center xl:flex xl:mb-32'>
+          <div className='text-center xl:pr-10'>
+            <h3 className='text-4xl font-semibold leading-snug text-gray-900'>
+              <span className='relative mx-2 text-green-600 whitespace-nowrap'>
                 Experience
                 <svg
                   aria-hidden='true'
@@ -23,11 +23,11 @@ export default function AppDemo() {
               </span>
               LearnEase AI in Action
             </h3>
-            <p className='font-medium text-green-500 text-sm mt-2'>
+            <p className='mt-2 text-sm font-medium text-green-500'>
               Learn Complex Concepts with Lightning Speed.
             </p>
-            <div className=' my-4 mx-auto xl:text-left w-9/12 mt-3'>
-              <ul className='hidden xl:block xl:list-inside xl:list-disc text-gray-700'>
+            <div className='w-9/12 mx-auto my-4 mt-3  xl:text-left'>
+              <ul className='hidden text-gray-700 xl:block xl:list-inside xl:list-disc'>
                 <li className='mb-2'>Open Source</li>
                 <li className='mb-2'>Easy-to-understand language</li>
                 <li className='mb-2'>Streamlined response</li>
@@ -37,7 +37,7 @@ export default function AppDemo() {
               </ul>
             </div>
           </div>
-          <div className='justify-self-end my-4 mx-auto w-9/12 mt-3'>
+          <div className='w-9/12 mx-auto my-4 mt-3 justify-self-end'>
             <div className='flex justify-center xl:justify-start'>
               <a
                 target={"_blank"}
@@ -52,7 +52,7 @@ export default function AppDemo() {
           </div>
         </div>
 
-        <div className='group relative xl:-mr-5 -mb-5 w-full mt-5 xl:mt-0 xl:w-auto shadow-lg xl:shadow-none flex justify-center'>
+        <div className='relative flex justify-center w-full mt-5 -mb-5 shadow-lg group xl:-mr-5 xl:mt-0 xl:w-auto xl:shadow-none'>
           <Link
             as='video'
             href={
@@ -79,14 +79,7 @@ export default function AppDemo() {
               }}
               className='relative m-h-[200px] sm:min-h-[600px] w-full overflow-hidden whitespace-nowrap rounded-2xl rounded-bl-none xl:rounded-tr-none bg-white shadow-2xl lg:w-[800px]'
             >
-              <video
-                autoPlay
-                muted
-                loop
-                width={800}
-                height={600}
-                // poster={feature.thumbnail}
-              >
+              <video autoPlay muted loop width={800} height={600}>
                 <source
                   src={
                     "https://res.cloudinary.com/drk2xigke/video/upload/v1680005499/learnease-ai/learn-ease-ai-demo_mnmxd9.mov"
@@ -97,7 +90,7 @@ export default function AppDemo() {
               </video>
             </motion.div>
           </AnimatePresence>
-          <div className='group-hover:bg-transparent transition-all absolute bg-black bg-opacity-10 h-full w-full rounded-2xl rounded-bl-none xl:rounded-tr-none'></div>
+          <div className='absolute w-full h-full transition-all bg-black rounded-bl-none group-hover:bg-transparent bg-opacity-10 rounded-2xl xl:rounded-tr-none'></div>
         </div>
       </section>
     </MaxWidthWrapper>
