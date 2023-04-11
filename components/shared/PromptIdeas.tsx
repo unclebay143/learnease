@@ -55,7 +55,7 @@ export default function PromptIdeas({
           </AnimatePresence>
         </section>
         {show >= PROMPT_IDEAS.length ? null : (
-          <section className='flex items-center justify-center mt-6'>
+          <section className='flex items-center justify-center pt-5 mt-6 border-t'>
             <button
               onClick={() => setShow(show + 10)}
               className='p-1 text-sm text-gray-600 border border-gray-400 rounded hover:bg-gray-100'
