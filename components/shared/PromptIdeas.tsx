@@ -20,6 +20,8 @@ export default function PromptIdeas({
   level: { value: string; label: string };
   openDefault?: boolean;
 }) {
+  const [show, setShow] = useState<number>(20);
+
   return (
     <div className='max-w-screen-md p-6 mx-auto mt-10 bg-white border shadow sm:rounded-lg md:px-8'>
       <CollapsibleWrapper
@@ -35,7 +37,7 @@ export default function PromptIdeas({
         <section className='flex flex-col items-center justify-center text-gray-300'>
           <AnimatePresence>
             <motion.div {...FADE_IN_ANIMATION_SETTINGS}>
-              {PROMPT_IDEAS.map((prompt, i) => {
+              {PROMPT_IDEAS.slice(0, show).map((prompt, i) => {
                 return (
                   <PromptButton
                     activeId={i}
@@ -52,6 +54,16 @@ export default function PromptIdeas({
             </motion.div>
           </AnimatePresence>
         </section>
+        {show >= PROMPT_IDEAS.length ? null : (
+          <section className='flex items-center justify-center mt-6'>
+            <button
+              onClick={() => setShow(show + 10)}
+              className='p-1 text-sm text-gray-600 border border-gray-400 rounded hover:bg-gray-100'
+            >
+              Show more
+            </button>
+          </section>
+        )}
       </CollapsibleWrapper>
     </div>
   );
