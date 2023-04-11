@@ -14,7 +14,7 @@ export default function Favorites({
       heading={`my favorites ${
         favResponses?.length > 0 ? `(${favResponses?.length})` : ""
       }`}
-      placeholder='Your favorite items will appear here'
+      placeholder='Your favorite response will appear here'
     >
       {favResponses?.length > 0 ? (
         <>

@@ -3,6 +3,7 @@ import ResponseMarkdown from "./response-markdown";
 import PlaceholderSections from "@/components/home/PlaceholderSections";
 import ErrorOccurred from "../shared/error-occurred";
 import Image from "next/image";
+import Link from "next/link";
 
 const PromptResponse = ({
   currentlyLoggedInUser,
@@ -18,6 +19,8 @@ const PromptResponse = ({
   responseId,
   responseNotFound,
   hideHeading,
+  language,
+  level,
 }: {
   currentlyLoggedInUser: Object | null;
   isIdle: boolean;
@@ -32,6 +35,8 @@ const PromptResponse = ({
   responseId: string;
   responseNotFound?: boolean;
   hideHeading?: boolean;
+  language: { value: string; label: string };
+  level: { value: string; label: string };
 }) => {
   const [focusMode, setFocusMode] = useState<boolean>(true);
 
@@ -47,14 +52,16 @@ const PromptResponse = ({
     savedPromptResponse,
     fetchResponse,
     responseId,
+    language,
+    level,
   };
 
   return (
-    <div className='relative max-w-screen-md mx-auto w-full mt-20'>
+    <div className='relative w-full max-w-screen-md mx-auto mt-20'>
       {hideHeading || responseNotFound ? null : (
-        <h3 className='text-4xl text-center mb-3 font-medium'>
+        <h3 className='mb-3 text-4xl font-medium text-center'>
           White
-          <span className='mx-2 relative whitespace-nowrap text-green-600'>
+          <span className='relative mx-2 text-green-600 whitespace-nowrap'>
             Board
             <svg
               aria-hidden='true'
@@ -77,23 +84,33 @@ const PromptResponse = ({
         </ErrorOccurred>
       ) : (
         <section
-          className={`sm:rounded-lg border mx-auto border-grays-200 ${
+          className={`sm:rounded-lg border mx-auto  ${
             focusMode ? "bg-white" : ""
           } p-6 md:px-8 shadow mt-10`}
         >
           {responseNotFound ? (
-            <section className='flex items-center justify-center flex-col'>
+            <section className='flex flex-col items-center justify-center min-h-[50vh]'>
               <Image
                 src='/_static/illustrations/not_found.svg'
                 alt='not found'
                 width='100'
                 height='100'
-                className='h-56 w-full mt-3'
+                className='w-full h-56 mt-3'
               />
-              <p className='text-gray-500 text-center mt-5'>
-                The response cannot be found.
-                <br /> It may have been deleted or the reference ID is invalid.
-              </p>
+              <div className='mt-5 text-center text-gray-500'>
+                <h3 className='text-lg font-semibold'>
+                  The response you're looking for cannot be found.{" "}
+                </h3>
+                <p className='mb-5 text-sm'>
+                  It may have been deleted or the reference ID is invalid.
+                </p>
+                <Link
+                  href='/'
+                  className='p-2 text-sm text-gray-500 border rounded border-1'
+                >
+                  Okay, take me home
+                </Link>
+              </div>
             </section>
           ) : (
             <>

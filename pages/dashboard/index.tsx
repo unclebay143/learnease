@@ -17,6 +17,8 @@ import {
 import { useRouter } from "next/router";
 import ToastNotification from "@/components/shared/alert";
 import LowCreditDialog from "@/components/shared/low-credit-dialog";
+import { SUPPORTED_LANGUAGES, SUPPORTED_LEVELS } from "@/lib/constants";
+import PromptIdeas from "@/components/shared/PromptIdeas";
 
 export default function Dashboard() {
   const { status, data: session } = useSession();
@@ -45,7 +47,12 @@ export default function Dashboard() {
   const [paymentSuccessful, setPaymentSuccessful] = useState<boolean>(false);
   const [hasLowCredit, setHasLowCredit] = useState<boolean>(false);
   const [hasLowCreditMsg, setHasLowCreditMsg] = useState<string>("");
-
+  const [language, setLanguage] = useState<{ value: string; label: string }>(
+    SUPPORTED_LANGUAGES[0]
+  );
+  const [level, setLevel] = useState<{ value: string; label: string }>(
+    SUPPORTED_LEVELS[0]
+  );
   const router = useRouter();
 
   // won't work if stream happens immediately
@@ -57,7 +64,15 @@ export default function Dashboard() {
     return;
   };
 
-  const handleSubmit = async (prompt: string) => {
+  const handleSubmit = async ({
+    prompt,
+    language,
+    level,
+  }: {
+    prompt: string;
+    language: { value: string; label: string };
+    level: { value: string; label: string };
+  }) => {
     try {
       setDoneGenerating(false);
 
@@ -80,7 +95,11 @@ export default function Dashboard() {
       setTimeout(async () => {
         setIsGeneratingResponse(true);
 
-        const generateRes = await generateResponse(prompt || promptInputValue);
+        const generateRes = await generateResponse({
+          prompt: prompt || promptInputValue,
+          language: language.value,
+          level: level.value,
+        });
 
         if (!generateRes.ok) {
           setIsErrorWhileResponding(true);
@@ -116,7 +135,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (session) {
-      getProfile().then((profile) => setCurrentlyLoggedInUser(profile));
+      getProfile().then((profile) => {
+        setCurrentlyLoggedInUser(profile);
+        setLanguage(
+          { label: profile.language, value: profile.language } ||
+            SUPPORTED_LANGUAGES[0]
+        );
+        setLevel(
+          { label: profile.level, value: profile.level } || SUPPORTED_LEVELS[0]
+        );
+      });
       fetchSavedPromptResponses().then((responses) =>
         setSavedPromptResponses(responses)
       );
@@ -128,6 +156,8 @@ export default function Dashboard() {
       saveResponse({
         title: responseTitle,
         markdown: response,
+        language: language.value,
+        level: level.value,
       }).then((res) => setResponseId(res.responseId));
     }
   }, [doneGenerating]);
@@ -172,6 +202,10 @@ export default function Dashboard() {
           handleSubmit={handleSubmit}
           isGeneratingResponse={isGeneratingResponse}
           showSharer={showSharer}
+          language={language}
+          level={level}
+          setLanguage={setLanguage}
+          setLevel={setLevel}
         />
       </Header>
       <div ref={resultDivRef}></div>
@@ -187,7 +221,20 @@ export default function Dashboard() {
         fetchResponse={() => null}
         isErrorWhileResponding={isErrorWhileResponding}
         responseId={responseId}
+        language={language}
+        level={level}
       />
+
+      {isGeneratingResponse || (
+        <PromptIdeas
+          setPromptInputValue={setPromptInputValue}
+          handleSubmit={handleSubmit}
+          isGeneratingResponse={isGeneratingResponse}
+          language={language}
+          level={level}
+          openDefault
+        />
+      )}
       <div className='mb-20'></div>
       {paymentSuccessful ? (
         <ToastNotification

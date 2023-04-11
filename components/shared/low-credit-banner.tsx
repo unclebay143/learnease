@@ -1,6 +1,5 @@
-import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
-import { AnimatePresence, motion } from "framer-motion";
+
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import React from "react";

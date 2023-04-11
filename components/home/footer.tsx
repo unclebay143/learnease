@@ -9,7 +9,7 @@ type Props = {};
 export default function Footer({}: Props) {
   return (
     <section
-      className='z-20 text-md md:text-md p-5 text-gray-400 bg-gray-900'
+      className='z-20 p-5 text-gray-400 bg-gray-900 text-md md:text-md'
       style={{
         backgroundImage: "url('/_static/illustrations/grid.svg')",
         backgroundPosition: "center",
@@ -18,23 +18,23 @@ export default function Footer({}: Props) {
         top: "0",
       }}
     >
-      <div className='max-w-screen-xl mx-auto flex justify-between items-center flex-col md:flex-row '>
+      <div className='flex flex-col items-center justify-between max-w-screen-xl mx-auto md:flex-row '>
         <div className='flex items-center space-x-1'>
           <Image
             src='/_static/icons/learn-ease-2.png'
             alt='footer logo'
             width='100'
             height='100'
-            className='opacity-75 mb-5 md:mb-0 w-'
+            className='opacity-75 mb-5 md:mb-0 w-[100px] h-[17.19px]'
           />
           {/* <span>AI</span> */}
         </div>
-        <div className='flex items-center space-x-4 justify-center'>
+        <div className='flex items-center justify-center space-x-4'>
           <a
             href='http://'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex justify-center items-center space-x-1'
+            className='flex items-center justify-center space-x-1'
           >
             <Github className='mt-1' />
             <span>GitHub</span>
@@ -43,7 +43,7 @@ export default function Footer({}: Props) {
             href='https://www.buymeacoffee.com/unclebigbay'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex justify-center items-center space-x-1'
+            className='flex items-center justify-center space-x-1'
           >
             <Love className='mt-1' />
             <span>Buy me a coffee</span>
@@ -52,7 +52,7 @@ export default function Footer({}: Props) {
             href='http://'
             target='_blank'
             rel='noopener noreferrer'
-            className='flex justify-center items-center space-x-1'
+            className='flex items-center justify-center space-x-1'
           >
             <Chat className='mt-1' />
             <span>Feedback</span>
@@ -60,7 +60,7 @@ export default function Footer({}: Props) {
         </div>
 
         <button
-          className='flex items-center text-sm min-w-42 self-end mt-5 md:mt-0'
+          className='flex items-center self-end mt-5 text-sm min-w-42 md:mt-0'
           onClick={() =>
             window.scrollTo({
               top: 0,

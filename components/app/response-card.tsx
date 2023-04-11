@@ -40,10 +40,9 @@ function ResponseCard({
 
     if (data?.success) {
       setDeleted(true);
-      setIsDeletingResponse(false);
-      fetchSavedPromptResponses().then((responses) =>
-        setSavedPromptResponses(responses)
-      );
+      fetchSavedPromptResponses().then((responses) => {
+        setSavedPromptResponses(responses);
+      });
     }
   };
 

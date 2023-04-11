@@ -18,6 +18,8 @@ import {
 } from "@/lib/services";
 import { handleInsufficientCredits, handleStreamResponse } from "../lib";
 import LowCreditDialog from "@/components/shared/low-credit-dialog";
+import { SUPPORTED_LANGUAGES, SUPPORTED_LEVELS } from "@/lib/constants";
+import PromptIdeas from "@/components/shared/PromptIdeas";
 
 export default function Home({ stars }: { stars: number }) {
   const { data: session } = useSession();
@@ -48,6 +50,13 @@ export default function Home({ stars }: { stars: number }) {
   const [hasLowCredit, setHasLowCredit] = useState<boolean>(false);
   const [hasLowCreditMsg, setHasLowCreditMsg] = useState<string>("");
 
+  const [language, setLanguage] = useState<{ value: string; label: string }>(
+    SUPPORTED_LANGUAGES[0]
+  );
+  const [level, setLevel] = useState<{ value: string; label: string }>(
+    SUPPORTED_LEVELS[0]
+  );
+
   // won't work if stream happens immediately
   const scrollToResult = () => {
     if (resultDivRef.current !== null) {
@@ -57,15 +66,18 @@ export default function Home({ stars }: { stars: number }) {
     return;
   };
 
-  const handleSubmit = async (prompt: string) => {
+  const handleSubmit = async (params: {
+    prompt?: string;
+    language: { value: string; label: string };
+    level: { value: string; label: string };
+  }) => {
+    const { prompt, language, level } = params;
     setDoneGenerating(false);
     const { hasSufficientCredits, message } = handleInsufficientCredits({
       usedAppCount,
       currentlyLoggedInUser,
     });
-    console.log(hasSufficientCredits);
-    console.log(message);
-    console.log(currentlyLoggedInUser);
+
     if (!hasSufficientCredits) {
       setHasLowCredit(true);
       setHasLowCreditMsg(message);
@@ -79,7 +91,11 @@ export default function Home({ stars }: { stars: number }) {
     // Adding settimeout to allow scrollToResult work
     setTimeout(async () => {
       setIsGeneratingResponse(true);
-      const generateRes = await generateResponse(prompt || promptInputValue);
+      const generateRes = await generateResponse({
+        prompt: prompt || promptInputValue,
+        language: language.value,
+        level: level.value,
+      });
 
       if (!generateRes.ok) {
         setIsErrorWhileResponding(true);
@@ -115,7 +131,16 @@ export default function Home({ stars }: { stars: number }) {
 
   useEffect(() => {
     if (session) {
-      getProfile().then((profile) => setCurrentlyLoggedInUser(profile));
+      getProfile().then((profile) => {
+        setCurrentlyLoggedInUser(profile);
+        setLanguage(
+          { label: profile.language, value: profile.language } ||
+            SUPPORTED_LANGUAGES[0]
+        );
+        setLevel(
+          { label: profile.level, value: profile.level } || SUPPORTED_LEVELS[0]
+        );
+      });
       fetchSavedPromptResponses().then((responses) =>
         setSavedPromptResponses(responses)
       );
@@ -127,6 +152,8 @@ export default function Home({ stars }: { stars: number }) {
       saveResponse({
         title: responseTitle,
         markdown: response,
+        language: language.value,
+        level: level.value,
       }).then((res) => setResponseId(res.responseId));
     }
   }, [doneGenerating]);
@@ -155,6 +182,10 @@ export default function Home({ stars }: { stars: number }) {
           handleSubmit={handleSubmit}
           isGeneratingResponse={isGeneratingResponse}
           showSharer={showSharer}
+          language={language}
+          level={level}
+          setLanguage={setLanguage}
+          setLevel={setLevel}
         />
       </Header>
       <AppFeatures />
@@ -173,7 +204,20 @@ export default function Home({ stars }: { stars: number }) {
         fetchResponse={() => null}
         isErrorWhileResponding={isErrorWhileResponding}
         responseId={responseId}
+        language={language}
+        level={level}
       />
+
+      {isGeneratingResponse || (
+        <PromptIdeas
+          openDefault={true}
+          setPromptInputValue={setPromptInputValue}
+          handleSubmit={handleSubmit}
+          isGeneratingResponse={isGeneratingResponse}
+          language={language}
+          level={level}
+        />
+      )}
 
       <OSS stars={stars} />
     </HomeLayout>

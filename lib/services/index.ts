@@ -10,13 +10,19 @@ export const appUsageCount = async () => {
 export const saveResponse = async ({
   title,
   markdown,
+  language,
+  level,
 }: {
   title: string
   markdown: string
+  language: string
+  level: string
 }) => {
   const payload = {
     title,
     markdown,
+    language,
+    level,
   }
 
   const res = await fetch('/api/response', {
@@ -37,13 +43,39 @@ export const getProfile = async () => {
   return data
 }
 
-export const generateResponse = async (prompt: string) => {
+export const updateUserPreference = async ({
+  language,
+  level,
+}: {
+  language?: string
+  level?: string
+}) => {
+  const res = await fetch('/api/user', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ language, level }),
+  })
+  const { data } = await res.json()
+  return data
+}
+
+export const generateResponse = async ({
+  prompt,
+  language,
+  level,
+}: {
+  prompt: string
+  language?: string
+  level?: string
+}) => {
   const res = await fetch('/api/generate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ prompt }),
+    body: JSON.stringify({ prompt, language, level }),
   })
 
   return res

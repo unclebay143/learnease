@@ -11,8 +11,10 @@ export const config = {
 
 const handler = async (req: NextRequest): Promise<Response> => {
   try {
-    const { prompt } = (await req.json()) as {
+    const { prompt, language, level } = (await req.json()) as {
       prompt: string
+      language: string
+      level: string
     }
 
     const promptEmpty = prompt.trim().length === 0
@@ -23,7 +25,9 @@ const handler = async (req: NextRequest): Promise<Response> => {
 
     const completion: OpenAIStreamPayload = {
       model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: generatePrompt(prompt) }],
+      messages: [
+        { role: 'user', content: generatePrompt({ prompt, language, level }) },
+      ],
       temperature: 0.6,
       max_tokens: 1000,
       top_p: 1.0,
@@ -42,9 +46,16 @@ const handler = async (req: NextRequest): Promise<Response> => {
   }
 }
 
-function generatePrompt(prompt: string) {
+function generatePrompt({
+  prompt,
+  language,
+  level,
+}: {
+  prompt: string
+  language?: string
+  level?: string
+}) {
   const conceptToLearn = prompt[0].toUpperCase() + prompt.slice(1).toLowerCase()
-  // return `do nothing and smile`;
 
   // return `
   //   Please provide a markdown response that explains ${conceptToLearn} in a way that's accessible to a PRO user who wants to learn the concept from scratch like they're 5 years old.
@@ -71,18 +82,21 @@ function generatePrompt(prompt: string) {
 
   [Information for AI: "I am an open-source AI learning assistant designed to help people in the tech industry easily learn new concepts using advanced artificial intelligence technology. Created by Unclebigbay a software developer from Nigeria 🇳🇬. Unclebigbay Twitter https://twitter.com/unclebigbay143, LearnEase AI GitHub Repository: https://github.com/unclebay143/learnease, Unclebigbay youtube channel: https://www.youtube.com/@unclebigbay"]
 
-
+  [TASK: Reply in ${language || 'English'}]
   Let your response be in markdown
-  [TASK: I want to learn a new concept ${conceptToLearn}, I am a PRO, I want you to explain to me like I am NOT 5 years old in this format:
-  [Guide: you can use emojis to make it more user friendly and paraphrase the ## headings if needed]
+  [TASK: I want to learn a new concept ${conceptToLearn}, my level is like a ${level}, I want you to explain to me like a ${level} in this format:
+  [Guide: you can use emojis to make it more reader friendly and paraphrase the ## headings if needed]
 
   [INSTRUCTION: Always use the ## heading arrangements and wordings in the template and add markdown horizontal line after each headings]
+
+  [INSTRUCTION: EMOJI should always be rendered in all languages]
 
   ## Definition EMOJI
   [paragraph] - [INSTRUCTION: break to new line after 2 dots.]
   [INSTRUCTION: Only if ${conceptToLearn} is code related generate at least one sample of ${conceptToLearn} in markdown code block]
   [INSTRUCTION: Do not put code block heading, text, list, paragraphs or sentence inside the markdown code block backticks, only code syntax and its comments should be within code blocks, you've made this mistakes before]
   [INSTRUCTION: Don't repeat the question asked in your response]
+
 
   ## Analogy EMOJI
   [paragraph]
@@ -92,6 +106,7 @@ function generatePrompt(prompt: string) {
   [bullet points]
 
   ## Friendly projects to build with the concept EMOJI
+  [INSTRUCTION: The projects must be for ${level} level]
   [paragraph]
   [bullet points]
   [Only If the concept is code related, then provide a simple code from the projects bullet points]

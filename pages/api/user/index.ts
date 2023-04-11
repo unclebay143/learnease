@@ -46,6 +46,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return errorResponse(res, 'something went wrong', 400)
       }
 
+    case 'PUT':
+      try {
+        const session = await getServerSession(req, res, authOptions)
+
+        if (!session) {
+          return res.status(401).json({ message: 'You must be logged in.' })
+        }
+
+        const { language, level } = req.body
+
+        // TEST: const session = { user: { email: 'unclebigbay@gmail.com' } }
+
+        await connectToMongoDb()
+        const user = await User.findOneAndUpdate(
+          { email: session.user?.email },
+          { $set: { language, level } },
+        )
+
+        return successResponse(
+          res,
+          'Preference updated successfully',
+          user,
+          200,
+        )
+      } catch (error) {
+        return errorResponse(res, 'something went wrong', 400)
+      }
+
     default:
       res.setHeader('Allow', ['GET'])
       res.status(405).end(`Method ${method} Not Allowed`)

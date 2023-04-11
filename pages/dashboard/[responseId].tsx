@@ -47,6 +47,7 @@ export default function DashboardWithResponseId() {
       setResponse(markdown);
       setSavedPromptResponse(data);
       setIsRetrievingResponse(false);
+      setOpenSiderbar(false);
       return data;
     }
     setIsErrorWhileRetrievingResponse(true);

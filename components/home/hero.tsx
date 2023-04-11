@@ -9,18 +9,26 @@ export default function Hero({
   setPromptInputValue,
   isGeneratingResponse,
   showSharer,
+  language,
+  setLanguage,
+  level,
+  setLevel,
 }: {
   promptInputValue: string;
   setPromptInputValue: Function;
   handleSubmit: Function;
   isGeneratingResponse: boolean;
   showSharer: boolean;
+  language: { value: string; label: string };
+  setLanguage: Function;
+  level: { value: string; label: string };
+  setLevel: Function;
 }) {
   return (
-    <div className='px-5 md:px-20 flex justify-center items-center flex-col py-10'>
+    <div className='flex flex-col items-center justify-center px-5 py-10 md:px-20'>
       <div className='max-w-screen-md'>
-        <section className='text-center mb-10'>
-          <h3 className='text-4xl text-white mb-3'>
+        <section className='mb-12 text-center sm:mb-10'>
+          <h3 className='mb-3 text-4xl text-white'>
             Learn with Ease, Master with Confidence.
           </h3>
 
@@ -28,6 +36,8 @@ export default function Hero({
             setPromptInputValue={setPromptInputValue}
             handleSubmit={handleSubmit}
             isGeneratingResponse={isGeneratingResponse}
+            language={language}
+            level={level}
           />
         </section>
         <PromptForm
@@ -35,6 +45,10 @@ export default function Hero({
           setPromptInputValue={setPromptInputValue}
           handleSubmit={handleSubmit}
           isGeneratingResponse={isGeneratingResponse}
+          language={language}
+          level={level}
+          setLanguage={setLanguage}
+          setLevel={setLevel}
         />
         {showSharer ? <Sharer /> : null}
       </div>
