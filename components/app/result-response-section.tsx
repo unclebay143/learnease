@@ -99,7 +99,7 @@ const PromptResponse = ({
               />
               <div className='mt-5 text-center text-gray-500'>
                 <h3 className='text-lg font-semibold'>
-                  The response you're looking for cannot be found.{" "}
+                  The response you&apos;re looking for cannot be found.
                 </h3>
                 <p className='mb-5 text-sm'>
                   It may have been deleted or the reference ID is invalid.

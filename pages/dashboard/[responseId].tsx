@@ -94,6 +94,8 @@ export default function DashboardWithResponseId() {
         currentlyLoggedInUser={currentlyLoggedInUser}
         isIdle={!response}
         handleSubmit={() => null}
+        language={{ value: "", label: "" }}
+        level={{ value: "", label: "" }}
         isGeneratingResponse={isRetrievingResponse}
         response={response}
         responseTitle={responseTitle}
