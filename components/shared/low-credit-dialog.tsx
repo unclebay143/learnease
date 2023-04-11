@@ -2,6 +2,7 @@ import React from "react";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 
 const LowCreditDialog = ({
   open,
@@ -21,7 +22,7 @@ const LowCreditDialog = ({
   showBuyCreditsBtn?: boolean;
 }) => {
   return (
-    <div className='z-50 relative'>
+    <div className='relative z-50'>
       <AlertDialog.Root open={open} onOpenChange={() => setOpen(false)}>
         <AlertDialog.Portal>
           <AlertDialog.Overlay className='z-50 bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0' />
@@ -47,7 +48,7 @@ const LowCreditDialog = ({
                       }
                       className='text-black bg-gray-200 hover:bg-gray-300 flex h-[35px] items-center justify-center rounded-md px-[15px] font-medium leading-none outline-none'
                     >
-                      <img
+                      <Image
                         alt="google's logo"
                         src='/_static/icons/google.webp'
                         width={20}

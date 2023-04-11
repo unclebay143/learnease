@@ -11,6 +11,7 @@ import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import DocumentPlus from "../shared/icons/document-plus";
 import Link from "next/link";
+import Image from "next/image";
 
 function ResponseMenu({
   reload,
@@ -129,7 +130,7 @@ function ResponseMenu({
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
               className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
             >
-              <img
+              <Image
                 alt="google's logo"
                 src='/_static/icons/google.webp'
                 width={20}
