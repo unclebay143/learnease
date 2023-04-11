@@ -54,16 +54,26 @@ export default function PromptIdeas({
             </motion.div>
           </AnimatePresence>
         </section>
-        {show >= PROMPT_IDEAS.length ? null : (
-          <section className='flex items-center justify-center pt-5 mt-6 border-t'>
+        <section className='flex items-center justify-center pt-5 mt-6 border-t'>
+          {show >= PROMPT_IDEAS.length ? (
+            <div className='inline-flex flex-col justify-center'>
+              <p className='text-sm text-gray-600'>You've reached the end.</p>
+              <button
+                onClick={() => setShow(show - 10)}
+                className='p-1 mx-auto mt-3 text-sm text-gray-600 border border-gray-400 rounded hover:bg-gray-100'
+              >
+                Hide some
+              </button>
+            </div>
+          ) : (
             <button
               onClick={() => setShow(show + 10)}
               className='p-1 text-sm text-gray-600 border border-gray-400 rounded hover:bg-gray-100'
             >
               Show more
             </button>
-          </section>
-        )}
+          )}
+        </section>
       </CollapsibleWrapper>
     </div>
   );
