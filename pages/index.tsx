@@ -224,7 +224,7 @@ export default function Home({ stars }: { stars: number }) {
         />
       )}
 
-      <Testimonials />
+      {/* <Testimonials /> */}
 
       <OSS stars={stars} />
     </HomeLayout>
