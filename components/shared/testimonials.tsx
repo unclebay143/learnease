@@ -129,7 +129,7 @@ const Testimonials = (props: Props) => {
                         <figure className='relative rounded-2xl bg-gray-50 p-6 shadow-xl shadow-slate-900/10'>
                           <blockquote className='relative'>
                             <p className='text-lg tracking-tight text-gray-600'>
-                              "{testimonial.quote}"
+                              &quot;{testimonial.quote}&quot;
                             </p>
                           </blockquote>
                           <figcaption className='relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6'>
