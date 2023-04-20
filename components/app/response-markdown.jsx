@@ -28,6 +28,9 @@ export default function ResponseMarkdown({
   const [deleted, setDeleted] = useState(false);
   const [favoriteStatusUpdated, setFavoriteStatusUpdated] = useState(false);
   const [isUpdatingFavorite, setIsUpdatingFavorite] = useState(false);
+  const isNonEnglish =
+    language?.value?.toLowerCase() !== "english" &&
+    savedPromptResponse?.language?.toLowerCase() !== "english";
 
   const saveResponseForUser = async () => {
     setSaving(true);
@@ -102,6 +105,7 @@ export default function ResponseMarkdown({
 
   return (
     <div className={`markdown-container ${loading ? "min-h-[100vh]" : ""}`}>
+      {/* TODO: improve how toast notifications are reused */}
       {saved ? (
         <ToastNotification
           open={saved}
@@ -110,7 +114,6 @@ export default function ResponseMarkdown({
           dark
         />
       ) : null}
-
       {setDeleted ? (
         <ToastNotification
           open={deleted}
@@ -119,7 +122,6 @@ export default function ResponseMarkdown({
           dark
         />
       ) : null}
-
       {favoriteStatusUpdated ? (
         <ToastNotification
           open={favoriteStatusUpdated}
@@ -128,13 +130,11 @@ export default function ResponseMarkdown({
           dark
         />
       ) : null}
-
       {!savedPromptResponse?.responseId ? (
         <span className='p-1 text-xs text-gray-600 bg-green-300 bg-opacity-50 rounded'>
           {saving ? "Saving" : "Not saved"}
         </span>
       ) : null}
-
       <ResponseMenu
         currentlyLoggedInUser={currentlyLoggedInUser}
         reload={handleSubmit}
@@ -152,8 +152,17 @@ export default function ResponseMarkdown({
         toggleFavorite={toggleFavorite}
         isUpdatingFavorite={isUpdatingFavorite}
       />
-
       <h1 className='capitalize'>{title}</h1>
+
+      {isNonEnglish ? (
+        <>
+          <span className='inline-block p-1 mt-3 text-xs text-gray-600 bg-gray-300 bg-opacity-50 rounded'>
+            {!language?.value
+              ? savedPromptResponse?.language
+              : language?.value || language}
+          </span>
+        </>
+      ) : null}
 
       <ReactMarkdown
         linkTarget={"_blank"}
@@ -191,7 +200,6 @@ export default function ResponseMarkdown({
         {/* passed here because of react/no-children-prop error */}
         {markdown}
       </ReactMarkdown>
-
       <EmojiFeedback
         responseId={savedPromptResponse?.responseId || responseId}
         hasGivenFeedback={savedPromptResponse?.hasGivenFeedback}

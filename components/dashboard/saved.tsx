@@ -21,13 +21,14 @@ export default function Saved({
           {savedResWithoutFav
             ?.filter((item) => item.isFavorite === false)
             ?.map((item) => {
-              const { title, responseId } = item;
+              const { title, responseId, language } = item;
               return (
                 <ResponseCard
                   title={title}
                   key={responseId}
                   responseId={responseId}
                   setSavedPromptResponses={setSavedPromptResponses}
+                  language={language}
                 />
               );
             })}

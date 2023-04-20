@@ -30,7 +30,13 @@ export default function Navbar({
             Beta
           </span>
         </Link>
-        <section>
+        <section className='flex items-center'>
+          <Link
+            href='/buy-credits'
+            className='flex items-center rounded text-white text-sm transition-all hover:text-gray-300 py-1.5 px-5'
+          >
+            Pricing
+          </Link>
           <AnimatePresence>
             {status == "loading" ? null : (
               <>
