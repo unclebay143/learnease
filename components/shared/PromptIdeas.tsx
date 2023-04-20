@@ -28,60 +28,62 @@ export default function PromptIdeas({
   const [show, setShow] = useState<number>(20);
 
   return (
-    <div className='max-w-screen-md p-6 mx-auto mt-10 bg-white border shadow sm:rounded-lg md:px-8'>
-      <CollapsibleWrapper
-        openDefault={openDefault}
-        heading={"Prompt suggestions"}
-        isLoading={isGeneratingResponse}
-      >
-        <p className='mb-4 text-left text-gray-400'>
-          Explore our collection of prompt suggestions for various programming
-          topics. Use them as templates or click to run them directly and start
-          learning in seconds.
-        </p>
-        <section className='flex flex-col items-center justify-center text-gray-300'>
-          <AnimatePresence>
-            <motion.div {...FADE_IN_ANIMATION_SETTINGS}>
-              {PROMPT_IDEAS.slice(0, show).map((prompt, i) => {
-                return (
-                  <PromptButton
-                    activeId={i}
-                    prompt={prompt}
-                    key={prompt + i}
-                    handleSubmit={handleSubmit}
-                    setPromptInputValue={setPromptInputValue}
-                    language={language}
-                    level={level}
-                    isGeneratingResponse={isGeneratingResponse}
-                  />
-                );
-              })}
-            </motion.div>
-          </AnimatePresence>
-        </section>
-        <section className='flex items-center justify-center pt-5 mt-6 border-t'>
-          {show >= PROMPT_IDEAS.length ? (
-            <div className='inline-flex flex-col justify-center'>
-              <p className='text-sm text-gray-600'>
-                You&apos;ve reached the end.
-              </p>
+    <div className='px-5'>
+      <div className='max-w-screen-md rounded-lg p-6 mx-auto mt-10 bg-white border shadow md:px-8'>
+        <CollapsibleWrapper
+          openDefault={openDefault}
+          heading={"Prompt suggestions"}
+          isLoading={isGeneratingResponse}
+        >
+          <p className='mb-4 text-left text-gray-400'>
+            Explore our collection of prompt suggestions for various programming
+            topics. Use them as templates or click to run them directly and
+            start learning in seconds.
+          </p>
+          <section className='flex flex-col items-center justify-center text-gray-300'>
+            <AnimatePresence>
+              <motion.div {...FADE_IN_ANIMATION_SETTINGS}>
+                {PROMPT_IDEAS.slice(0, show).map((prompt, i) => {
+                  return (
+                    <PromptButton
+                      activeId={i}
+                      prompt={prompt}
+                      key={prompt + i}
+                      handleSubmit={handleSubmit}
+                      setPromptInputValue={setPromptInputValue}
+                      language={language}
+                      level={level}
+                      isGeneratingResponse={isGeneratingResponse}
+                    />
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
+          </section>
+          <section className='flex items-center justify-center pt-5 mt-6 border-t'>
+            {show >= PROMPT_IDEAS.length ? (
+              <div className='inline-flex flex-col justify-center'>
+                <p className='text-sm text-gray-600'>
+                  You&apos;ve reached the end.
+                </p>
+                <button
+                  onClick={() => setShow(show - 10)}
+                  className='p-1 mx-auto mt-3 text-sm text-gray-600 border border-slate-300 rounded hover:bg-gray-100'
+                >
+                  Hide some
+                </button>
+              </div>
+            ) : (
               <button
-                onClick={() => setShow(show - 10)}
-                className='p-1 mx-auto mt-3 text-sm text-gray-600 border border-gray-400 rounded hover:bg-gray-100'
+                onClick={() => setShow(show + 10)}
+                className='p-1 text-sm text-gray-600 border border-slate-300 rounded hover:bg-gray-100'
               >
-                Hide some
+                Show more
               </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setShow(show + 10)}
-              className='p-1 text-sm text-gray-600 border border-gray-400 rounded hover:bg-gray-100'
-            >
-              Show more
-            </button>
-          )}
-        </section>
-      </CollapsibleWrapper>
+            )}
+          </section>
+        </CollapsibleWrapper>
+      </div>
     </div>
   );
 }
@@ -118,7 +120,7 @@ const PromptButton = ({
       )}
       <button
         disabled={isGeneratingResponse}
-        className={`w-full md:w-auto flex space-x-2 justify-between border text-gray-600 rounded p-2 mr-2 mt-2 text-sm border-gray-400 text-left hover:bg-gray-100 ${
+        className={`w-full md:w-auto flex space-x-2 justify-between border border-slate-300 text-gray-600 rounded p-2 mr-2 mt-2 text-sm border-gray-4d00 text-left hover:bg-gray-100 ${
           active === activeId ? "bg-green-800 bg-opacity-50" : null
         }`}
       >

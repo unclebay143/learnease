@@ -50,7 +50,7 @@ export default function Dashboard() {
   const [language, setLanguage] = useState<{ value: string; label: string }>(
     SUPPORTED_LANGUAGES[0]
   );
-  const [currentResponseLang, setCurrentResponseLang] = useState<{
+  const [currentResponseLanguage, setCurrentResponseLanguage] = useState<{
     value: string;
     label: string;
   }>({ value: "", label: "" });
@@ -77,7 +77,7 @@ export default function Dashboard() {
     language: { value: string; label: string };
     level: { value: string; label: string };
   }) => {
-    setCurrentResponseLang(language);
+    setCurrentResponseLanguage(language);
 
     try {
       setDoneGenerating(false);
@@ -165,11 +165,11 @@ export default function Dashboard() {
       saveResponse({
         title: responseTitle,
         markdown: response,
-        language: currentResponseLang.value,
+        language: currentResponseLanguage.value,
         level: level.value,
       }).then((res) => {
         setResponseId(res.responseId);
-        setCurrentResponseLang({
+        setCurrentResponseLanguage({
           value: res.language,
           label: res.language,
         });
@@ -236,7 +236,7 @@ export default function Dashboard() {
         fetchResponse={() => null}
         isErrorWhileResponding={isErrorWhileResponding}
         responseId={responseId}
-        language={currentResponseLang}
+        language={currentResponseLanguage}
         level={level}
       />
 

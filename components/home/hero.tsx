@@ -2,7 +2,6 @@ import React from "react";
 import PromptForm from "../app/prompt-form";
 import Sharer from "../shared/sharer";
 import PromptSuggestions from "./PromptSuggestions";
-import { SUPPORTED_LANGUAGES, SUPPORTED_LEVELS } from "@/lib/constants";
 
 export default function Hero({
   promptInputValue,
