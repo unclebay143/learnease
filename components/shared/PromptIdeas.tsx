@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FADE_IN_ANIMATION_SETTINGS, PROMPT_IDEAS } from "@/lib/constants";
+import {
+  FADE_IN_ANIMATION_SETTINGS,
+  PROMPT_IDEAS,
+  SUPPORTED_LANGUAGES,
+  SUPPORTED_LEVELS,
+} from "@/lib/constants";
 import CollapsibleWrapper from "./collapsible-wrapper";
 import CopyToClipboard from "react-copy-to-clipboard";
 import ToastNotification from "./alert";
@@ -45,8 +50,10 @@ export default function PromptIdeas({
                     key={prompt + i}
                     handleSubmit={handleSubmit}
                     setPromptInputValue={setPromptInputValue}
-                    language={language}
-                    level={level}
+                    language={
+                      language?.value ? language : SUPPORTED_LANGUAGES[0]
+                    }
+                    level={level?.value ? level : SUPPORTED_LEVELS[0]}
                     isGeneratingResponse={isGeneratingResponse}
                   />
                 );
