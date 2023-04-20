@@ -2,6 +2,7 @@ import React from "react";
 import PromptForm from "../app/prompt-form";
 import Sharer from "../shared/sharer";
 import PromptSuggestions from "./PromptSuggestions";
+import { SUPPORTED_LANGUAGES, SUPPORTED_LEVELS } from "@/lib/constants";
 
 export default function Hero({
   promptInputValue,
@@ -36,8 +37,8 @@ export default function Hero({
             setPromptInputValue={setPromptInputValue}
             handleSubmit={handleSubmit}
             isGeneratingResponse={isGeneratingResponse}
-            language={language}
-            level={level}
+            language={language?.value ? language : SUPPORTED_LANGUAGES[0]}
+            level={level?.value ? level : SUPPORTED_LEVELS[0]}
           />
         </section>
         <PromptForm
@@ -45,8 +46,8 @@ export default function Hero({
           setPromptInputValue={setPromptInputValue}
           handleSubmit={handleSubmit}
           isGeneratingResponse={isGeneratingResponse}
-          language={language}
-          level={level}
+          language={language?.value ? language : SUPPORTED_LANGUAGES[0]}
+          level={level?.value ? level : SUPPORTED_LEVELS[0]}
           setLanguage={setLanguage}
           setLevel={setLevel}
         />
