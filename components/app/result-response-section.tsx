@@ -79,6 +79,9 @@ const PromptResponse = ({
         <ErrorOccurred
           handleBtnClick={handleSubmit}
           hide={isGeneratingResponse}
+          responseTitle={responseTitle}
+          language={language}
+          level={level}
         >
           <PlaceholderSections loading={isGeneratingResponse} />
         </ErrorOccurred>

@@ -54,6 +54,11 @@ export default function Home({ stars }: { stars: number }) {
   const [language, setLanguage] = useState<{ value: string; label: string }>(
     SUPPORTED_LANGUAGES[0]
   );
+  const [currentResponseLang, setCurrentResponseLang] = useState<{
+    value: string;
+    label: string;
+  }>({ value: "", label: "" });
+
   const [level, setLevel] = useState<{ value: string; label: string }>(
     SUPPORTED_LEVELS[0]
   );
@@ -73,7 +78,7 @@ export default function Home({ stars }: { stars: number }) {
     level: { value: string; label: string };
   }) => {
     const { prompt, language, level } = params;
-    console.log(params);
+    setCurrentResponseLang(language);
     setDoneGenerating(false);
     const { hasSufficientCredits, message } = handleInsufficientCredits({
       usedAppCount,
@@ -157,9 +162,15 @@ export default function Home({ stars }: { stars: number }) {
       saveResponse({
         title: responseTitle,
         markdown: response,
-        language: language.value,
+        language: currentResponseLang.value,
         level: level.value,
-      }).then((res) => setResponseId(res.responseId));
+      }).then((res) => {
+        setResponseId(res.responseId);
+        setCurrentResponseLang({
+          value: res.language,
+          label: res.language,
+        });
+      });
     }
   }, [doneGenerating]);
 
@@ -209,7 +220,7 @@ export default function Home({ stars }: { stars: number }) {
         fetchResponse={() => null}
         isErrorWhileResponding={isErrorWhileResponding}
         responseId={responseId}
-        language={language}
+        language={currentResponseLang}
         level={level}
       />
 

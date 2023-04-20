@@ -45,6 +45,7 @@ export default function PromptForm({
                 className='flex mr-3 disabled:text-gray-500'
                 type='button'
                 onClick={() => setOpen(true)}
+                disabled={isGeneratingResponse}
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
