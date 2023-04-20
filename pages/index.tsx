@@ -73,6 +73,7 @@ export default function Home({ stars }: { stars: number }) {
     level: { value: string; label: string };
   }) => {
     const { prompt, language, level } = params;
+    console.log(params);
     setDoneGenerating(false);
     const { hasSufficientCredits, message } = handleInsufficientCredits({
       usedAppCount,
@@ -135,11 +136,14 @@ export default function Home({ stars }: { stars: number }) {
       getProfile().then((profile) => {
         setCurrentlyLoggedInUser(profile);
         setLanguage(
-          { label: profile.language, value: profile.language } ||
-            SUPPORTED_LANGUAGES[0]
+          profile?.language?.value
+            ? { label: profile.language, value: profile.language }
+            : SUPPORTED_LANGUAGES[0]
         );
         setLevel(
-          { label: profile.level, value: profile.level } || SUPPORTED_LEVELS[0]
+          profile?.level?.value
+            ? { label: profile.level, value: profile.level }
+            : SUPPORTED_LEVELS[0]
         );
       });
       fetchSavedPromptResponses().then((responses) =>
@@ -220,7 +224,7 @@ export default function Home({ stars }: { stars: number }) {
         />
       )}
 
-      <Testimonials />
+      {/* <Testimonials /> */}
 
       <OSS stars={stars} />
     </HomeLayout>

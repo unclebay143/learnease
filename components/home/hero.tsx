@@ -37,8 +37,8 @@ export default function Hero({
             setPromptInputValue={setPromptInputValue}
             handleSubmit={handleSubmit}
             isGeneratingResponse={isGeneratingResponse}
-            language={language?.value ? language : SUPPORTED_LANGUAGES[0]}
-            level={level?.value ? level : SUPPORTED_LEVELS[0]}
+            language={language}
+            level={level}
           />
         </section>
         <PromptForm
@@ -46,8 +46,8 @@ export default function Hero({
           setPromptInputValue={setPromptInputValue}
           handleSubmit={handleSubmit}
           isGeneratingResponse={isGeneratingResponse}
-          language={language?.value ? language : SUPPORTED_LANGUAGES[0]}
-          level={level?.value ? level : SUPPORTED_LEVELS[0]}
+          language={language}
+          level={level}
           setLanguage={setLanguage}
           setLevel={setLevel}
         />
