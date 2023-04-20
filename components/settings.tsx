@@ -28,7 +28,7 @@ const PersonalizationDialogForm = ({
   const [showLoginWarning, setShowLoginWarning] =
     React.useState<boolean>(false);
 
-  console.log(language);
+  console.log("test");
 
   return (
     <Dialog.Root open={open} onOpenChange={() => setOpen(false)}>

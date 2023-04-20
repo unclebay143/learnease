@@ -82,9 +82,9 @@ function ResponseCard({
                 <h3 className='pl-1 text-sm capitalize truncate' title={title}>
                   {title || "untitled"}
                 </h3>
-                {language.toLowerCase() !== "english" && (
+                {language?.toLowerCase() !== "english" && (
                   <span className='inline-block p-[1px] px-[2px] ml-1 text-xs bg-slate-100 text-gray-600 rounded'>
-                    {language.toLowerCase() === "nigeria pidgin" // too long for UI
+                    {language?.toLowerCase() === "nigeria pidgin" // too long for UI
                       ? "Pidgin"
                       : language}
                   </span>
