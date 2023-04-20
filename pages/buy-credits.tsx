@@ -11,6 +11,9 @@ import {
   getProfile,
   handleCreditsPurchase,
 } from "@/lib/services";
+import Github from "@/components/shared/icons/github";
+import GetInTouch from "@/components/shared/get-in-touch";
+import UsersCounter from "@/components/shared/users-counter";
 
 export default function BuyCredits() {
   const { status, data: session } = useSession();
@@ -31,8 +34,10 @@ export default function BuyCredits() {
 
   const features = [
     "Save your generated response",
-    "Mark response as favorite",
-    "Ability to request features",
+    "Mark response as favorites",
+    "Personalize language to fit your needs",
+    "Customize the level of professionalism",
+    "Ability to request additional features",
     "Premium support by email",
   ];
 
@@ -105,7 +110,7 @@ export default function BuyCredits() {
                 </div>
                 <button
                   onClick={() => handleCreditsPurchase(5)}
-                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-gray-700 hover:shadow-xl hover:bg-gray-800'
+                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-gray-700 rounded hover:shadow-xl hover:bg-gray-800'
                 >
                   Buy Now
                 </button>
@@ -130,7 +135,7 @@ export default function BuyCredits() {
                 </div>
                 <button
                   onClick={() => handleCreditsPurchase(19)}
-                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-green-700 hover:bg-opacity-100 bg-opacity-90 hover:shadow-xl'
+                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-green-700 rounded hover:bg-opacity-100 bg-opacity-90 hover:shadow-xl'
                 >
                   Buy Now
                 </button>
@@ -150,7 +155,7 @@ export default function BuyCredits() {
                 </div>
                 <button
                   onClick={() => handleCreditsPurchase(35)}
-                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-gray-700 hover:shadow-xl hover:bg-gray-800'
+                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-gray-700 rounded hover:shadow-xl hover:bg-gray-800'
                 >
                   Buy Now
                 </button>
@@ -170,7 +175,7 @@ export default function BuyCredits() {
                 </div>
                 <button
                   onClick={() => handleCreditsPurchase(75)}
-                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-gray-700 hover:shadow-xl hover:bg-gray-800'
+                  className='w-full py-2 mt-6 mb-3 font-semibold text-white duration-200 bg-gray-700 rounded hover:shadow-xl hover:bg-gray-800'
                 >
                   Buy Now
                 </button>
@@ -179,8 +184,9 @@ export default function BuyCredits() {
           </motion.ul>
         </AnimatePresence>
         <div className='flex items-center justify-center'>
-          <div className='mt-16'>
-            <h3 className='text-2xl font-semibold text-center text-gray-500 uppercase mb-7 tracking-px'>
+          <div className='mt-16 group'>
+            {/* <h3 className='text-2xl font-semibold text-center text-gray-500 uppercase mb-7 tracking-px'> */}
+            <h3 className='text-2xl font-bold text-center mb-7 tracking-px'>
               Features included
             </h3>
             <AnimatePresence>
@@ -190,9 +196,12 @@ export default function BuyCredits() {
               >
                 {features.map((f, i) => {
                   return (
-                    <li className='flex items-center mb-4' key={i}>
+                    <li
+                      className='flex items-center mb-4 text-gray-600 group-hover:text-black'
+                      key={i}
+                    >
                       <svg
-                        className='mr-2 text-gray-600'
+                        className='mr-2 text-gray-600 group-hover:text-black'
                         width={20}
                         height={20}
                         viewBox='0 0 20 20'
@@ -215,15 +224,9 @@ export default function BuyCredits() {
             </AnimatePresence>
           </div>
         </div>
-        <section className='px-6 my-10 text-center'>
-          <button className='px-4 py-2 text-sm font-semibold text-gray-700 border border-green-600 rounded-2xl sm:text-base'>
-            Over{" "}
-            <span className='font-semibold text-green-600'>
-              1 hundred users
-            </span>{" "}
-            have used LearnEase so far
-          </button>
-        </section>
+        <UsersCounter />
+
+        <GetInTouch />
       </section>
     </HomeLayout>
   );

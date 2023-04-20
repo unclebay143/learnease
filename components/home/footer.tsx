@@ -9,7 +9,7 @@ type Props = {};
 export default function Footer({}: Props) {
   return (
     <section
-      className='z-20 p-5 text-gray-400 bg-gray-900 text-md md:text-md'
+      className='z-20 px-2 py-5 text-gray-400 bg-gray-900 sm:p-5 text-md md:text-md'
       style={{
         backgroundImage: "url('/_static/illustrations/grid.svg')",
         backgroundPosition: "center",
@@ -18,7 +18,7 @@ export default function Footer({}: Props) {
         top: "0",
       }}
     >
-      <div className='flex flex-col items-center justify-between max-w-screen-xl mx-auto md:flex-row '>
+      <div className='flex flex-col items-center justify-between max-w-screen-xl mx-auto md:flex-row'>
         <div className='flex items-center space-x-1'>
           <Image
             src='/_static/icons/learn-ease-2.png'
@@ -49,7 +49,7 @@ export default function Footer({}: Props) {
             <span>Buy me a coffee</span>
           </a>
           <a
-            href='http://'
+            href='https://twitter.com/unclebigbay143'
             target='_blank'
             rel='noopener noreferrer'
             className='flex items-center justify-center space-x-1'

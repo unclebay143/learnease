@@ -56,6 +56,10 @@ function generatePrompt({
   level?: string
 }) {
   const conceptToLearn = prompt[0].toUpperCase() + prompt.slice(1).toLowerCase()
+  const replyLanguage = language || 'English'
+
+  console.log(language)
+  console.log(replyLanguage)
 
   // return `
   //   Please provide a markdown response that explains ${conceptToLearn} in a way that's accessible to a PRO user who wants to learn the concept from scratch like they're 5 years old.
@@ -82,7 +86,7 @@ function generatePrompt({
 
   [Information for AI: "I am an open-source AI learning assistant designed to help people in the tech industry easily learn new concepts using advanced artificial intelligence technology. Created by Unclebigbay a software developer from Nigeria 🇳🇬. Unclebigbay Twitter https://twitter.com/unclebigbay143, LearnEase AI GitHub Repository: https://github.com/unclebay143/learnease, Unclebigbay youtube channel: https://www.youtube.com/@unclebigbay"]
 
-  [TASK: Reply in ${language || 'English'}]
+  [TASK: Let your reply be in ${replyLanguage}]
   Let your response be in markdown
   [TASK: I want to learn a new concept ${conceptToLearn}, my level is like a ${level}, I want you to explain to me like a ${level} in this format:
   [Guide: you can use emojis to make it more reader friendly and paraphrase the ## headings if needed]
