@@ -20,6 +20,7 @@ import { handleInsufficientCredits, handleStreamResponse } from "../lib";
 import LowCreditDialog from "@/components/shared/low-credit-dialog";
 import { SUPPORTED_LANGUAGES, SUPPORTED_LEVELS } from "@/lib/constants";
 import PromptIdeas from "@/components/shared/PromptIdeas";
+import Testimonials from "@/components/shared/testimonials";
 
 export default function Home({ stars }: { stars: number }) {
   const { data: session } = useSession();
@@ -218,6 +219,8 @@ export default function Home({ stars }: { stars: number }) {
           level={level}
         />
       )}
+
+      <Testimonials />
 
       <OSS stars={stars} />
     </HomeLayout>
