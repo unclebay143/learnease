@@ -54,7 +54,7 @@ export default function Home({ stars }: { stars: number }) {
   const [language, setLanguage] = useState<{ value: string; label: string }>(
     SUPPORTED_LANGUAGES[0]
   );
-  const [currentResponseLang, setCurrentResponseLang] = useState<{
+  const [currentResponseLanguage, setCurrentResponseLanguage] = useState<{
     value: string;
     label: string;
   }>({ value: "", label: "" });
@@ -78,7 +78,7 @@ export default function Home({ stars }: { stars: number }) {
     level: { value: string; label: string };
   }) => {
     const { prompt, language, level } = params;
-    setCurrentResponseLang(language);
+    setCurrentResponseLanguage(language);
     setDoneGenerating(false);
     const { hasSufficientCredits, message } = handleInsufficientCredits({
       usedAppCount,
@@ -162,11 +162,11 @@ export default function Home({ stars }: { stars: number }) {
       saveResponse({
         title: responseTitle,
         markdown: response,
-        language: currentResponseLang.value,
+        language: currentResponseLanguage.value,
         level: level.value,
       }).then((res) => {
         setResponseId(res.responseId);
-        setCurrentResponseLang({
+        setCurrentResponseLanguage({
           value: res.language,
           label: res.language,
         });
@@ -220,7 +220,7 @@ export default function Home({ stars }: { stars: number }) {
         fetchResponse={() => null}
         isErrorWhileResponding={isErrorWhileResponding}
         responseId={responseId}
-        language={currentResponseLang}
+        language={currentResponseLanguage}
         level={level}
       />
 
@@ -235,7 +235,7 @@ export default function Home({ stars }: { stars: number }) {
         />
       )}
 
-      {/* <Testimonials /> */}
+      <Testimonials />
 
       <OSS stars={stars} />
     </HomeLayout>
