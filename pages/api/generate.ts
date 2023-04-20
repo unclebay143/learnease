@@ -58,9 +58,6 @@ function generatePrompt({
   const conceptToLearn = prompt[0].toUpperCase() + prompt.slice(1).toLowerCase()
   const replyLanguage = language || 'English'
 
-  console.log(language)
-  console.log(replyLanguage)
-
   // return `
   //   Please provide a markdown response that explains ${conceptToLearn} in a way that's accessible to a PRO user who wants to learn the concept from scratch like they're 5 years old.
   //   Use the following prompt template, which includes sections for
@@ -105,7 +102,7 @@ function generatePrompt({
   ## Analogy EMOJI
   [paragraph]
 
-  ## Practical usecase in real world EMOJI
+  ## Practical use case in real-world EMOJI
   [paragraph]
   [bullet points]
 

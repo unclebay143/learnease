@@ -11,9 +11,11 @@ function ResponseCard({
   title,
   isFavorite,
   setSavedPromptResponses,
+  language,
 }: {
   responseId: string;
   title: string;
+  language: string;
   isFavorite?: boolean;
   setSavedPromptResponses: Function;
 }) {
@@ -76,12 +78,22 @@ function ResponseCard({
                 <span className='line-through opacity-75'>{title}</span>
               </h3>
             ) : (
-              <h3 className='pl-1 text-sm capitalize truncate' title={title}>
-                {title || "untitled"}
-              </h3>
+              <div className='flex items-center'>
+                <h3 className='pl-1 text-sm capitalize truncate' title={title}>
+                  {title || "untitled"}
+                </h3>
+                {language.toLowerCase() !== "english" && (
+                  <span className='inline-block p-[1px] px-[2px] ml-1 text-xs bg-slate-100 text-gray-600 rounded'>
+                    {language.toLowerCase() === "nigeria pidgin" // too long for UI
+                      ? "Pidgin"
+                      : language}
+                  </span>
+                )}
+              </div>
             )}
           </section>
         </Link>
+        {/* floating menu: trash and star */}
         <div className='absolute right-0 z-20 sm:hidden group-hover:inline'>
           <button
             disabled={isDeletingResponse}

@@ -19,7 +19,7 @@ export default function Favorites({
       {favResponses?.length > 0 ? (
         <>
           {favResponses?.map((item) => {
-            const { title, responseId, isFavorite } = item;
+            const { title, responseId, isFavorite, language } = item;
             return (
               <ResponseCard
                 isFavorite={isFavorite}
@@ -27,6 +27,7 @@ export default function Favorites({
                 key={responseId}
                 responseId={responseId}
                 setSavedPromptResponses={setSavedPromptResponses}
+                language={language}
               />
             );
           })}
