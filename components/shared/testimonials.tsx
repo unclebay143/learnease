@@ -105,8 +105,8 @@ const Testimonials = (props: Props) => {
             {/* <p className='mx-auto mt-6 max-w-xl text-lg sm:text-gray-400  text-gray-500 leading-7'> */}
             <p className='mt-6 text-gray-600 sm:text-lg text-center'>
               {/* See what our early users are saying about the product. */}
-              Don't just take our word for it. Hear from people who loves using
-              LearnEase!
+              Don&apos;t just take our word for it. Hear from people who loves
+              using LearnEase!
             </p>
           </div>
           <ul
