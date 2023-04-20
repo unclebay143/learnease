@@ -17,8 +17,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const payload = req.body
   const event = payload['event.type']
-  console.log(event)
-  console.log(payload)
 
   switch (event) {
     case 'CARD_TRANSACTION':
