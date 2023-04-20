@@ -73,6 +73,7 @@ export default function Dashboard() {
     language: { value: string; label: string };
     level: { value: string; label: string };
   }) => {
+    console.log(language, level);
     try {
       setDoneGenerating(false);
 
@@ -138,11 +139,14 @@ export default function Dashboard() {
       getProfile().then((profile) => {
         setCurrentlyLoggedInUser(profile);
         setLanguage(
-          { label: profile.language, value: profile.language } ||
-            SUPPORTED_LANGUAGES[0]
+          profile?.language?.value
+            ? { label: profile.language, value: profile.language }
+            : SUPPORTED_LANGUAGES[0]
         );
         setLevel(
-          { label: profile.level, value: profile.level } || SUPPORTED_LEVELS[0]
+          profile?.level?.value
+            ? { label: profile.level, value: profile.level }
+            : SUPPORTED_LEVELS[0]
         );
       });
       fetchSavedPromptResponses().then((responses) =>

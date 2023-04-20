@@ -50,10 +50,8 @@ export default function PromptIdeas({
                     key={prompt + i}
                     handleSubmit={handleSubmit}
                     setPromptInputValue={setPromptInputValue}
-                    language={
-                      language?.value ? language : SUPPORTED_LANGUAGES[0]
-                    }
-                    level={level?.value ? level : SUPPORTED_LEVELS[0]}
+                    language={language}
+                    level={level}
                     isGeneratingResponse={isGeneratingResponse}
                   />
                 );
