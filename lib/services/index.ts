@@ -101,3 +101,10 @@ export const handleCreditsPurchase = async (amount: number) => {
     window.location.href = data?.data?.link
   }
 }
+
+// Admin
+export const fetchUsersCount = async () => {
+  const res = await fetch('/api/admin/user')
+  const { data } = await res.json()
+  return data
+}

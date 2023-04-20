@@ -3,9 +3,9 @@ import MaxWidthWrapper from "../shared/max-width-wrapper";
 export default function AppFeatures() {
   return (
     <MaxWidthWrapper>
-      <p className='text-gray-900 font-medium leading-10 text-4xl text-center mt-20'>
+      <p className='mt-20 text-4xl font-medium leading-10 text-center text-gray-900'>
         Unlock the Power of
-        <span className='mx-2 relative whitespace-nowrap text-green-600'>
+        <span className='relative mx-2 text-green-600 whitespace-nowrap'>
           Learning with
           <svg
             aria-hidden='true'
@@ -20,8 +20,8 @@ export default function AppFeatures() {
       </p>
 
       <div className='mt-10'>
-        <section className='grid grid-cols-1 md:grid-cols-3 gap-5'>
-          <article className='border rounded-lg w-full p-4 border-gray-300'>
+        <section className='grid grid-cols-1 gap-5 md:grid-cols-3'>
+          <article className='w-full p-4 border border-gray-300 rounded-lg'>
             <section>
               <span>
                 <svg
@@ -39,7 +39,7 @@ export default function AppFeatures() {
                   />
                 </svg>
 
-                <h3 className='text-2xl text-gray-black  my-2 font-medium'>
+                <h3 className='my-2 text-2xl font-medium text-gray-black'>
                   Learn with Analogies
                 </h3>
               </span>
@@ -49,7 +49,7 @@ export default function AppFeatures() {
               concepts in a way that is easy to understand and remember.
             </p>
           </article>
-          <article className='border rounded-lg w-full p-4 border-gray-300'>
+          <article className='w-full p-4 border border-gray-300 rounded-lg'>
             <section>
               <span>
                 <svg
@@ -66,7 +66,7 @@ export default function AppFeatures() {
                     d='M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z'
                   />
                 </svg>
-                <h3 className='text-2xl text-gray-black  my-2 font-medium'>
+                <h3 className='my-2 text-2xl font-medium text-gray-black'>
                   Real-World Examples
                 </h3>
               </span>
@@ -77,7 +77,7 @@ export default function AppFeatures() {
               understanding of how it works.
             </p>
           </article>
-          <article className='border rounded-lg w-full p-4 border-gray-300'>
+          <article className='w-full p-4 border border-gray-300 rounded-lg'>
             <section>
               <span>
                 <svg
@@ -95,7 +95,7 @@ export default function AppFeatures() {
                   />
                 </svg>
 
-                <h3 className='text-2xl text-gray-black  my-2 font-medium'>
+                <h3 className='my-2 text-2xl font-medium text-gray-black'>
                   Hands-On Learning
                 </h3>
               </span>
@@ -106,6 +106,92 @@ export default function AppFeatures() {
               into practice and gain valuable experience.
             </p>
           </article>
+
+          {/* Fade */}
+          <article className='w-full p-4 border border-gray-300 rounded-lg'>
+            <section>
+              <span>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='w-6 h-6 text-green-500'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802'
+                  />
+                </svg>
+
+                <h3 className='my-2 text-2xl font-medium text-gray-black'>
+                  Personalized Language Learning
+                </h3>
+              </span>
+            </section>
+            <p className='text-gray-500'>
+              Choose your preferred language for learning, making it easier to
+              understand and retain information. Whether you&apos;re a native
+              speaker or learning a new language, we&apos;ve got you covered.
+            </p>
+          </article>
+
+          <article className='w-full p-4 border border-gray-300 rounded-lg'>
+            <section>
+              <span>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='w-6 h-6 text-green-500'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125'
+                  />
+                </svg>
+
+                <h3 className='my-2 text-2xl font-medium text-gray-black'>
+                  Career Level Personalization
+                </h3>
+              </span>
+            </section>
+            <p className='text-gray-500'>
+              We understand that everyone&apos;s learning needs are different.
+              That&apos;s why we offer professional-level personalization,
+              allowing you to customize your learning experience according to
+              your skill level.
+            </p>
+          </article>
+          <a
+            target='_blank'
+            rel='noreferrer'
+            href='https://github.com/unclebay143/learnease/issues/new'
+            className='flex items-center justify-center w-full p-4 border border-gray-300 rounded-lg group'
+          >
+            <p className='flex flex-col items-center justify-center text-gray-500 capitalize group-hover:underline'>
+              <span>Suggest feature request</span>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='w-32 h-32'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M12 4.5v15m7.5-7.5h-15'
+                />
+              </svg>
+            </p>
+          </a>
         </section>
       </div>
     </MaxWidthWrapper>

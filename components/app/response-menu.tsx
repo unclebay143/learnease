@@ -62,7 +62,7 @@ function ResponseMenu({
         >
           <button
             onClick={() => setFocusMode(!focusMode)}
-            className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
+            className='flex items-center gap-2 p-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
           >
             <Sparkles className='w-4 h-4 text-slate-600' />
             <span className='text-slate-600'>
@@ -76,7 +76,7 @@ function ResponseMenu({
                 <button
                   onClick={() => deleteResponse(responseId)}
                   disabled={isDeletingResponse}
-                  className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
+                  className='flex items-center gap-2 p-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
                 >
                   <Trash className='w-4 h-4 text-slate-600' />
                   <span className='text-slate-600'>
@@ -89,7 +89,7 @@ function ResponseMenu({
                 <button
                   disabled={saving}
                   onClick={() => saveResponse()}
-                  className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
+                  className='flex items-center gap-2 p-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
                 >
                   <Bookmark className='w-4 h-4 text-slate-600' />
                   <span className='text-slate-600'>
@@ -109,7 +109,7 @@ function ResponseMenu({
                   isFavorite ? "fill-yellow-300 text-yellow-300" : ""
                 } capitalize flex items-center ${
                   !responseId ? "bg-slate-200" : ""
-                } hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm`}
+                } hover:bg-slate-100 gap-2 rounded border border-gray-400 p-2 text-sm`}
               >
                 <Star
                   className={` ${
@@ -128,7 +128,7 @@ function ResponseMenu({
           ) : (
             <button
               onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
+              className='flex items-center gap-2 p-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
             >
               <Image
                 alt="google's logo"
@@ -146,7 +146,7 @@ function ResponseMenu({
           {router.query?.responseId ? (
             <Link
               href='/dashboard'
-              className='!no-underline capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-1 px-2 text-sm'
+              className='!no-underline capitalize flex items-center hover:bg-slate-100 gap-2 rounded border border-gray-400 p-2 text-sm'
             >
               <DocumentPlus className='w-4 h-4 text-slate-600' />
               <span className='text-slate-600'>New Prompt</span>
@@ -155,7 +155,7 @@ function ResponseMenu({
             <button
               disabled={isLoading}
               onClick={() => reload({ prompt, language, level })}
-              className='flex items-center gap-2 p-1 px-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
+              className='flex items-center gap-2 p-2 text-sm capitalize border border-gray-400 rounded hover:bg-slate-100'
             >
               <ArrowPathReload className='w-4 h-4 text-slate-600' />
               <span className='text-slate-600'>
