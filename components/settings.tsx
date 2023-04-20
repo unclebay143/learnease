@@ -28,6 +28,8 @@ const PersonalizationDialogForm = ({
   const [showLoginWarning, setShowLoginWarning] =
     React.useState<boolean>(false);
 
+  console.log(language);
+
   return (
     <Dialog.Root open={open} onOpenChange={() => setOpen(false)}>
       <Dialog.Portal>
@@ -47,7 +49,7 @@ const PersonalizationDialogForm = ({
 
           <fieldset className='mb-[15px] gap-5'>
             <SelectDropdown
-              selected={language}
+              selected={language?.value ? language : SUPPORTED_LANGUAGES[0]}
               setSelected={setLanguage}
               label='Language'
               data={SUPPORTED_LANGUAGES}
@@ -55,7 +57,7 @@ const PersonalizationDialogForm = ({
           </fieldset>
           <fieldset className='mb-[15px] gap-5'>
             <SelectDropdown
-              selected={level}
+              selected={level?.value ? level : SUPPORTED_LEVELS[0]}
               setSelected={setLevel}
               label='Level'
               data={SUPPORTED_LEVELS}

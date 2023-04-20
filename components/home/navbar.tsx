@@ -38,7 +38,18 @@ export default function Navbar({
             Pricing
           </Link>
           <AnimatePresence>
-            {status == "loading" ? null : (
+            {status == "loading" ? (
+              <button className='invisible flex items-center rounded text-white text-sm transition-all border border-gray-50 hover:bg-white hover:text-gray-700 border-opacity-40 bg-gray-800 py-1.5 px-5'>
+                <h3>Loading</h3>
+                <Image
+                  src={`https://avatars.dicebear.com/api/micah/loading.svg`}
+                  alt='user'
+                  width='50'
+                  height='50'
+                  className='w-6 h-6 ml-2 rounded-full'
+                />
+              </button>
+            ) : (
               <>
                 {session ? (
                   <motion.button
