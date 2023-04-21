@@ -21,13 +21,13 @@ const UsersCounter = (props: Props) => {
 
   return (
     <section className='px-6 my-10 text-center'>
-      <button className='px-4 py-2 text-sm font-semibold text-gray-700 border border-green-600 rounded-xl sm:text-base'>
+      <div className='inline px-4 py-2 text-sm font-semibold text-gray-700 border border-green-600 rounded-xl sm:text-base'>
         Over{" "}
         <span className='font-semibold text-green-600'>
           {usersCount || cachedUsersCount} users
         </span>{" "}
         have used LearnEase so far
-      </button>
+      </div>
     </section>
   );
 };

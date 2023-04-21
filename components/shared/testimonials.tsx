@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { ReactElement } from "react";
 
 // credit: https://github.com/Nutlope/roomGPT/blob/main/components/Testimonials.tsx
 
@@ -9,74 +9,104 @@ const testimonials = [
     {
       author: {
         name: "Perspective",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
+        img: "/_static/testimonial-headshots/perspective.webp",
         title: "Software engineer",
       },
       quote:
         "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
       srcUrl:
         "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
+      src: "Twitter",
     },
     {
       author: {
         name: "Konadu Akwasi 👨‍💻",
-        img: "https://pbs.twimg.com/profile_images/1608992040917913600/fve1EMPZ_400x400.jpg",
-        title: "Full Stack Web Developer",
+        img: "/_static/testimonial-headshots/konadu-akwasi.webp",
+        title: "Full-Stack Web Developer",
       },
       quote: "This looks cool, uncle BJay  🚀",
       srcUrl:
         "https://twitter.com/akuoko_konadu/status/1648982207170596864?s=20",
+      src: "Twitter",
     },
   ],
   [
     {
       author: {
-        name: "Perspective",
-        title: "Software engineer",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
+        name: "Pyman",
+        title: "Python developer",
+        img: "/_static/testimonial-headshots/pyman.webp",
       },
-      quote:
-        "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
+      quote: "This amazing! The UI feel is lovely",
       srcUrl:
-        "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
+        "https://twitter.com/CodeShagbaor/status/1648994290893299713?s=20",
+      src: "Twitter",
     },
     {
       author: {
-        name: "Perspective",
-        title: "Software engineer",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
+        name: "Chinenye Anikwenze",
+        title: "Technical Writer",
+        img: "/_static/testimonial-headshots/chinenye-anikwenze.jpeg",
       },
-      quote:
-        "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
+      quote: `Omg! This is really good!! I really love that you added analogy feature and also real world application of the concept.
+      Cos I have a bit of challenge with understanding how to implement concepts in real world projects`,
       srcUrl:
-        "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
+        "https://www.linkedin.com/feed/update/urn:li:activity:7054719570867011584?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7054719570867011584%2C7054737745067294720%29",
+      src: "LinkedIn",
     },
   ],
   [
     {
       author: {
-        name: "Perspective",
+        name: "Andrew Baisden ♐️",
         title: "Software engineer",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
+        img: "/_static/testimonial-headshots/andrew-baisden.webp",
       },
-      quote:
-        "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
+      quote: "Another worthwhile addition to my list.",
       srcUrl:
-        "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
+        "https://twitter.com/andrewbaisden/status/1647205352511885313?s=20",
+      src: "Twitter",
     },
     {
       author: {
-        name: "Perspective",
-        title: "Software engineer",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
+        name: "LEO",
+        title: "Web developer",
+        img: "/_static/testimonial-headshots/leo.webp",
       },
-      quote:
-        "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
-      srcUrl:
-        "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
+      quote: "UncleBigBay, this is good 🔥",
+      srcUrl: "https://twitter.com/Omaebije/status/1649362907107414017?s=20",
+      src: "Twitter",
     },
   ],
 ];
+
+const srcIcon: { [key: string]: ReactElement } = {
+  LinkedIn: (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width={16}
+      height={16}
+      fill='currentColor'
+      className='inline-block ml-1 group-hover:text-green-600 bi bi-linkedin'
+      viewBox='0 0 16 16'
+    >
+      <path d='M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z' />
+    </svg>
+  ),
+
+  Twitter: (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width={16}
+      height={16}
+      fill='currentColor'
+      className='inline-block ml-1 group-hover:text-green-600 bi bi-twitter'
+      viewBox='0 0 16 16'
+    >
+      <path d='M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z' />
+    </svg>
+  ),
+};
 
 const Testimonials = (props: Props) => {
   return (
@@ -84,9 +114,9 @@ const Testimonials = (props: Props) => {
       <section
         id='testimonials'
         aria-label='What our customers are saying'
-        className='mt-20 max-w-7xl mx-auto'
+        className='mx-auto mt-20 max-w-7xl'
       >
-        <div className='mx-auto px-5 sm:px-6 lg:px-8 md:px-7'>
+        <div className='px-5 mx-auto sm:px-6 lg:px-8 md:px-7'>
           <div className='mx-auto md:text-center'>
             <h1 className='text-4xl font-medium leading-10 text-center text-gray-900'>
               Loved by many
@@ -102,8 +132,8 @@ const Testimonials = (props: Props) => {
                 </svg>
               </span>
             </h1>
-            {/* <p className='mx-auto mt-6 max-w-xl text-lg sm:text-gray-400  text-gray-500 leading-7'> */}
-            <p className='mt-6 text-gray-600 sm:text-lg text-center'>
+            {/* <p className='max-w-xl mx-auto mt-6 text-lg leading-7 text-gray-500 sm:text-gray-400'> */}
+            <p className='mt-6 text-center text-gray-600 sm:text-lg'>
               {/* See what our early users are saying about the product. */}
               Don&apos;t just take our word for it. Hear from people who loves
               using LearnEase!
@@ -111,7 +141,7 @@ const Testimonials = (props: Props) => {
           </div>
           <ul
             role='list'
-            className='mx-auto mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:mt-16 lg:max-w-7xl lg:grid-cols-3'
+            className='grid grid-cols-1 gap-6 mx-auto mt-16 md:grid-cols-2 sm:gap-8 lg:mt-16 lg:max-w-7xl lg:grid-cols-3'
           >
             {testimonials.map((column, columnIndex) => (
               <li key={columnIndex}>
@@ -119,37 +149,41 @@ const Testimonials = (props: Props) => {
                   {column.map((testimonial, testimonialIndex) => (
                     <li
                       key={testimonialIndex}
-                      className='hover:scale-105 transition duration-300 ease-in-out '
+                      className='transition duration-300 ease-in-out hover:scale-105 '
                     >
                       <a
                         href={testimonial.srcUrl}
                         target='_blank'
                         rel='noreferrer'
                       >
-                        <figure className='relative rounded-2xl bg-gray-50 p-6 shadow-xl shadow-slate-900/10'>
+                        <figure className='relative p-6 shadow-xl group rounded-2xl bg-gray-50 shadow-slate-900/10'>
                           <blockquote className='relative'>
                             <p className='text-lg tracking-tight text-gray-600'>
                               &quot;{testimonial.quote}&quot;
+                              {srcIcon[testimonial.src]}
                             </p>
                           </blockquote>
-                          <figcaption className='relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6'>
+                          <figcaption className='relative flex items-center justify-between pt-6 mt-6 border-t border-slate-100'>
                             <div>
-                              <div className='font-display text-base text-green-600'>
+                              <div className='justify-start text-base text-green-600 items- font-display'>
                                 {testimonial.author.name}
                               </div>
-                              <div className='mt-1 text-sm text-gray-400'>
+                              <div className='mt-1 text-sm text-gray-400 capitalize'>
                                 {testimonial.author.title}
                               </div>
                             </div>
-                            <div className='overflow-hidden rounded-full bg-green-50 border border-green-400 p-1'>
-                              <Image
-                                className='h-14 w-14 object-cover rounded-full'
-                                src={testimonial.author.img}
-                                alt='picture of the testimonial author'
-                                width={56}
-                                height={56}
-                              />
-                            </div>
+                            <section className='flex items-end'>
+                              <div className='p-1 overflow-hidden border border-green-400 rounded-full bg-green-50'>
+                                <Image
+                                  className='object-cover rounded-full h-14 w-14'
+                                  src={testimonial.author.img}
+                                  alt='picture of the testimonial author'
+                                  width={56}
+                                  height={56}
+                                />
+                              </div>
+                              {/* {srcIcon[testimonial.src]} */}
+                            </section>
                           </figcaption>
                         </figure>
                       </a>
