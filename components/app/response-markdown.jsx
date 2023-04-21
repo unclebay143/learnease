@@ -186,13 +186,18 @@ export default function ResponseMarkdown({
                 </SyntaxHighlighter>
               </>
             ) : (
-              <code
-                className={`overflow-x-scroll ${className}`}
-                {...props}
-                style={{ borderRadius: "100%" }}
+              <div
+                className='overflow-x-auto p-[1em]'
+                style={{
+                  background: "rgb(245, 242, 240)",
+                  fontFamily:
+                    "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+                }}
               >
-                {children}
-              </code>
+                <code className={` ${className}`} {...props}>
+                  {children}
+                </code>
+              </div>
             );
           },
         }}
