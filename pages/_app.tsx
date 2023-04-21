@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { ToastProvider } from "@radix-ui/react-toast";
 import "@/styles/globals.css";
 import * as gtag from "../lib/gtag";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function App({
   Component,
@@ -50,6 +51,8 @@ export default function App({
       <ToastProvider>
         <SessionProvider session={session}>
           <Component {...pageProps} />
+
+          <Analytics />
         </SessionProvider>
       </ToastProvider>
     </>
