@@ -144,12 +144,12 @@ export default function Dashboard() {
       getProfile().then((profile) => {
         setCurrentlyLoggedInUser(profile);
         setLanguage(
-          profile?.language?.value
+          profile?.language
             ? { label: profile.language, value: profile.language }
             : SUPPORTED_LANGUAGES[0]
         );
         setLevel(
-          profile?.level?.value
+          profile?.level
             ? { label: profile.level, value: profile.level }
             : SUPPORTED_LEVELS[0]
         );

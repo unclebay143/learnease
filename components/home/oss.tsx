@@ -5,10 +5,10 @@ import styles from "./oss.module.css";
 
 export default function OSS({ stars }: { stars: number }) {
   return (
-    <div className='my-32 px-5'>
-      <div className='mx-auto max-w-md text-center sm:max-w-xl'>
-        {/* <h2 className='bg-gradient-to-r from-gray-800 via-gray-500 to-gray-800 bg-clip-text font-display text-4xl font-extrabold leading-tight text-transparent sm:text-5xl sm:leading-tight'> */}
-        <h2 className='mt-20 text-5xl leading-10 text-center font-medium text-gray-900'>
+    <div className='px-5 my-32'>
+      <div className='max-w-md mx-auto text-center sm:max-w-xl'>
+        {/* <h2 className='text-4xl font-extrabold leading-tight text-transparent bg-gradient-to-r from-gray-800 via-gray-500 to-gray-800 bg-clip-text font-display sm:text-5xl sm:leading-tight'> */}
+        <h2 className='mt-20 text-5xl font-medium leading-10 text-center text-gray-900'>
           It&apos;s
           <span className='relative mx-2 text-green-600 whitespace-nowrap'>
             open-source
@@ -23,20 +23,21 @@ export default function OSS({ stars }: { stars: number }) {
           </span>
         </h2>
         <p className='mt-10 text-gray-600 sm:text-lg'>
-          {/* <p className='mx-auto mt-6 max-w-xl text-lg sm:text-gray-400  text-gray-500 leading-7'> */}
+          {/* <p className='max-w-xl mx-auto mt-6 text-lg leading-7 text-gray-500 sm:text-gray-400'> */}
           LearnEase source code is available on GitHub as part of learning -
           feel free to read, review, or contribute to it in anyway you see fit!
         </p>
       </div>
       <div className='flex items-center justify-center py-10'>
         <a
-          href='https://dub.sh/learnease-github'
+          // href='https://dub.sh/learnease-github'
+          href='https://dub.sh/learnease-stargazers'
           target='_blank'
           rel='noreferrer'
         >
           <div className='flex items-center'>
             <div
-              className='flex h-10 items-center space-x-2 rounded-md border border-gray-600 bg-gray-900 p-4'
+              className='flex items-center h-10 p-4 space-x-2 bg-gray-900 border border-gray-600 rounded-md'
               style={{
                 backgroundImage: "url('/_static/illustrations/grid.svg')",
                 backgroundPosition: "center",
@@ -44,7 +45,7 @@ export default function OSS({ stars }: { stars: number }) {
                 top: "0",
               }}
             >
-              <Github className='h-5 w-5 text-white' />
+              <Github className='w-5 h-5 text-white' />
               <p className='font-medium text-white'>Star</p>
             </div>
             <div
@@ -58,7 +59,7 @@ export default function OSS({ stars }: { stars: number }) {
             >
               <CountingNumbers
                 value={stars}
-                className='font-display font-medium text-white'
+                className='font-medium text-white font-display'
               />
             </div>
           </div>
@@ -72,7 +73,7 @@ export default function OSS({ stars }: { stars: number }) {
             href='https://openai.com/blog/chatgpt'
             target='_blank'
             rel='noopener noreferrer'
-            className='font-bold text-gray-800 mx-1 hover:underline hover:underline-offset-2'
+            className='mx-1 font-bold text-gray-800 hover:underline hover:underline-offset-2'
           >
             ChatGPT
           </a>
@@ -81,7 +82,7 @@ export default function OSS({ stars }: { stars: number }) {
             href='https://vercel.com/docs/concepts/functions/edge-functions'
             target='_blank'
             rel='noopener noreferrer'
-            className='font-bold text-gray-800 mx-1 hover:underline hover:underline-offset-2'
+            className='mx-1 font-bold text-gray-800 hover:underline hover:underline-offset-2'
           >
             Vercel Edge Functions.
           </a>
