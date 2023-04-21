@@ -5,7 +5,7 @@ import styles from "./oss.module.css";
 
 export default function OSS({ stars }: { stars: number }) {
   return (
-    <div className='my-20 px-5'>
+    <div className='my-32 px-5'>
       <div className='mx-auto max-w-md text-center sm:max-w-xl'>
         {/* <h2 className='bg-gradient-to-r from-gray-800 via-gray-500 to-gray-800 bg-clip-text font-display text-4xl font-extrabold leading-tight text-transparent sm:text-5xl sm:leading-tight'> */}
         <h2 className='mt-20 text-5xl leading-10 text-center font-medium text-gray-900'>
