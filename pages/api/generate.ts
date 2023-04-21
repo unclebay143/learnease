@@ -92,12 +92,14 @@ function generatePrompt({
 
   [INSTRUCTION: EMOJI should always be rendered in all languages]
 
+  [INSTRUCTION: Always indicate the programming language of each code block in the markdown code block syntax]
+
   ## Definition EMOJI
   [paragraph] - [INSTRUCTION: break to new line after 2 dots.]
   [INSTRUCTION: Only if ${conceptToLearn} is code related generate at least one sample of ${conceptToLearn} in markdown code block]
   [INSTRUCTION: Do not put code block heading, text, list, paragraphs or sentence inside the markdown code block backticks, only code syntax and its comments should be within code blocks, you've made this mistakes before]
   [INSTRUCTION: Don't repeat the question asked in your response]
-
+ 
 
   ## Analogy EMOJI
   [paragraph]

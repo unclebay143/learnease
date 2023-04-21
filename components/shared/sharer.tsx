@@ -14,7 +14,7 @@ export default function Sharer({ caption }: { caption?: string }) {
           showSharer ? "flex" : "hidden"
         } bg-green-800 mt-10 bg-opacity-50 p-3 rounded text-white  justify-between group items-center`}
       >
-        <div className='flex flex-wrap items-center space-x-1 justify-center w-11/12'>
+        <div className='flex flex-wrap items-center justify-center w-11/12 space-x-1'>
           <h3>Found this useful? </h3>
           <div className='space-x-2'>
             <a
@@ -24,23 +24,23 @@ export default function Sharer({ caption }: { caption?: string }) {
               }`}
               target='_blank'
               rel='noopener noreferrer'
-              className='underline underline-offset-2 text-blue-300'
+              className='text-blue-300 underline underline-offset-2'
             >
               Tweet about it
             </a>
             <span className='hidden md:inline'>or</span>
             <a
-              href='https://dub.sh/learnease-github'
+              href='https://dub.sh/learnease-stargazers'
               target='_blank'
               rel='noopener noreferrer'
-              className='hidden md:inline underline underline-offset-2 text-blue-300'
+              className='hidden text-blue-300 underline md:inline underline-offset-2'
             >
               Star on GitHub
             </a>
           </div>
         </div>
         <button
-          className='hidden group-hover:inline cursor-pointer'
+          className='hidden cursor-pointer group-hover:inline'
           onClick={() => setShowSharer(false)}
         >
           <svg

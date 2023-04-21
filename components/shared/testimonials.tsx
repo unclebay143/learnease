@@ -1,82 +1,10 @@
+import { srcIcon, testimonials } from "@/lib/constants/testimonials";
 import Image from "next/image";
-import React from "react";
+import React, { ReactElement } from "react";
 
 // credit: https://github.com/Nutlope/roomGPT/blob/main/components/Testimonials.tsx
 
 type Props = {};
-const testimonials = [
-  [
-    {
-      author: {
-        name: "Perspective",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
-        title: "Software engineer",
-      },
-      quote:
-        "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
-      srcUrl:
-        "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
-    },
-    {
-      author: {
-        name: "Konadu Akwasi 👨‍💻",
-        img: "https://pbs.twimg.com/profile_images/1608992040917913600/fve1EMPZ_400x400.jpg",
-        title: "Full Stack Web Developer",
-      },
-      quote: "This looks cool, uncle BJay  🚀",
-      srcUrl:
-        "https://twitter.com/akuoko_konadu/status/1648982207170596864?s=20",
-    },
-  ],
-  [
-    {
-      author: {
-        name: "Perspective",
-        title: "Software engineer",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
-      },
-      quote:
-        "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
-      srcUrl:
-        "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
-    },
-    {
-      author: {
-        name: "Perspective",
-        title: "Software engineer",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
-      },
-      quote:
-        "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
-      srcUrl:
-        "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
-    },
-  ],
-  [
-    {
-      author: {
-        name: "Perspective",
-        title: "Software engineer",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
-      },
-      quote:
-        "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
-      srcUrl:
-        "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
-    },
-    {
-      author: {
-        name: "Perspective",
-        title: "Software engineer",
-        img: "https://pbs.twimg.com/profile_images/1258799781213876230/hA3y0KEP_400x400.jpg",
-      },
-      quote:
-        "The UI is great and has an enjoyable feel to it. I'd definitely use this.",
-      srcUrl:
-        "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
-    },
-  ],
-];
 
 const Testimonials = (props: Props) => {
   return (
@@ -84,9 +12,9 @@ const Testimonials = (props: Props) => {
       <section
         id='testimonials'
         aria-label='What our customers are saying'
-        className='mt-20 max-w-7xl mx-auto'
+        className='mx-auto mt-20 max-w-7xl'
       >
-        <div className='mx-auto px-5 sm:px-6 lg:px-8 md:px-7'>
+        <div className='px-5 mx-auto sm:px-6 lg:px-8 md:px-7'>
           <div className='mx-auto md:text-center'>
             <h1 className='text-4xl font-medium leading-10 text-center text-gray-900'>
               Loved by many
@@ -102,8 +30,8 @@ const Testimonials = (props: Props) => {
                 </svg>
               </span>
             </h1>
-            {/* <p className='mx-auto mt-6 max-w-xl text-lg sm:text-gray-400  text-gray-500 leading-7'> */}
-            <p className='mt-6 text-gray-600 sm:text-lg text-center'>
+            {/* <p className='max-w-xl mx-auto mt-6 text-lg leading-7 text-gray-500 sm:text-gray-400'> */}
+            <p className='mt-6 text-center text-gray-600 sm:text-lg'>
               {/* See what our early users are saying about the product. */}
               Don&apos;t just take our word for it. Hear from people who loves
               using LearnEase!
@@ -111,50 +39,35 @@ const Testimonials = (props: Props) => {
           </div>
           <ul
             role='list'
-            className='mx-auto mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:mt-16 lg:max-w-7xl lg:grid-cols-3'
+            className='grid grid-cols-1 gap-6 mx-auto mt-16 md:grid-cols-2 sm:gap-8 lg:mt-16 lg:max-w-7xl lg:grid-cols-3'
           >
             {testimonials.map((column, columnIndex) => (
               <li key={columnIndex}>
                 <ul role='list' className='flex flex-col gap-y-6 sm:gap-y-8'>
-                  {column.map((testimonial, testimonialIndex) => (
-                    <li
-                      key={testimonialIndex}
-                      className='hover:scale-105 transition duration-300 ease-in-out '
-                    >
-                      <a
-                        href={testimonial.srcUrl}
-                        target='_blank'
-                        rel='noreferrer'
+                  {column.map(
+                    ({ quote, author, src, srcUrl }, testimonialIndex) => (
+                      <li
+                        key={testimonialIndex}
+                        className='transition duration-300 ease-in-out hover:scale-105 '
                       >
-                        <figure className='relative rounded-2xl bg-gray-50 p-6 shadow-xl shadow-slate-900/10'>
-                          <blockquote className='relative'>
-                            <p className='text-lg tracking-tight text-gray-600'>
-                              &quot;{testimonial.quote}&quot;
-                            </p>
-                          </blockquote>
-                          <figcaption className='relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6'>
-                            <div>
-                              <div className='font-display text-base text-green-600'>
-                                {testimonial.author.name}
-                              </div>
-                              <div className='mt-1 text-sm text-gray-400'>
-                                {testimonial.author.title}
-                              </div>
-                            </div>
-                            <div className='overflow-hidden rounded-full bg-green-50 border border-green-400 p-1'>
-                              <Image
-                                className='h-14 w-14 object-cover rounded-full'
-                                src={testimonial.author.img}
-                                alt='picture of the testimonial author'
-                                width={56}
-                                height={56}
-                              />
-                            </div>
-                          </figcaption>
-                        </figure>
-                      </a>
-                    </li>
-                  ))}
+                        {srcUrl ? (
+                          <a href={srcUrl} target={"_blank"} rel='noreferrer'>
+                            <TestimonialCard
+                              quote={quote}
+                              author={author}
+                              src={src}
+                            />
+                          </a>
+                        ) : (
+                          <TestimonialCard
+                            quote={quote}
+                            author={author}
+                            src={src}
+                          />
+                        )}
+                      </li>
+                    )
+                  )}
                 </ul>
               </li>
             ))}
@@ -162,6 +75,49 @@ const Testimonials = (props: Props) => {
         </div>
       </section>
     </div>
+  );
+};
+
+const TestimonialCard = ({
+  quote,
+  author,
+  src,
+}: {
+  quote: string;
+  author: { name: string; title: string; img: string };
+  src: string;
+}) => {
+  return (
+    <figure className='relative p-6 shadow-xl group rounded-2xl bg-gray-50 shadow-slate-900/10'>
+      <blockquote className='relative'>
+        <p className='text-lg tracking-tight text-gray-600'>
+          &quot;{quote}&quot;
+          {srcIcon[src]}
+        </p>
+      </blockquote>
+      <figcaption className='relative flex items-center justify-between pt-6 mt-6 border-t border-slate-100'>
+        <div>
+          <div className='justify-start text-base text-green-600 items- font-display'>
+            {author.name}
+          </div>
+          <div className='mt-1 text-sm text-gray-400 capitalize'>
+            {author.title}
+          </div>
+        </div>
+        <section className='flex items-end'>
+          <div className='p-1 overflow-hidden border border-green-400 rounded-full bg-green-50'>
+            <Image
+              className='object-cover rounded-full h-14 w-14'
+              src={author.img}
+              alt='picture of the testimonial author'
+              width={56}
+              height={56}
+            />
+          </div>
+          {/* {srcIcon[testimonial.src]} */}
+        </section>
+      </figcaption>
+    </figure>
   );
 };
 

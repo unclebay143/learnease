@@ -91,7 +91,7 @@ const PersonalizationDialogForm = ({
                   if (savePreference) {
                     await updateUserPreference({
                       language: language.value,
-                      level: level.value,
+                      level: level.label, // use label because of neutral which has a value of "a 5 years old"
                     });
                   }
                 }}
