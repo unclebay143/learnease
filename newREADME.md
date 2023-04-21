@@ -15,7 +15,8 @@
         <img src="/img/LearnEase-readme.png" alt="LearnEaseLogo"> <br>
     </a>
 
-Experience LearnEase AI in Action, learn Complex Concepts with Lightning Speed.
+##  Experience LearnEase AI in Action, learn Complex Concepts with Lightning Speed.
+<!-- you can add more description -->
 
 <br>
 
