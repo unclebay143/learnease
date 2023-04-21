@@ -83,7 +83,7 @@ function ResponseCard({
                   {title || "untitled"}
                 </h3>
                 {language?.toLowerCase() !== "english" && (
-                  <span className='inline-block p-[1px] px-[2px] ml-1 text-xs bg-slate-100 text-gray-600 rounded'>
+                  <span className='inline-block p-[1px] px-[2px] ml-1 text-xs bg-slate-100 text-gray-600 rounded ring-1 ring-inset ring-gray-500/10'>
                     {language?.toLowerCase() === "nigeria pidgin" // too long for UI
                       ? "Pidgin"
                       : language}
