@@ -11,9 +11,11 @@
 
 ## What is LearnEase? 💚
 
-hero image here
+ <a href="https://learnease.vercel.app/" target="_blank">
+        <img src="/img/LearnEase-readme.png" alt="LearnEaseLogo"> <br>
+    </a>
 
-Experience LearnEase AI in Action, learn Complex Concepts with Lightning Speed. 
+Experience LearnEase AI in Action, learn Complex Concepts with Lightning Speed.
 
 <br>
 
@@ -28,8 +30,9 @@ Experience LearnEase AI in Action, learn Complex Concepts with Lightning Speed.
   LearnEase AI provides real-world use cases for every concept, so you can <br> see how it is applied in practice and understand how it works.
 
 - ### Hands-On Learning
+
   Learn by doing! LearnEase AI offer a variety of projects and ready-to-run code <br> samples that allow you to put your new knowledge into practice <br> and gain valuable experience.
-  
+
   <br>
 
 ## Support 🦸
