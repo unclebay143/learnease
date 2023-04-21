@@ -5,7 +5,7 @@ export default function Meta({
   sitename = "LearnEase.vercel.app",
   title = "LearnEase - Unlock the Power of Learning with AI",
   description = "Your One-Stop Destination for Easy-to-Understand Tech Concepts with AI Assistance.",
-  image = "https://learnease.vercel.app/_static/demo/og-gif.png",
+  image = "https://learnease.vercel.app/_static/demo/og-image.png",
 }: {
   sitename?: string;
   title?: string;
