@@ -42,6 +42,7 @@ export const srcIcon: { [key: string]: ReactElement } = {
 };
 
 export const testimonials = [
+  // 1
   [
     {
       author: {
@@ -55,6 +56,7 @@ export const testimonials = [
         "https://twitter.com/iamthebuilder__/status/1648968287961722880?s=20",
       src: "Twitter",
     },
+
     {
       author: {
         name: "Konadu Akwasi 👨‍💻",
@@ -78,6 +80,7 @@ export const testimonials = [
       src: "Whatsapp",
     },
   ],
+  // 2
   [
     {
       author: {
@@ -102,7 +105,18 @@ export const testimonials = [
         "https://www.linkedin.com/feed/update/urn:li:activity:7054719570867011584?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7054719570867011584%2C7054737745067294720%29",
       src: "LinkedIn",
     },
+    {
+      author: {
+        name: "LEO",
+        title: "Web developer",
+        img: "/_static/testimonial-headshots/leo.webp",
+      },
+      quote: "UncleBigBay, this is good 🔥",
+      srcUrl: "https://twitter.com/Omaebije/status/1649362907107414017?s=20",
+      src: "Twitter",
+    },
   ],
+  // 3
   [
     {
       author: {
@@ -115,15 +129,17 @@ export const testimonials = [
         "https://twitter.com/andrewbaisden/status/1647205352511885313?s=20",
       src: "Twitter",
     },
+
     {
       author: {
-        name: "LEO",
-        title: "Web developer",
-        img: "/_static/testimonial-headshots/leo.webp",
+        name: " Idris Olubisi",
+        img: "/_static/testimonial-headshots/idris.webp",
+        title: "Founder Web3 Afrika",
       },
-      quote: "UncleBigBay, this is good 🔥",
-      srcUrl: "https://twitter.com/Omaebije/status/1649362907107414017?s=20",
-      src: "Twitter",
+      quote:
+        "LearnEase is an awesome platform with great UI! The use of analogies and real-world examples makes it easy to understand complex tech concepts. Highly recommend it! 👍",
+      srcUrl: "",
+      src: "Whatsapp",
     },
   ],
 ];
