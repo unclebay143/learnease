@@ -73,12 +73,15 @@ function ResponseCard({
           </section>
           <section className='w-9/12 md:w-10/12'>
             {isDeletingResponse ? (
-              <h3 className='pl-1 text-sm capitalize truncate' title={title}>
+              <h3
+                className='pl-1 text-sm capitalize truncate max-w-[200px] md:max-w-full'
+                title={title}
+              >
                 Deleting:{" "}
                 <span className='line-through opacity-75'>{title}</span>
               </h3>
             ) : (
-              <div className='flex items-center'>
+              <div className='flex items-center max-w-[200px] md:max-w-full'>
                 <h3 className='pl-1 text-sm capitalize truncate' title={title}>
                   {title || "untitled"}
                 </h3>
