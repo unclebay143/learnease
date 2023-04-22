@@ -1,7 +1,7 @@
 <br>
 <h3 align="center">
     <a href="https://learnease.vercel.app/" target="_blank">
-        <img width="100" height="100" src="/img/LearnEase-logo.png" alt="LearnEaseLogo"> <br> LearnEase
+        <img width="100" height="100" src="/readme/LearnEase-logo.png" alt="LearnEaseLogo"> <br> LearnEase
     </a>
 </h3>
 
@@ -14,13 +14,15 @@
 learnEase is a learning platform that simplifies tech concepts through regular technical writing style, analogies, practical use cases, friendly projects, and what-to-learn-next sections.
 
  <a href="https://learnease.vercel.app/" target="_blank">
-        <img src="/img/LearnEase-readme.png" alt="LearnEaseLogo"> <br>
+        <img src="/readme/LearnEase-readme.png" alt="LearnEaseLogo"> <br>
     </a>
 With learnEase, anyone can acquire knowledge in various tech fields with ease.
 
 
-##  Experience LearnEase AI in Action, and learn Complex Concepts with Lightning Speed.
+### Experience LearnEase AI in Action, and learn Complex Concepts with Lightning Speed.
 <!-- you can add more description -->
+<img src="/readme/demo.gif" alt="LearnEase demo">
+
 
 <br>
 
@@ -28,15 +30,15 @@ With learnEase, anyone can acquire knowledge in various tech fields with ease.
 
 - ### Learn with Analogies
 
-  Our AI-powered platform uses analogies to explain complex tech concepts <br> in a way that is easy to understand and remember.
+  Our AI-powered platform uses analogies to explain complex tech concepts in a way that is easy to understand and remember.
 
 - ### Real-world use cases
 
-  LearnEase AI provides real-world use cases for every concept, so you can <br> see how it is applied in practice and understand how it works.
+  LearnEase AI provides real-world use cases for every concept, so you can see how it is applied in practice and understand how it works.
 
 - ### Hands-On Learning
 
-  Learn by doing! LearnEase AI offers a variety of projects and ready-to-run code <br> samples that allow you to put your new knowledge into practice <br> and gain valuable experience.
+  Learn by doing! LearnEase AI offers a variety of projects and ready-to-run code samples that allow you to put your new knowledge into practice and gain valuable experience.
 
 - ### Personalized Language Learning
   Choose your preferred language for learning, making it easier to understand and retain information. Whether you're a native speaker or learning a new language, we've got you covered.
