@@ -2,31 +2,36 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@/lib/constants";
 import PersonalizationDialogForm from "../settings";
+import { usePromptResponseContext } from "context/Response";
+import { useUserContext } from "context/User";
 
-export default function PromptForm({
-  promptInputValue,
-  setPromptInputValue,
-  handleSubmit,
-  isGeneratingResponse,
-  language,
-  setLanguage,
-  level,
-  setLevel,
-}: {
-  promptInputValue: string;
-  setPromptInputValue: Function;
-  handleSubmit: Function;
-  isGeneratingResponse: boolean;
-  language: { value: string; label: string };
-  setLanguage: Function;
-  level: { value: string; label: string };
-  setLevel: Function;
+export default function PromptForm({}: // promptInputValue,
+// setPromptInputValue,
+// handleSubmit,
+// isGeneratingResponse,
+// language,
+// setLanguage,
+// level,
+// setLevel,
+{
+  // promptInputValue: string;
+  // setPromptInputValue: Function;
+  // handleSubmit: Function;
+  // isGeneratingResponse: boolean;
+  // language: { value: string; label: string };
+  // setLanguage: Function;
+  // level: { value: string; label: string };
+  // setLevel: Function;
 }) {
-  const disableButton = !promptInputValue || isGeneratingResponse;
   const [open, setOpen] = React.useState<boolean>(false);
-
-  console.log(language);
-
+  const {
+    promptInputValue,
+    setPromptInputValue,
+    isGeneratingResponse,
+    handleGenerateResponse,
+  } = usePromptResponseContext();
+  const { userLanguage, userLevel } = useUserContext();
+  const disableButton = !promptInputValue || isGeneratingResponse;
   return (
     <>
       <form className='items-start w-full space-y-2 sm:flex sm:space-x-2 sm:space-y-0'>
@@ -36,7 +41,9 @@ export default function PromptForm({
             placeholder='What else do you want to learn?'
             className='w-full p-4 mb-2 bg-white rounded text-md focus:outline-none'
             value={promptInputValue}
-            onChange={(e) => setPromptInputValue(e.target.value)}
+            onChange={(e) => {
+              if (setPromptInputValue) setPromptInputValue(e.target.value);
+            }}
           />
           <AnimatePresence>
             <motion.div
@@ -76,7 +83,9 @@ export default function PromptForm({
               <button
                 disabled={disableButton}
                 className={`flex disabled:text-gray-500`}
-                onClick={() => setPromptInputValue("")}
+                onClick={() => {
+                  if (setPromptInputValue) setPromptInputValue("");
+                }}
                 type='button'
               >
                 <svg
@@ -108,12 +117,13 @@ export default function PromptForm({
             if (!promptInputValue) {
               return alert("Prompt field cannot be empty...");
             }
-
-            handleSubmit({
-              prompt: promptInputValue,
-              language,
-              level,
-            });
+            if (handleGenerateResponse) {
+              handleGenerateResponse({
+                prompt: promptInputValue,
+                language: userLanguage,
+                level: userLevel,
+              });
+            }
           }}
           disabled={disableButton}
         >
@@ -123,10 +133,10 @@ export default function PromptForm({
       <PersonalizationDialogForm
         open={open}
         setOpen={setOpen}
-        language={language}
-        setLanguage={setLanguage}
-        level={level}
-        setLevel={setLevel}
+        // language={userLanguage}
+        // setLanguage={setLanguage}
+        // level={userLevel}
+        // setLevel={setLevel}
       />
     </>
   );

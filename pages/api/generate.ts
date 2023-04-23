@@ -29,7 +29,7 @@ const handler = async (req: NextRequest): Promise<Response> => {
         { role: 'user', content: generatePrompt({ prompt, language, level }) },
       ],
       temperature: 0.6,
-      max_tokens: 1000,
+      max_tokens: 100,
       top_p: 1.0,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,

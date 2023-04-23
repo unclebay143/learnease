@@ -1,27 +1,23 @@
-interface User {
-  freeCredits: number
-  credits: number
-}
+import { ResponseType } from 'context/Response'
+import { UserType } from 'context/User'
 
 export const handleInsufficientCredits = ({
   usedAppCount,
-  currentlyLoggedInUser,
+  user,
 }: {
   usedAppCount: number
-  currentlyLoggedInUser: User | null
+  user: UserType | null
 }) => {
-  if (usedAppCount >= 2 && !currentlyLoggedInUser) {
+  if (usedAppCount >= 2 && !user) {
     return {
       hasSufficientCredits: false,
       message: 'Please log in to access 3 more credits.',
     }
   }
 
-  if (currentlyLoggedInUser) {
+  if (user) {
     const hasCredit =
-      usedAppCount <= 2 ||
-      currentlyLoggedInUser?.freeCredits > 0 ||
-      currentlyLoggedInUser?.credits > 0
+      usedAppCount <= 2 || user?.freeCredits > 0 || user?.credits > 0
 
     if (!hasCredit) {
       return {
@@ -54,7 +50,11 @@ export const handleStreamResponse = async ({
     const { value, done: doneReading } = await reader.read()
     done = doneReading
     const chunkValue = decoder.decode(value)
-    setResponse((prev: string) => prev + chunkValue)
+    // setResponse((prev: string) => prev + chunkValue)
+    setResponse((prev: ResponseType) => ({
+      ...prev,
+      markdown: prev.markdown + chunkValue,
+    }))
   }
 
   if (done) {

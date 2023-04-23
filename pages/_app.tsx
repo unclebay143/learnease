@@ -7,6 +7,8 @@ import { ToastProvider } from "@radix-ui/react-toast";
 import "@/styles/globals.css";
 import * as gtag from "../lib/gtag";
 import { Analytics } from "@vercel/analytics/react";
+import { PromptResponseProvider } from "context/Response";
+import { UserProvider } from "context/User";
 
 export default function App({
   Component,
@@ -47,14 +49,17 @@ export default function App({
         `,
         }}
       />
+      <SessionProvider session={session}>
+        <UserProvider>
+          <PromptResponseProvider>
+            <ToastProvider>
+              <Component {...pageProps} />
 
-      <ToastProvider>
-        <SessionProvider session={session}>
-          <Component {...pageProps} />
-
-          <Analytics />
-        </SessionProvider>
-      </ToastProvider>
+              <Analytics />
+            </ToastProvider>
+          </PromptResponseProvider>
+        </UserProvider>
+      </SessionProvider>
     </>
   );
 }

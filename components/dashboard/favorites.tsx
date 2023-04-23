@@ -1,13 +1,8 @@
+import { ResponseType } from "context/Response";
 import ResponseCard from "../app/response-card";
 import CollapsibleWrapper from "../shared/collapsible-wrapper";
 
-export default function Favorites({
-  items,
-  setSavedPromptResponses,
-}: {
-  items: Array<any>;
-  setSavedPromptResponses: Function;
-}) {
+export default function Favorites({ items }: { items: ResponseType[] }) {
   const favResponses = items?.filter((item) => item.isFavorite === true);
   return (
     <CollapsibleWrapper
@@ -19,17 +14,8 @@ export default function Favorites({
       {favResponses?.length > 0 ? (
         <>
           {favResponses?.map((item) => {
-            const { title, responseId, isFavorite, language } = item;
-            return (
-              <ResponseCard
-                isFavorite={isFavorite}
-                title={title}
-                key={responseId}
-                responseId={responseId}
-                setSavedPromptResponses={setSavedPromptResponses}
-                language={language}
-              />
-            );
+            const { responseId } = item;
+            return <ResponseCard key={responseId} response={item} />;
           })}
         </>
       ) : null}

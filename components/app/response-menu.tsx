@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import DocumentPlus from "../shared/icons/document-plus";
 import Link from "next/link";
 import Image from "next/image";
+import { usePromptResponseContext } from "context/Response";
 
 function ResponseMenu({
   reload,
@@ -22,12 +23,6 @@ function ResponseMenu({
   saving,
   deleteResponse,
   isDeletingResponse,
-  savedPromptResponse,
-  toggleFavorite,
-  isUpdatingFavorite,
-  prompt,
-  language,
-  level,
 }: {
   reload: Function;
   isLoading: boolean;
@@ -37,20 +32,10 @@ function ResponseMenu({
   saving: boolean;
   deleteResponse: Function;
   isDeletingResponse: boolean;
-  savedPromptResponse: Object;
-  toggleFavorite: Function;
-  isUpdatingFavorite: boolean;
-  prompt: string;
-  language: { value: string; label: string };
-  level: { value: string; label: string };
 }) {
-  const { status, data: session } = useSession();
-
-  const { isFavorite, responseId } =
-    (savedPromptResponse as {
-      isFavorite: boolean;
-      responseId: string;
-    }) || {};
+  const { data: session } = useSession();
+  const { toggleFavorite, isUpdatingFavoriteStatus, fetchResponse, response } =
+    usePromptResponseContext();
 
   const router = useRouter();
   return (
@@ -76,9 +61,9 @@ function ResponseMenu({
 
           {session ? (
             <>
-              {responseId ? (
+              {response?.responseId ? (
                 <button
-                  onClick={() => deleteResponse(responseId)}
+                  onClick={() => deleteResponse(response?.responseId)}
                   disabled={isDeletingResponse}
                   className='flex items-center gap-2 p-2 text-sm capitalize border border-gray-400 rounded md:py-1 hover:bg-slate-100'
                 >
@@ -102,28 +87,35 @@ function ResponseMenu({
                 </button>
               )}
               <button
-                disabled={isUpdatingFavorite}
+                disabled={isUpdatingFavoriteStatus}
                 onClick={() => {
-                  if (!responseId) {
+                  if (!response?.responseId) {
                     return alert("Save response first");
                   }
-                  toggleFavorite(responseId);
+                  if (toggleFavorite) {
+                    toggleFavorite(response?.responseId).then((res) => {
+                      if (fetchResponse && response?.responseId)
+                        fetchResponse(response?.responseId);
+                    });
+                  }
                 }}
                 className={` ${
-                  isFavorite ? "fill-yellow-300 text-yellow-300" : ""
+                  response?.isFavorite ? "fill-yellow-300 text-yellow-300" : ""
                 } capitalize flex items-center ${
-                  !responseId ? "bg-slate-200" : ""
+                  !response?.responseId ? "bg-slate-200" : ""
                 } hover:bg-slate-100 gap-2 rounded border border-gray-400 p-2 text-sm md:py-1`}
               >
                 <Star
                   className={` ${
-                    isFavorite ? "fill-yellow-300 text-yellow-300" : ""
+                    response?.isFavorite
+                      ? "fill-yellow-300 text-yellow-300"
+                      : ""
                   } text-slate-600 w-4 h-4`}
                 />
                 <span className='text-slate-600'>
-                  {isUpdatingFavorite
+                  {isUpdatingFavoriteStatus
                     ? "Please wait..."
-                    : isFavorite
+                    : response?.isFavorite
                     ? "Unmark favorite"
                     : "Mark favorite"}
                 </span>
@@ -158,7 +150,13 @@ function ResponseMenu({
           ) : (
             <button
               disabled={isLoading}
-              onClick={() => reload({ prompt, language, level })}
+              onClick={() =>
+                reload({
+                  prompt: response?.title,
+                  language: response?.language,
+                  level: response?.level,
+                })
+              }
               className='flex items-center gap-2 p-2 text-sm capitalize border border-gray-400 rounded md:py-1 hover:bg-slate-100'
             >
               <ArrowPathReload className='w-4 h-4 text-slate-600' />

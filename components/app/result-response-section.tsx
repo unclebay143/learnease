@@ -4,56 +4,25 @@ import PlaceholderSections from "@/components/home/PlaceholderSections";
 import ErrorOccurred from "../shared/error-occurred";
 import Image from "next/image";
 import Link from "next/link";
+import { usePromptResponseContext } from "context/Response";
 
-const PromptResponse = ({
-  currentlyLoggedInUser,
-  isIdle,
-  handleSubmit,
-  isGeneratingResponse,
-  response,
-  responseTitle,
-  savedPromptResponse,
-  fetchSavedPromptResponses,
-  fetchResponse,
-  isErrorWhileResponding,
-  responseId,
-  responseNotFound,
-  hideHeading,
-  language,
-  level,
-}: {
-  currentlyLoggedInUser: Object | null;
-  isIdle: boolean;
-  handleSubmit: Function;
-  isGeneratingResponse: boolean;
-  response: string;
-  responseTitle: string;
-  savedPromptResponse: Object;
-  fetchSavedPromptResponses: Function;
-  fetchResponse: Function;
-  isErrorWhileResponding: boolean;
-  responseId: string;
-  responseNotFound?: boolean;
-  hideHeading?: boolean;
-  language: { value: string; label: string };
-  level: { value: string; label: string };
-}) => {
+const PromptResponse = ({ hideHeading }: { hideHeading?: boolean }) => {
   const [focusMode, setFocusMode] = useState<boolean>(true);
+  const {
+    isGeneratingResponse,
+    isErrorWhileResponding,
+    response,
+    responseNotFound,
+    isRetrievingResponse,
+    isErrorWhileRetrievingResponse,
+    handleGenerateResponse,
+  } = usePromptResponseContext();
 
   const responseMarkdownProps = {
-    currentlyLoggedInUser,
-    handleSubmit,
+    handleSubmit: handleGenerateResponse,
     loading: isGeneratingResponse,
-    markdown: response,
-    title: responseTitle,
     focusMode,
     setFocusMode,
-    fetchSavedPromptResponses,
-    savedPromptResponse,
-    fetchResponse,
-    responseId,
-    language,
-    level,
   };
 
   return (
@@ -75,13 +44,14 @@ const PromptResponse = ({
         </h3>
       )}
 
-      {!isGeneratingResponse && isErrorWhileResponding ? (
+      {(!isGeneratingResponse && isErrorWhileResponding) ||
+      (!isRetrievingResponse && isErrorWhileRetrievingResponse) ? (
         <ErrorOccurred
-          handleBtnClick={handleSubmit}
+          handleBtnClick={handleGenerateResponse}
           hide={isGeneratingResponse}
-          responseTitle={responseTitle}
-          language={language}
-          level={level}
+          responseTitle={response?.title}
+          language={response?.language}
+          level={response?.level}
         >
           <PlaceholderSections loading={isGeneratingResponse} />
         </ErrorOccurred>
@@ -117,10 +87,14 @@ const PromptResponse = ({
             </section>
           ) : (
             <>
-              {isIdle ? (
-                <PlaceholderSections loading={isGeneratingResponse} />
+              {!response?.markdown ? (
+                <PlaceholderSections
+                  loading={isGeneratingResponse || isRetrievingResponse}
+                />
               ) : (
-                <ResponseMarkdown {...responseMarkdownProps} />
+                <>
+                  <ResponseMarkdown {...responseMarkdownProps} />
+                </>
               )}
             </>
           )}

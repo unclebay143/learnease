@@ -1,22 +1,21 @@
+import { ResponseType } from "context/Response";
 import React, { useState } from "react";
 
 const EmojiFeedback = ({
-  responseId,
-  hasGivenFeedback,
+  response,
   hide,
 }: {
-  title: string;
-  markdown: string;
-  responseId?: string;
-  hasGivenFeedback: boolean;
+  response: ResponseType;
   hide: boolean;
 }) => {
-  const [feedbackSaved, setFeedbackSaved] = useState<boolean>(hasGivenFeedback);
-
+  const [feedbackSaved, setFeedbackSaved] = useState<boolean | undefined>(
+    response?.hasGivenFeedback
+  );
+  console.log(response);
   const handleSendFeedback = async (isUseful: boolean) => {
     const payload = {
       isUseful,
-      responseId,
+      responseId: response?.responseId,
     };
 
     const res = await fetch("/api/feedback", {
@@ -43,13 +42,13 @@ const EmojiFeedback = ({
           <h3 className='text-sm'>Did you find this response useful?</h3>
           <section className='flex items-center gap-2'>
             <button
-              className='bg-gray-300 rounded p-1 text-sm px-2 text-gray-700'
+              className='p-1 px-2 text-sm text-gray-700 bg-gray-300 rounded'
               onClick={() => handleSendFeedback(true)}
             >
               👍 Yes I did
             </button>
             <button
-              className='bg-gray-300 rounded p-1 text-sm px-2 text-gray-700'
+              className='p-1 px-2 text-sm text-gray-700 bg-gray-300 rounded'
               onClick={() => handleSendFeedback(false)}
             >
               👎 Not Exactly

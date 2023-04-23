@@ -7,26 +7,33 @@ import { useSession } from "next-auth/react";
 import { SUPPORTED_LANGUAGES, SUPPORTED_LEVELS } from "@/lib/constants";
 import { updateUserPreference } from "@/lib/services";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  UserLanguagePairType,
+  UserLevelPairType,
+  useUserContext,
+} from "context/User";
 
 const PersonalizationDialogForm = ({
   open,
   setOpen,
-  language,
-  setLanguage,
-  level,
-  setLevel,
-}: {
+}: // language,
+// setLanguage,
+// level,
+// setLevel,
+{
   open: boolean;
   setOpen: Function;
-  language: { value: string; label: string };
-  setLanguage: Function;
-  level: { value: string; label: string };
-  setLevel: Function;
+  // language: UserLanguagePairType;
+  // setLanguage: Function;
+  // level: UserLevelPairType;
+  // setLevel: Function;
 }) => {
   const [savePreference, setSavePreference] = React.useState<boolean>(false);
   const { data: session } = useSession();
   const [showLoginWarning, setShowLoginWarning] =
     React.useState<boolean>(false);
+  const { userLanguage, userLevel, setUserLanguage, setUserLevel } =
+    useUserContext();
 
   return (
     <Dialog.Root open={open} onOpenChange={() => setOpen(false)}>
@@ -47,16 +54,16 @@ const PersonalizationDialogForm = ({
 
           <fieldset className='mb-[15px] gap-5'>
             <SelectDropdown
-              selected={language}
-              setSelected={setLanguage}
+              selected={userLanguage}
+              setSelected={setUserLanguage}
               label='Language'
               data={SUPPORTED_LANGUAGES}
             />
           </fieldset>
           <fieldset className='mb-[15px] gap-5'>
             <SelectDropdown
-              selected={level}
-              setSelected={setLevel}
+              selected={userLevel}
+              setSelected={setUserLevel}
               label='Level'
               data={SUPPORTED_LEVELS}
             />
@@ -90,8 +97,8 @@ const PersonalizationDialogForm = ({
                 onClick={async () => {
                   if (savePreference) {
                     await updateUserPreference({
-                      language: language.value,
-                      level: level.label, // use label because of neutral which has a value of "a 5 years old"
+                      language: userLanguage?.value,
+                      level: userLevel?.label, // use label because of neutral which has a value of "a 5 years old"
                     });
                   }
                 }}

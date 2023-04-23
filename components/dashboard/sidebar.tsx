@@ -6,32 +6,21 @@ import Power from "../shared/icons/power";
 import { useRouter } from "next/router";
 import DocumentPlus from "../shared/icons/document-plus";
 import Link from "next/link";
+import { usePromptResponseContext } from "context/Response";
+import { useUserContext } from "context/User";
 
 export default function SidebarDashboard({
   open,
   setOpen,
-  savedPromptResponses,
-  setSavedPromptResponses,
-  currentlyLoggedInUser,
 }: {
   open: boolean;
   setOpen: Function;
-  savedPromptResponses: Array<any>;
-  setSavedPromptResponses: Function;
-  currentlyLoggedInUser: {
-    credits: number;
-    freeCredits: number;
-  } | null;
 }) {
   const router = useRouter();
+  const { userSavedPromptResponses } = usePromptResponseContext();
 
   return (
-    <SlideOverWrapper
-      title='Dashboard'
-      open={open}
-      setOpen={setOpen}
-      currentlyLoggedInUser={currentlyLoggedInUser}
-    >
+    <SlideOverWrapper title='Dashboard' open={open} setOpen={setOpen}>
       <div className='flex flex-col justify-between h-full max-w-[350px] md:max-w-full'>
         <section>
           {router.pathname !== "/dashboard" && (
@@ -44,14 +33,8 @@ export default function SidebarDashboard({
               </Link>
             </section>
           )}
-          <Favorites
-            items={savedPromptResponses}
-            setSavedPromptResponses={setSavedPromptResponses}
-          />
-          <Saved
-            items={savedPromptResponses}
-            setSavedPromptResponses={setSavedPromptResponses}
-          />
+          <Favorites items={userSavedPromptResponses} />
+          <Saved items={userSavedPromptResponses} />
         </section>
         <section className='flex items-center justify-center mt-5 rounded'>
           <button

@@ -13,9 +13,9 @@ const LowCreditDialog = ({
   handleOkClick,
   showBuyCreditsBtn,
 }: {
-  open: boolean;
-  setOpen: Function;
-  text: string;
+  open?: boolean;
+  setOpen?: Function;
+  text?: string;
   showLoginBtn?: boolean;
   showOkBtn?: boolean;
   handleOkClick?: () => void;
@@ -23,7 +23,12 @@ const LowCreditDialog = ({
 }) => {
   return (
     <div className='relative z-50'>
-      <AlertDialog.Root open={open} onOpenChange={() => setOpen(false)}>
+      <AlertDialog.Root
+        open={open}
+        onOpenChange={() => {
+          if (setOpen) setOpen(false);
+        }}
+      >
         <AlertDialog.Portal>
           <AlertDialog.Overlay className='z-50 bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0' />
           <AlertDialog.Content className='z-50 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none'>

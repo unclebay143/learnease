@@ -13,10 +13,10 @@ export const saveResponse = async ({
   language,
   level,
 }: {
-  title: string
-  markdown: string
-  language: string
-  level: string
+  title: string | undefined
+  markdown: string | undefined
+  language: string | undefined | null
+  level: string | undefined | null
 }) => {
   const payload = {
     title,
@@ -37,6 +37,14 @@ export const saveResponse = async ({
   return data
 }
 
+export const deleteResponse = async (responseId: string) => {
+  const res = await fetch('/api/response/' + responseId, {
+    method: 'DELETE',
+  })
+  const data = await res.json()
+  return data.success
+}
+
 export const getProfile = async () => {
   const res = await fetch('/api/user')
   const { data } = await res.json()
@@ -47,8 +55,8 @@ export const updateUserPreference = async ({
   language,
   level,
 }: {
-  language?: string
-  level?: string
+  language?: string | null
+  level?: string | null
 }) => {
   const res = await fetch('/api/user', {
     method: 'PUT',

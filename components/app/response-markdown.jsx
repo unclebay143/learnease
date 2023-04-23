@@ -6,37 +6,32 @@ import CopyToClipboardButton from "./copy-to-clipboard";
 import ResponseMenu from "./response-menu";
 import ToastNotification from "../shared/alert";
 import EmojiFeedback from "../shared/emoji-feedback";
+import { useUserContext } from "context/User";
+import { usePromptResponseContext } from "context/Response";
 
 export default function ResponseMarkdown({
-  markdown,
-  title,
   handleSubmit,
   loading,
   focusMode,
   setFocusMode,
-  currentlyLoggedInUser,
-  fetchSavedPromptResponses,
-  savedPromptResponse,
-  fetchResponse,
-  responseId,
-  language,
-  level,
 }) {
+  const { user } = useUserContext();
+  const { response, currentResponseLanguage } = usePromptResponseContext();
+
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [isDeletingResponse, setIsDeletingResponse] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [favoriteStatusUpdated, setFavoriteStatusUpdated] = useState(false);
-  const [isUpdatingFavorite, setIsUpdatingFavorite] = useState(false);
   const isNonEnglish =
-    language?.value?.toLowerCase() !== "english" &&
-    savedPromptResponse?.language?.toLowerCase() !== "english";
+    currentResponseLanguage?.value?.toLowerCase() !== "english" ||
+    response?.language?.toLowerCase() !== "english";
 
   const saveResponseForUser = async () => {
     setSaving(true);
     const payload = {
-      userId: currentlyLoggedInUser?.userId,
-      responseId,
+      userId: user?.userId,
+      responseId: response?.responseId,
     };
 
     const res = await fetch("/api/response", {
@@ -50,7 +45,6 @@ export default function ResponseMarkdown({
     if (res.ok) {
       const { data } = await res.json();
 
-      fetchSavedPromptResponses();
       setSaved(true);
 
       setTimeout(() => {
@@ -86,23 +80,6 @@ export default function ResponseMarkdown({
     }
   };
 
-  const toggleFavorite = async (responseId) => {
-    setIsUpdatingFavorite(true);
-
-    try {
-      const res = await fetch("/api/response/" + responseId, {
-        method: "PUT",
-      });
-      fetchSavedPromptResponses();
-      setFavoriteStatusUpdated(true);
-      await fetchResponse().then((res) => {
-        setIsUpdatingFavorite(false);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className={`markdown-container ${loading ? "min-h-[100vh]" : ""}`}>
       {/* TODO: improve how toast notifications are reused */}
@@ -130,17 +107,13 @@ export default function ResponseMarkdown({
           dark
         />
       ) : null}
-      {!savedPromptResponse?.responseId ? (
+      {!response?.user ? (
         <span className='p-1 text-xs text-gray-600 bg-green-300 bg-opacity-50 rounded'>
           {saving ? "Saving" : "Not saved"}
         </span>
       ) : null}
       <ResponseMenu
-        currentlyLoggedInUser={currentlyLoggedInUser}
         reload={handleSubmit}
-        prompt={title}
-        language={language}
-        level={level}
         isLoading={loading}
         focusMode={focusMode}
         setFocusMode={setFocusMode}
@@ -148,18 +121,13 @@ export default function ResponseMarkdown({
         saving={saving}
         deleteResponse={deleteResponse}
         isDeletingResponse={isDeletingResponse}
-        savedPromptResponse={savedPromptResponse}
-        toggleFavorite={toggleFavorite}
-        isUpdatingFavorite={isUpdatingFavorite}
       />
-      <h1 className='capitalize'>{title}</h1>
+      <h1 className='capitalize'>{response?.title}</h1>
 
       {isNonEnglish ? (
         <>
           <span className='inline-block p-1 mt-3 text-xs text-gray-600 bg-gray-300 bg-opacity-50 rounded'>
-            {!language?.value
-              ? savedPromptResponse?.language
-              : language?.value || language}
+            {response?.language?.value || currentResponseLanguage?.value}
           </span>
         </>
       ) : null}
@@ -203,13 +171,9 @@ export default function ResponseMarkdown({
         }}
       >
         {/* passed here because of react/no-children-prop error */}
-        {markdown}
+        {response?.markdown}
       </ReactMarkdown>
-      <EmojiFeedback
-        responseId={savedPromptResponse?.responseId || responseId}
-        hasGivenFeedback={savedPromptResponse?.hasGivenFeedback}
-        hide={loading}
-      />
+      <EmojiFeedback hide={loading} response={response} />
     </div>
   );
 }

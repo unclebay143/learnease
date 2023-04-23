@@ -9,27 +9,35 @@ import {
 import CollapsibleWrapper from "./collapsible-wrapper";
 import CopyToClipboard from "react-copy-to-clipboard";
 import ToastNotification from "./alert";
+import { usePromptResponseContext } from "context/Response";
+import {
+  UserLanguagePairType,
+  UserLevelPairType,
+  useUserContext,
+} from "context/User";
 
 export default function PromptIdeas({
-  setPromptInputValue,
-  handleSubmit,
-  isGeneratingResponse,
-  language,
-  level,
+  // setPromptInputValue,
+  // handleSubmit,
+  // isGeneratingResponse,
+  // language,
+  // level,
   openDefault,
 }: {
-  setPromptInputValue: Function;
-  handleSubmit: Function;
-  isGeneratingResponse: boolean;
-  language: { value: string; label: string };
-  level: { value: string; label: string };
+  // setPromptInputValue: Function;
+  // handleSubmit: Function;
+  // isGeneratingResponse: boolean;
+  // language: { value: string; label: string };
+  // level: { value: string; label: string };
   openDefault?: boolean;
 }) {
   const [show, setShow] = useState<number>(20);
-
+  const { setPromptInputValue, isGeneratingResponse, handleGenerateResponse } =
+    usePromptResponseContext();
+  const { userLanguage, userLevel } = useUserContext();
   return (
     <div className='px-5'>
-      <div className='max-w-screen-md rounded-lg p-6 mx-auto mt-10 bg-white border shadow md:px-8'>
+      <div className='max-w-screen-md p-6 mx-auto mt-10 bg-white border rounded-lg shadow md:px-8'>
         <CollapsibleWrapper
           openDefault={openDefault}
           heading={"Prompt suggestions"}
@@ -49,10 +57,10 @@ export default function PromptIdeas({
                       activeId={i}
                       prompt={prompt}
                       key={prompt + i}
-                      handleSubmit={handleSubmit}
+                      handleSubmit={handleGenerateResponse}
                       setPromptInputValue={setPromptInputValue}
-                      language={language}
-                      level={level}
+                      language={userLanguage}
+                      level={userLevel}
                       isGeneratingResponse={isGeneratingResponse}
                     />
                   );
@@ -68,7 +76,7 @@ export default function PromptIdeas({
                 </p>
                 <button
                   onClick={() => setShow(show - 10)}
-                  className='p-1 mx-auto mt-3 text-sm text-gray-600 border border-slate-300 rounded hover:bg-gray-100'
+                  className='p-1 mx-auto mt-3 text-sm text-gray-600 border rounded border-slate-300 hover:bg-gray-100'
                 >
                   Hide some
                 </button>
@@ -76,7 +84,7 @@ export default function PromptIdeas({
             ) : (
               <button
                 onClick={() => setShow(show + 10)}
-                className='p-1 text-sm text-gray-600 border border-slate-300 rounded hover:bg-gray-100'
+                className='p-1 text-sm text-gray-600 border rounded border-slate-300 hover:bg-gray-100'
               >
                 Show more
               </button>
@@ -100,8 +108,8 @@ const PromptButton = ({
   handleSubmit: Function;
   isGeneratingResponse: boolean;
   setPromptInputValue: Function;
-  language: { value: string; label: string };
-  level: { value: string; label: string };
+  language: UserLanguagePairType;
+  level: UserLevelPairType;
   prompt: string;
   activeId: number;
 }) => {

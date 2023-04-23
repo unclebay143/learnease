@@ -4,6 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useUserContext } from "context/User";
 
 // https://tailwindui.com/components/application-ui/overlays/slide-overs
 export default function SlideOverWrapper({
@@ -11,23 +12,19 @@ export default function SlideOverWrapper({
   setOpen,
   title,
   children,
-  currentlyLoggedInUser,
 }: {
   open: boolean;
   setOpen: Function;
   title?: string;
   children: ReactNode;
-  currentlyLoggedInUser: {
-    credits: number;
-    freeCredits: number;
-  } | null;
 }) {
   const { data: session } = useSession();
+  const { user } = useUserContext();
+
   let totalUserCredits;
 
-  if (currentlyLoggedInUser) {
-    totalUserCredits =
-      currentlyLoggedInUser?.freeCredits + currentlyLoggedInUser?.credits;
+  if (user) {
+    totalUserCredits = user?.freeCredits + user?.credits;
   }
 
   return (
