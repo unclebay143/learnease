@@ -3,10 +3,15 @@ import Document from "../shared/icons/document";
 import Star from "../shared/icons/star";
 import Trash from "../shared/icons/trash";
 import Link from "next/link";
-import { ResponseType, usePromptResponseContext } from "context/Response";
+import { usePromptResponseContext } from "context/Response";
 
 type Props = {
-  response: ResponseType;
+  response: {
+    responseId: string;
+    title: string;
+    isFavorite: boolean;
+    language: string;
+  };
 };
 
 function ResponseCard({ response }: Props) {
