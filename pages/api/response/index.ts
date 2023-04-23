@@ -18,10 +18,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return errorResponse(res, 'You must be logged in.', 401)
         }
 
-        // TEST: const session = { user: { email: 'unclebigbay@gmail.com' } }
+        // TEST:
+        // const session = { user: { email: 'unclebigbay@yahoo.com' } }
 
         await connectToMongoDb()
         const user = await User.findOne({ email: session?.user?.email })
+
+        if (!user) {
+          return successResponse(
+            res,
+            'Prompt responses retrieved successfully',
+            [],
+            200,
+          )
+        }
 
         const promptResponse = await Response.find({
           user: user?._id,

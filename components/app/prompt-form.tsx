@@ -25,8 +25,6 @@ export default function PromptForm({
   const disableButton = !promptInputValue || isGeneratingResponse;
   const [open, setOpen] = React.useState<boolean>(false);
 
-  console.log(language);
-
   return (
     <>
       <form className='items-start w-full space-y-2 sm:flex sm:space-x-2 sm:space-y-0'>
