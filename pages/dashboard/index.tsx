@@ -183,6 +183,12 @@ export default function Dashboard() {
       // https://stackoverflow.com/a/72346195
       router.replace("/dashboard", undefined, { shallow: true }); // clear query params from browser bar
     }
+
+    if (router.query.status === "cancelled") {
+      alert("Credit purchase payment cancelled by user");
+      // https://stackoverflow.com/a/72346195
+      router.replace("/dashboard", undefined, { shallow: true }); // clear query params from browser bar
+    }
   }, [router.query]);
 
   if (

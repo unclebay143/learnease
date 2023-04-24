@@ -21,7 +21,7 @@ export default function Navbar({
             width={50}
             height={50}
             alt='LearnEase logo'
-            className='w-[50px] h-[48.4px]'
+            className='md:w-[50px] md:h-[48.4px] w-11 h-11'
           />
           <h1 className='hidden mt-1 text-2xl text-gray-200 md:inline-block relative-left-16'>
             LearnEase
@@ -40,7 +40,7 @@ export default function Navbar({
           <AnimatePresence>
             {status == "loading" ? (
               <button className='invisible flex items-center rounded text-white text-sm transition-all border border-gray-50 hover:bg-white hover:text-gray-700 border-opacity-40 bg-gray-800 py-1.5 px-5'>
-                <h3 className='hidden md:inline mr-2'>Loading</h3>
+                <h3 className='hidden mr-2 md:inline'>Loading</h3>
                 <Image
                   src={`https://avatars.dicebear.com/api/micah/loading.svg`}
                   alt='user'
@@ -57,7 +57,7 @@ export default function Navbar({
                     className='flex items-center rounded text-white text-sm transition-all border border-gray-50 hover:bg-white hover:text-gray-700 border-opacity-40 bg-gray-800 py-1.5 px-5'
                     onClick={() => setOpenSiderbar(true)}
                   >
-                    <h3 className='hidden md:inline mr-2'>My Dashboard</h3>
+                    <h3 className='hidden mr-2 md:inline'>My Dashboard</h3>
                     <Image
                       src={
                         session?.user?.image ||
